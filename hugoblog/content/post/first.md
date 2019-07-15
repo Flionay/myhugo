@@ -3,7 +3,6 @@ author = "Angyi"
 comments = true	# set false to hide Disqus
 date= 2019-07-10T09:59:58+08:00
 draft = false
-image = ""
 Menu = "Java"		# set "main" to add this content to the 
 share = true	# set false to hide share buttons
 tags = ["Java"]
@@ -11,12 +10,9 @@ title = "Java 基础"
 Summary = "  Java 廖雪峰教程跟学笔记  "
 
 +++
-*Java Notebook*
 
 
-!(学无止尽)[https://github.com/Flionay/flionay.github.io/tree/master/images/senlin.jpg]
-
-
+![](https://raw.githubusercontent.com/Flionay/myhugo/master/hugoblog/static/images/java_s.jpg)
 
 
 ## Java的 `Hello world`
@@ -290,3 +286,63 @@ StringBuilder sb = new StringBuilder();
 
 ### 整数运算
 
+### 布尔运算
+
+```java
+boolean isGreater = 5>3; //true
+int age =12;
+boolean isZero = age ==0; //false
+boolean isNonzero = !isZero; 
+boolean isAdult = age >= 18;
+boolean isTeenager =age >6 && age<18;
+```
+
+运算符的优先级从高到低依次是：
+
+- `!`
+- `>`，`>=`，`<`，`<=`
+- `==`，`!=`
+- `&&`
+- `||`
+
+布尔运算的一个重要特点是短路运算，
+
+### 数组类型
+
+
+
+### 流程控制
+#### 输入和输出
+```java
+public class Main{
+    public static void main(String[],args){
+        System.out.print("A,");
+        System.out.print("B,");
+        System.out.println("换行输出")
+    }
+}
+
+
+
+```
+
+**格式化输出**
+```java
+public class Main{
+    public static void main(String[] args){
+        doubole d = 1290000;
+        System.out.println(d); //1.29E6
+        System.out.printf("%.2f\n",d)
+        System.out.printf("%.4f\n",d)
+    }
+}
+```
+Java的格式化功能提供了多种占位符，可以把各种数据类型“格式化”成指定的字符串：
+
+占位符	说明
+%d	格式化输出整数
+%x	格式化输出十六进制整数
+%f	格式化输出浮点数
+%e	格式化输出科学计数法表示的浮点数
+%s	格式化字符串
+注意，由于%表示占位符，因此，连续两个%%表示一个%字符本身。

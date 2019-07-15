@@ -15,8 +15,8 @@ canonifyurls = true
   author = "Angyi"
   authorlocation = "Qingdao, China"
   #authorwebsite = "https://weibo.com/u/5792963723"
-  authorbio= "Every man dies, not every man really lives."
-  logo = "images/pig.png"
+  authorbio= "If you plan to do something tomorrow,just start it now."
+  logo = "images/pig2.png"
   # googleAnalyticsUserID = "UA-79101-12"
   # Optional RSS-Link, if not provided it defaults to the standard index.xml
   # RSSLink = "http://feeds.feedburner.com/..."
@@ -63,7 +63,7 @@ canonifyurls = true
 [[menu.main]]
   name = "Others"
   weight = -3
-  identifier = "other"
+  identifier = "others"
   url = "/tags/others"
 
 [[menu.main]]
