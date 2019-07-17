@@ -56,21 +56,21 @@ canonifyurls = true
   url = "/tags/machine-learning"
 [[menu.main]]
   name = "Java"
-  weight = -3
+  weight = -4
   identifier = "java"
   url = "/tags/java"
 
 [[menu.main]]
   name = "Others"
-  weight = -3
+  weight = -5
   identifier = "others"
   url = "/tags/others"
 
 [[menu.main]]
-  name = "About"
-  weight = -4
-  identifier = "about"
-  url = "/about"
+  name = "Python"
+  weight = -3
+  identifier = "python"
+  url = "/tags/python"
 
   [permalinks]
   post = "/:year/:month/:day/:title/"
