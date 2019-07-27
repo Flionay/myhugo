@@ -11,9 +11,14 @@ Summary = "  网页中的代码编辑器，支持多种语言，高亮以及智�
 
 +++
 
-
 [ace官网](https://ace.c9.io)
+
+
+
 [ace github](<https://github.com/ajaxorg/ace/>)
+
+
+
 ```git
 git clone git@github.com:ajaxorg/ace.git
 ```
@@ -91,11 +96,13 @@ git clone git@github.com:ajaxorg/ace.git
 
 ```
 
-![效果图]()
+![效果图](https://github.com/Flionay/myhugo/blob/master/hugoblog/static/images/B98T$WSKD55%5D5%5DC4EB%257X0I.png?raw=true)
 
 
 
-ps:还有一个业界好评的插件，也是后来者居上的，`codemirror`，但是我在做一个网页弹窗中使用的时候会出现行号错位，缩进乱码的问题，弄了好久没有解决。换到了ACE，结果发现姜还是老的辣，稳定简单好使。高亮和提示都很棒。
+ps:还有一个业界好评的插件，也是后来者居上的，名字叫做`codemirror`，但是我在用它做一个网页弹窗的时候，会出现**行号错位**，**缩进乱码**的问题，弄了好久没有解决。`github`中有`issue`提到了这个问题，很多人利用`autorefresh`解决了，但是我还是不行，可能是我能力有限。最终换到了ACE，结果发现:
+
+>  姜还是老的辣，稳定简单好使。高亮和提示都很棒。
 
 
 
