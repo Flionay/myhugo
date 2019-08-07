@@ -1,6 +1,17 @@
-前面的章节关注于不同类型的数据规整流程和NumPy、pandas与其它库的特点。随着时间的发展，pandas发展出了更多适合高级用户的功能。本章就要深入学习pandas的高级功能。
 
-# 12.1 分类数据
+
++++
+author = "Angyi"
+comments = true	# set false to hide Disqus
+date= 2019-02-08T22:35:38+08:00
+draft = false
+Menu = "python"		# set "main" to add this content to the 
+share = true	# set false to hide share buttons
+tags = ["python"]
+title = "第12章 pandas 高级应用"
+Summary = " 第12章 pandas 高级应用：这一节介绍的是pandas的分类类型。我会向你展示通过使用它，提高性能和内存的使用率。我还会介绍一些在统计和机器学习中使用分类数据的工具。"
+
++++
 
 这一节介绍的是pandas的分类类型。我会向你展示通过使用它，提高性能和内存的使用率。我还会介绍一些在统计和机器学习中使用分类数据的工具。
 
