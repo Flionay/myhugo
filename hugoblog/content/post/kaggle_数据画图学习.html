@@ -1,0 +1,3050 @@
+---
+title: "标准的DataFrame数据框，能怎么分析？"
+date: 2019-08-21T10:40:16+08:00
+draft: false
+author : "Angyi"
+tags : ["Machine-Learning"]
+Menu : "ml"
+summary: "偶尔在Kaggle上看到的一个分析Notebook,惊讶于这么简单的数据竟然能够画出这么多漂亮的数据表。特此记录学习一下。"
+---
+<!DOCTYPE html><html><head>
+      <title>&#x6807;&#x51C6;&#x7684;DataFrame&#x6570;&#x636E;&#x6846;&#xFF0C;&#x80FD;&#x600E;&#x4E48;&#x5206;&#x6790;&#xFF1F;</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css">
+      
+      
+
+      
+      
+      
+      
+      
+      
+
+      <style>
+      /**
+ * prism.js Github theme based on GitHub's theme.
+ * @author Sam Clarke
+ */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #333;
+  background: none;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.4;
+
+  -moz-tab-size: 8;
+  -o-tab-size: 8;
+  tab-size: 8;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+  padding: .8em;
+  overflow: auto;
+  /* border: 1px solid #ddd; */
+  border-radius: 3px;
+  /* background: #fff; */
+  background: #f5f5f5;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
+  background: #f5f5f5;
+}
+
+.token.comment,
+.token.blockquote {
+  color: #969896;
+}
+
+.token.cdata {
+  color: #183691;
+}
+
+.token.doctype,
+.token.punctuation,
+.token.variable,
+.token.macro.property {
+  color: #333;
+}
+
+.token.operator,
+.token.important,
+.token.keyword,
+.token.rule,
+.token.builtin {
+  color: #a71d5d;
+}
+
+.token.string,
+.token.url,
+.token.regex,
+.token.attr-value {
+  color: #183691;
+}
+
+.token.property,
+.token.number,
+.token.boolean,
+.token.entity,
+.token.atrule,
+.token.constant,
+.token.symbol,
+.token.command,
+.token.code {
+  color: #0086b3;
+}
+
+.token.tag,
+.token.selector,
+.token.prolog {
+  color: #63a35c;
+}
+
+.token.function,
+.token.namespace,
+.token.pseudo-element,
+.token.class,
+.token.class-name,
+.token.pseudo-class,
+.token.id,
+.token.url-reference .token.variable,
+.token.attr-name {
+  color: #795da3;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.title,
+.token.title .token.punctuation {
+  font-weight: bold;
+  color: #1d3e81;
+}
+
+.token.list {
+  color: #ed6a43;
+}
+
+.token.inserted {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+.token.deleted {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+
+/* JSON */
+.language-json .token.property {
+  color: #183691;
+}
+
+.language-markup .token.tag .token.punctuation {
+  color: #333;
+}
+
+/* CSS */
+code.language-css,
+.language-css .token.function {
+  color: #0086b3;
+}
+
+/* YAML */
+.language-yaml .token.atrule {
+  color: #63a35c;
+}
+
+code.language-yaml {
+  color: #183691;
+}
+
+/* Ruby */
+.language-ruby .token.function {
+  color: #333;
+}
+
+/* Markdown */
+.language-markdown .token.url {
+  color: #795da3;
+}
+
+/* Makefile */
+.language-makefile .token.symbol {
+  color: #795da3;
+}
+
+.language-makefile .token.variable {
+  color: #183691;
+}
+
+.language-makefile .token.builtin {
+  color: #0086b3;
+}
+
+/* Bash */
+.language-bash .token.keyword {
+  color: #0086b3;
+}
+
+/* highlight */
+pre[data-line] {
+  position: relative;
+  padding: 1em 0 1em 3em;
+}
+pre[data-line] .line-highlight-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+  display: block;
+  width: 100%;
+}
+
+pre[data-line] .line-highlight {
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding: inherit 0;
+  margin-top: 1em;
+  background: hsla(24, 20%, 50%,.08);
+  background: linear-gradient(to right, hsla(24, 20%, 50%,.1) 70%, hsla(24, 20%, 50%,0));
+  pointer-events: none;
+  line-height: inherit;
+  white-space: pre;
+}
+
+pre[data-line] .line-highlight:before, 
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-start);
+  position: absolute;
+  top: .4em;
+  left: .6em;
+  min-width: 1em;
+  padding: 0 .5em;
+  background-color: hsla(24, 20%, 50%,.4);
+  color: hsl(24, 20%, 95%);
+  font: bold 65%/1.5 sans-serif;
+  text-align: center;
+  vertical-align: .3em;
+  border-radius: 999px;
+  text-shadow: none;
+  box-shadow: 0 1px white;
+}
+
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-end);
+  top: auto;
+  bottom: .4em;
+}html body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ul,html body>ol{margin-bottom:16px}html body ul,html body ol{padding-left:2em}html body ul.no-list,html body ol.no-list{padding:0;list-style-type:none}html body ul ul,html body ul ol,html body ol ol,html body ol ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:bold;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:bold}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em !important;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::before,html body code::after{letter-spacing:-0.2em;content:"\00a0"}html body pre>code{padding:0;margin:0;font-size:.85em !important;word-break:normal;white-space:pre;background:transparent;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;font-size:.85em !important;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:before,html body pre tt:before,html body pre code:after,html body pre tt:after{content:normal}html body p,html body blockquote,html body ul,html body ol,html body dl,html body pre{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body pre,html body code{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview .pagebreak,.markdown-preview .newpage{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center !important}.markdown-preview:not([for="preview"]) .code-chunk .btn-group{display:none}.markdown-preview:not([for="preview"]) .code-chunk .status{display:none}.markdown-preview:not([for="preview"]) .code-chunk .output-div{margin-bottom:16px}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0}@media screen and (min-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{font-size:14px !important;padding:1em}}@media print{html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,0.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{padding:0 1.6em;margin-top:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc li{margin-bottom:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{list-style-type:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% -  300px);padding:2em calc(50% - 457px -  150px);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+      </style>
+    </head>
+    <body for="html-export">
+      <div class="mume markdown-preview  ">
+      <p>&#x5728;&#x672C;&#x7B14;&#x8BB0;&#x672C;&#x4E2D;&#xFF0C;&#x8BA9;&#x6211;&#x4EEC;&#x63A2;&#x7D22;&#x4E3A;&#x672C;&#x6B21;&#x6BD4;&#x8D5B;&#x63D0;&#x4F9B;&#x7684;&#x6570;&#x636E;&#x96C6;&#x3002;</p>
+<p><strong>&#x76EE;&#x6807;</strong>&#xFF1A;&#x6B64;&#x6570;&#x636E;&#x96C6;&#x5305;&#x542B;&#x4E00;&#x7EC4;&#x63CF;&#x8FF0;&#x4E0D;&#x540C;&#x6885;&#x8D5B;&#x5FB7;&#x65AF;&#x6C7D;&#x8F66;&#x7684;&#x533F;&#x540D;&#x53D8;&#x91CF;&#x3002;&#x57FA;&#x672C;&#x4E8B;&#x5B9E;&#x6807;&#x8BB0;&#x4E3A;&#x201C;y&#x201D;&#xFF0C;&#x8868;&#x793A;&#x6C7D;&#x8F66;&#x901A;&#x8FC7;&#x6D4B;&#x8BD5;&#x7684;&#x65F6;&#x95F4;&#xFF08;&#x4EE5;&#x79D2;&#x4E3A;&#x5355;&#x4F4D;&#xFF09;&#x3002;</p>
+<h3 class="mume-header" id="let-us-first-import-the-necessary-modules">Let us first import the necessary modules.</h3>
+
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np <span class="token comment"># linear algebra</span>
+<span class="token keyword">import</span> pandas <span class="token keyword">as</span> pd <span class="token comment"># data processing, CSV file I/O (e.g. pd.read_csv)</span>
+<span class="token keyword">import</span> matplotlib<span class="token punctuation">.</span>pyplot <span class="token keyword">as</span> plt
+<span class="token keyword">import</span> seaborn <span class="token keyword">as</span> sns
+<span class="token keyword">from</span> sklearn <span class="token keyword">import</span> preprocessing
+<span class="token keyword">import</span> xgboost <span class="token keyword">as</span> xgb
+color <span class="token operator">=</span> sns<span class="token punctuation">.</span>color_palette<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token operator">%</span>matplotlib inline
+
+pd<span class="token punctuation">.</span>options<span class="token punctuation">.</span>mode<span class="token punctuation">.</span>chained_assignment <span class="token operator">=</span> <span class="token boolean">None</span>  <span class="token comment"># default=&apos;warn&apos;</span>
+pd<span class="token punctuation">.</span>options<span class="token punctuation">.</span>display<span class="token punctuation">.</span>max_columns <span class="token operator">=</span> <span class="token number">999</span>
+</pre><pre data-role="codeBlock" data-info="python" class="language-python">train_df <span class="token operator">=</span> pd<span class="token punctuation">.</span>read_csv<span class="token punctuation">(</span><span class="token string">&quot;input/train.csv&quot;</span><span class="token punctuation">)</span>
+test_df <span class="token operator">=</span> pd<span class="token punctuation">.</span>read_csv<span class="token punctuation">(</span><span class="token string">&quot;input/test.csv&quot;</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">&quot;Train shape : &quot;</span><span class="token punctuation">,</span> train_df<span class="token punctuation">.</span>shape<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">&quot;Test shape : &quot;</span><span class="token punctuation">,</span> test_df<span class="token punctuation">.</span>shape<span class="token punctuation">)</span>
+</pre><pre class="language-text">Train shape :  (4209, 378)
+Test shape :  (4209, 377)
+</pre>
+<p>Wow the number of rows are small with 388 columns. We should try not to overfit &#x1F603;</p>
+<p>Let us look at the top few rows.</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">train_df<span class="token punctuation">.</span>head<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>y</th>
+      <th>X0</th>
+      <th>X1</th>
+      <th>X2</th>
+      <th>X3</th>
+      <th>X4</th>
+      <th>X5</th>
+      <th>X6</th>
+      <th>X8</th>
+      <th>X10</th>
+      <th>X11</th>
+      <th>X12</th>
+      <th>X13</th>
+      <th>X14</th>
+      <th>X15</th>
+      <th>X16</th>
+      <th>X17</th>
+      <th>X18</th>
+      <th>X19</th>
+      <th>X20</th>
+      <th>X21</th>
+      <th>X22</th>
+      <th>X23</th>
+      <th>X24</th>
+      <th>X26</th>
+      <th>X27</th>
+      <th>X28</th>
+      <th>X29</th>
+      <th>X30</th>
+      <th>X31</th>
+      <th>X32</th>
+      <th>X33</th>
+      <th>X34</th>
+      <th>X35</th>
+      <th>X36</th>
+      <th>X37</th>
+      <th>X38</th>
+      <th>X39</th>
+      <th>X40</th>
+      <th>X41</th>
+      <th>X42</th>
+      <th>X43</th>
+      <th>X44</th>
+      <th>X45</th>
+      <th>X46</th>
+      <th>X47</th>
+      <th>X48</th>
+      <th>X49</th>
+      <th>X50</th>
+      <th>X51</th>
+      <th>X52</th>
+      <th>X53</th>
+      <th>X54</th>
+      <th>X55</th>
+      <th>X56</th>
+      <th>X57</th>
+      <th>X58</th>
+      <th>X59</th>
+      <th>X60</th>
+      <th>X61</th>
+      <th>X62</th>
+      <th>X63</th>
+      <th>X64</th>
+      <th>X65</th>
+      <th>X66</th>
+      <th>X67</th>
+      <th>X68</th>
+      <th>X69</th>
+      <th>X70</th>
+      <th>X71</th>
+      <th>X73</th>
+      <th>X74</th>
+      <th>X75</th>
+      <th>X76</th>
+      <th>X77</th>
+      <th>X78</th>
+      <th>X79</th>
+      <th>X80</th>
+      <th>X81</th>
+      <th>X82</th>
+      <th>X83</th>
+      <th>X84</th>
+      <th>X85</th>
+      <th>X86</th>
+      <th>X87</th>
+      <th>X88</th>
+      <th>X89</th>
+      <th>X90</th>
+      <th>X91</th>
+      <th>X92</th>
+      <th>X93</th>
+      <th>X94</th>
+      <th>X95</th>
+      <th>X96</th>
+      <th>X97</th>
+      <th>X98</th>
+      <th>X99</th>
+      <th>X100</th>
+      <th>X101</th>
+      <th>X102</th>
+      <th>X103</th>
+      <th>X104</th>
+      <th>X105</th>
+      <th>X106</th>
+      <th>X107</th>
+      <th>X108</th>
+      <th>X109</th>
+      <th>X110</th>
+      <th>X111</th>
+      <th>X112</th>
+      <th>X113</th>
+      <th>X114</th>
+      <th>X115</th>
+      <th>X116</th>
+      <th>X117</th>
+      <th>X118</th>
+      <th>X119</th>
+      <th>X120</th>
+      <th>X122</th>
+      <th>X123</th>
+      <th>X124</th>
+      <th>X125</th>
+      <th>X126</th>
+      <th>X127</th>
+      <th>X128</th>
+      <th>X129</th>
+      <th>X130</th>
+      <th>X131</th>
+      <th>X132</th>
+      <th>X133</th>
+      <th>X134</th>
+      <th>X135</th>
+      <th>X136</th>
+      <th>X137</th>
+      <th>X138</th>
+      <th>X139</th>
+      <th>X140</th>
+      <th>X141</th>
+      <th>X142</th>
+      <th>X143</th>
+      <th>X144</th>
+      <th>X145</th>
+      <th>X146</th>
+      <th>X147</th>
+      <th>X148</th>
+      <th>X150</th>
+      <th>X151</th>
+      <th>X152</th>
+      <th>X153</th>
+      <th>X154</th>
+      <th>X155</th>
+      <th>X156</th>
+      <th>X157</th>
+      <th>X158</th>
+      <th>X159</th>
+      <th>X160</th>
+      <th>X161</th>
+      <th>X162</th>
+      <th>X163</th>
+      <th>X164</th>
+      <th>X165</th>
+      <th>X166</th>
+      <th>X167</th>
+      <th>X168</th>
+      <th>X169</th>
+      <th>X170</th>
+      <th>X171</th>
+      <th>X172</th>
+      <th>X173</th>
+      <th>X174</th>
+      <th>X175</th>
+      <th>X176</th>
+      <th>X177</th>
+      <th>X178</th>
+      <th>X179</th>
+      <th>X180</th>
+      <th>X181</th>
+      <th>X182</th>
+      <th>X183</th>
+      <th>X184</th>
+      <th>X185</th>
+      <th>X186</th>
+      <th>X187</th>
+      <th>X189</th>
+      <th>X190</th>
+      <th>X191</th>
+      <th>X192</th>
+      <th>X194</th>
+      <th>X195</th>
+      <th>X196</th>
+      <th>X197</th>
+      <th>X198</th>
+      <th>X199</th>
+      <th>X200</th>
+      <th>X201</th>
+      <th>X202</th>
+      <th>X203</th>
+      <th>X204</th>
+      <th>X205</th>
+      <th>X206</th>
+      <th>X207</th>
+      <th>X208</th>
+      <th>X209</th>
+      <th>X210</th>
+      <th>X211</th>
+      <th>X212</th>
+      <th>X213</th>
+      <th>X214</th>
+      <th>X215</th>
+      <th>X216</th>
+      <th>X217</th>
+      <th>X218</th>
+      <th>X219</th>
+      <th>X220</th>
+      <th>X221</th>
+      <th>X222</th>
+      <th>X223</th>
+      <th>X224</th>
+      <th>X225</th>
+      <th>X226</th>
+      <th>X227</th>
+      <th>X228</th>
+      <th>X229</th>
+      <th>X230</th>
+      <th>X231</th>
+      <th>X232</th>
+      <th>X233</th>
+      <th>X234</th>
+      <th>X235</th>
+      <th>X236</th>
+      <th>X237</th>
+      <th>X238</th>
+      <th>X239</th>
+      <th>X240</th>
+      <th>X241</th>
+      <th>X242</th>
+      <th>X243</th>
+      <th>X244</th>
+      <th>X245</th>
+      <th>X246</th>
+      <th>X247</th>
+      <th>X248</th>
+      <th>X249</th>
+      <th>X250</th>
+      <th>X251</th>
+      <th>X252</th>
+      <th>X253</th>
+      <th>X254</th>
+      <th>X255</th>
+      <th>X256</th>
+      <th>X257</th>
+      <th>X258</th>
+      <th>X259</th>
+      <th>X260</th>
+      <th>X261</th>
+      <th>X262</th>
+      <th>X263</th>
+      <th>X264</th>
+      <th>X265</th>
+      <th>X266</th>
+      <th>X267</th>
+      <th>X268</th>
+      <th>X269</th>
+      <th>X270</th>
+      <th>X271</th>
+      <th>X272</th>
+      <th>X273</th>
+      <th>X274</th>
+      <th>X275</th>
+      <th>X276</th>
+      <th>X277</th>
+      <th>X278</th>
+      <th>X279</th>
+      <th>X280</th>
+      <th>X281</th>
+      <th>X282</th>
+      <th>X283</th>
+      <th>X284</th>
+      <th>X285</th>
+      <th>X286</th>
+      <th>X287</th>
+      <th>X288</th>
+      <th>X289</th>
+      <th>X290</th>
+      <th>X291</th>
+      <th>X292</th>
+      <th>X293</th>
+      <th>X294</th>
+      <th>X295</th>
+      <th>X296</th>
+      <th>X297</th>
+      <th>X298</th>
+      <th>X299</th>
+      <th>X300</th>
+      <th>X301</th>
+      <th>X302</th>
+      <th>X304</th>
+      <th>X305</th>
+      <th>X306</th>
+      <th>X307</th>
+      <th>X308</th>
+      <th>X309</th>
+      <th>X310</th>
+      <th>X311</th>
+      <th>X312</th>
+      <th>X313</th>
+      <th>X314</th>
+      <th>X315</th>
+      <th>X316</th>
+      <th>X317</th>
+      <th>X318</th>
+      <th>X319</th>
+      <th>X320</th>
+      <th>X321</th>
+      <th>X322</th>
+      <th>X323</th>
+      <th>X324</th>
+      <th>X325</th>
+      <th>X326</th>
+      <th>X327</th>
+      <th>X328</th>
+      <th>X329</th>
+      <th>X330</th>
+      <th>X331</th>
+      <th>X332</th>
+      <th>X333</th>
+      <th>X334</th>
+      <th>X335</th>
+      <th>X336</th>
+      <th>X337</th>
+      <th>X338</th>
+      <th>X339</th>
+      <th>X340</th>
+      <th>X341</th>
+      <th>X342</th>
+      <th>X343</th>
+      <th>X344</th>
+      <th>X345</th>
+      <th>X346</th>
+      <th>X347</th>
+      <th>X348</th>
+      <th>X349</th>
+      <th>X350</th>
+      <th>X351</th>
+      <th>X352</th>
+      <th>X353</th>
+      <th>X354</th>
+      <th>X355</th>
+      <th>X356</th>
+      <th>X357</th>
+      <th>X358</th>
+      <th>X359</th>
+      <th>X360</th>
+      <th>X361</th>
+      <th>X362</th>
+      <th>X363</th>
+      <th>X364</th>
+      <th>X365</th>
+      <th>X366</th>
+      <th>X367</th>
+      <th>X368</th>
+      <th>X369</th>
+      <th>X370</th>
+      <th>X371</th>
+      <th>X372</th>
+      <th>X373</th>
+      <th>X374</th>
+      <th>X375</th>
+      <th>X376</th>
+      <th>X377</th>
+      <th>X378</th>
+      <th>X379</th>
+      <th>X380</th>
+      <th>X382</th>
+      <th>X383</th>
+      <th>X384</th>
+      <th>X385</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>130.81</td>
+      <td>k</td>
+      <td>v</td>
+      <td>at</td>
+      <td>a</td>
+      <td>d</td>
+      <td>u</td>
+      <td>j</td>
+      <td>o</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>6</td>
+      <td>88.53</td>
+      <td>k</td>
+      <td>t</td>
+      <td>av</td>
+      <td>e</td>
+      <td>d</td>
+      <td>y</td>
+      <td>l</td>
+      <td>o</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>7</td>
+      <td>76.26</td>
+      <td>az</td>
+      <td>w</td>
+      <td>n</td>
+      <td>c</td>
+      <td>d</td>
+      <td>x</td>
+      <td>j</td>
+      <td>x</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>9</td>
+      <td>80.62</td>
+      <td>az</td>
+      <td>t</td>
+      <td>n</td>
+      <td>f</td>
+      <td>d</td>
+      <td>x</td>
+      <td>l</td>
+      <td>e</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>13</td>
+      <td>78.02</td>
+      <td>az</td>
+      <td>v</td>
+      <td>n</td>
+      <td>f</td>
+      <td>d</td>
+      <td>h</td>
+      <td>d</td>
+      <td>n</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p><strong>Target Variable:</strong></p>
+<p>&quot;y&quot; is the variable we need to predict. So let us do some analysis on this variable first.</p>
+<h4 class="mume-header" id="1-%E6%8A%8Ay%E6%8E%92%E5%BA%8F%E7%9C%8B%E4%B8%80%E4%B8%8B">1. &#x628A;y&#x6392;&#x5E8F;&#x770B;&#x4E00;&#x4E0B;</h4>
+
+<pre data-role="codeBlock" data-info="python" class="language-python">plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span>figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>scatter<span class="token punctuation">(</span><span class="token builtin">range</span><span class="token punctuation">(</span>train_df<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span> np<span class="token punctuation">.</span>sort<span class="token punctuation">(</span>train_df<span class="token punctuation">.</span>y<span class="token punctuation">.</span>values<span class="token punctuation">)</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>xlabel<span class="token punctuation">(</span><span class="token string">&apos;index&apos;</span><span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">12</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>ylabel<span class="token punctuation">(</span><span class="token string">&apos;y&apos;</span><span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">12</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><p><img src="https://i.loli.net/2019/08/21/gRskh49ApbWNf21.png" alt="output_7_0"></p>
+<p>&#x6700;&#x540E;&#x4F3C;&#x4E4E;&#x6709;&#x4E00;&#x4E2A;&#x5F02;&#x5E38;&#x503C;</p>
+<h4 class="mume-header" id="2-%E9%A2%91%E7%8E%87%E5%88%86%E5%B8%83%E5%9B%BE">2. &#x9891;&#x7387;&#x5206;&#x5E03;&#x56FE;</h4>
+
+<pre data-role="codeBlock" data-info="python" class="language-python">ulimit <span class="token operator">=</span> <span class="token number">180</span>
+train_df<span class="token punctuation">[</span><span class="token string">&apos;y&apos;</span><span class="token punctuation">]</span><span class="token punctuation">.</span>loc<span class="token punctuation">[</span>train_df<span class="token punctuation">[</span><span class="token string">&apos;y&apos;</span><span class="token punctuation">]</span><span class="token operator">&gt;</span>ulimit<span class="token punctuation">]</span> <span class="token operator">=</span> ulimit
+
+plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span>figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">12</span><span class="token punctuation">,</span><span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+sns<span class="token punctuation">.</span>distplot<span class="token punctuation">(</span>train_df<span class="token punctuation">.</span>y<span class="token punctuation">.</span>values<span class="token punctuation">,</span> bins<span class="token operator">=</span><span class="token number">50</span><span class="token punctuation">,</span> kde<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>xlabel<span class="token punctuation">(</span><span class="token string">&apos;y value&apos;</span><span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">12</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><p><img src="https://i.loli.net/2019/08/21/DTmeRhodsBc82rx.png" alt="output_9_0"></p>
+<h4 class="mume-header" id="3-%E7%9C%8B%E4%B8%80%E4%B8%8B%E5%90%84%E5%88%97%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B">3. &#x770B;&#x4E00;&#x4E0B;&#x5404;&#x5217;&#x7684;&#x6570;&#x636E;&#x7C7B;&#x578B;</h4>
+
+<p>&#x8FD9;&#x51E0;&#x4E2A;DataFrame&#x64CD;&#x4F5C;&#x503C;&#x5F97;&#x5B66;&#x4E60;</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">dtype_df <span class="token operator">=</span> train_df<span class="token punctuation">.</span>dtypes<span class="token punctuation">.</span>reset_index<span class="token punctuation">(</span><span class="token punctuation">)</span>
+dtype_df<span class="token punctuation">.</span>columns <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">&quot;Count&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;Column Type&quot;</span><span class="token punctuation">]</span>
+dtype_df<span class="token punctuation">.</span>groupby<span class="token punctuation">(</span><span class="token string">&quot;Column Type&quot;</span><span class="token punctuation">)</span><span class="token punctuation">.</span>aggregate<span class="token punctuation">(</span><span class="token string">&apos;count&apos;</span><span class="token punctuation">)</span><span class="token punctuation">.</span>reset_index<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Column Type</th>
+      <th>Count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>int64</td>
+      <td>369</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>float64</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>object</td>
+      <td>8</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p>&#x6240;&#x4EE5;&#x5927;&#x591A;&#x6570;&#x5217;&#x662F;&#x6574;&#x6570;&#xFF0C;&#x6709;8&#x4E2A;&#x5206;&#x7C7B;&#x5217;&#x548C;1&#x4E2A;&#x6D6E;&#x70B9;&#x5217;&#xFF08;&#x76EE;&#x6807;&#x53D8;&#x91CF;&#xFF09;</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">dtype_df<span class="token punctuation">.</span>loc<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token punctuation">:</span><span class="token punctuation">]</span>
+</pre><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Count</th>
+      <th>Column Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>ID</td>
+      <td>int64</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>y</td>
+      <td>float64</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>X0</td>
+      <td>object</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>X1</td>
+      <td>object</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>X2</td>
+      <td>object</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>X3</td>
+      <td>object</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>X4</td>
+      <td>object</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>X5</td>
+      <td>object</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>X6</td>
+      <td>object</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>X8</td>
+      <td>object</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>X10</td>
+      <td>int64</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p>X0 to X8 are the categorical columns.</p>
+<p>x0 &#x5230; x8 &#x662F;&#x5206;&#x7C7B;&#x53D8;&#x91CF;</p>
+<p><strong>Missing values:</strong></p>
+<p>Let us now check for the missing values.</p>
+<p>&#x68C0;&#x67E5;&#x7F3A;&#x5931;&#x53D8;&#x91CF;</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">missing_df <span class="token operator">=</span> train_df<span class="token punctuation">.</span>isnull<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token builtin">sum</span><span class="token punctuation">(</span>axis<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">.</span>reset_index<span class="token punctuation">(</span><span class="token punctuation">)</span>
+missing_df<span class="token punctuation">.</span>columns <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">&apos;column_name&apos;</span><span class="token punctuation">,</span> <span class="token string">&apos;missing_count&apos;</span><span class="token punctuation">]</span>
+missing_df <span class="token operator">=</span> missing_df<span class="token punctuation">.</span>loc<span class="token punctuation">[</span>missing_df<span class="token punctuation">[</span><span class="token string">&apos;missing_count&apos;</span><span class="token punctuation">]</span><span class="token operator">&gt;</span><span class="token number">0</span><span class="token punctuation">]</span>
+missing_df <span class="token operator">=</span> missing_df<span class="token punctuation">.</span>sort_values<span class="token punctuation">(</span>by<span class="token operator">=</span><span class="token string">&apos;missing_count&apos;</span><span class="token punctuation">)</span>
+missing_df
+</pre><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>column_name</th>
+      <th>missing_count</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+</div>
+<p>Good to see that there are no missing values in the dataset &#x1F603;</p>
+<h4 class="mume-header" id="4-%E6%95%B4%E6%95%B0%E5%88%97%E5%88%86%E6%9E%90">4. &#x6574;&#x6570;&#x5217;&#x5206;&#x6790;</h4>
+
+<p><strong>Integer Columns Analysis:</strong></p>
+<pre data-role="codeBlock" data-info="python" class="language-python">unique_values_dict <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token keyword">for</span> col <span class="token keyword">in</span> train_df<span class="token punctuation">.</span>columns<span class="token punctuation">:</span>
+    <span class="token keyword">if</span> col <span class="token keyword">not</span> <span class="token keyword">in</span> <span class="token punctuation">[</span><span class="token string">&quot;ID&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;y&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;X0&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;X1&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;X2&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;X3&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;X4&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;X5&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;X6&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;X8&quot;</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+        unique_value <span class="token operator">=</span> <span class="token builtin">str</span><span class="token punctuation">(</span>np<span class="token punctuation">.</span>sort<span class="token punctuation">(</span>train_df<span class="token punctuation">[</span>col<span class="token punctuation">]</span><span class="token punctuation">.</span>unique<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>tolist<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        tlist <span class="token operator">=</span> unique_values_dict<span class="token punctuation">.</span>get<span class="token punctuation">(</span>unique_value<span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+        tlist<span class="token punctuation">.</span>append<span class="token punctuation">(</span>col<span class="token punctuation">)</span>
+        unique_values_dict<span class="token punctuation">[</span>unique_value<span class="token punctuation">]</span> <span class="token operator">=</span> tlist<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">]</span>
+<span class="token keyword">for</span> unique_val<span class="token punctuation">,</span> columns <span class="token keyword">in</span> unique_values_dict<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">&quot;Columns containing the unique values : &quot;</span><span class="token punctuation">,</span>unique_val<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>columns<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">&quot;--------------------------------------------------&quot;</span><span class="token punctuation">)</span>
+        
+</pre><pre class="language-text">Columns containing the unique values :  [0, 1]
+[&apos;X10&apos;, &apos;X12&apos;, &apos;X13&apos;, &apos;X14&apos;, &apos;X15&apos;, &apos;X16&apos;, &apos;X17&apos;, &apos;X18&apos;, &apos;X19&apos;, &apos;X20&apos;, &apos;X21&apos;, &apos;X22&apos;, &apos;X23&apos;, &apos;X24&apos;, &apos;X26&apos;, &apos;X27&apos;, &apos;X28&apos;, &apos;X29&apos;, &apos;X30&apos;, &apos;X31&apos;, &apos;X32&apos;, &apos;X33&apos;, &apos;X34&apos;, &apos;X35&apos;, &apos;X36&apos;, &apos;X37&apos;, &apos;X38&apos;, &apos;X39&apos;, &apos;X40&apos;, &apos;X41&apos;, &apos;X42&apos;, &apos;X43&apos;, &apos;X44&apos;, &apos;X45&apos;, &apos;X46&apos;, &apos;X47&apos;, &apos;X48&apos;, &apos;X49&apos;, &apos;X50&apos;, &apos;X51&apos;, &apos;X52&apos;, &apos;X53&apos;, &apos;X54&apos;, &apos;X55&apos;, &apos;X56&apos;, &apos;X57&apos;, &apos;X58&apos;, &apos;X59&apos;, &apos;X60&apos;, &apos;X61&apos;, &apos;X62&apos;, &apos;X63&apos;, &apos;X64&apos;, &apos;X65&apos;, &apos;X66&apos;, &apos;X67&apos;, &apos;X68&apos;, &apos;X69&apos;, &apos;X70&apos;, &apos;X71&apos;, &apos;X73&apos;, &apos;X74&apos;, &apos;X75&apos;, &apos;X76&apos;, &apos;X77&apos;, &apos;X78&apos;, &apos;X79&apos;, &apos;X80&apos;, &apos;X81&apos;, &apos;X82&apos;, &apos;X83&apos;, &apos;X84&apos;, &apos;X85&apos;, &apos;X86&apos;, &apos;X87&apos;, &apos;X88&apos;, &apos;X89&apos;, &apos;X90&apos;, &apos;X91&apos;, &apos;X92&apos;, &apos;X94&apos;, &apos;X95&apos;, &apos;X96&apos;, &apos;X97&apos;, &apos;X98&apos;, &apos;X99&apos;, &apos;X100&apos;, &apos;X101&apos;, &apos;X102&apos;, &apos;X103&apos;, &apos;X104&apos;, &apos;X105&apos;, &apos;X106&apos;, &apos;X108&apos;, &apos;X109&apos;, &apos;X110&apos;, &apos;X111&apos;, &apos;X112&apos;, &apos;X113&apos;, &apos;X114&apos;, &apos;X115&apos;, &apos;X116&apos;, &apos;X117&apos;, &apos;X118&apos;, &apos;X119&apos;, &apos;X120&apos;, &apos;X122&apos;, &apos;X123&apos;, &apos;X124&apos;, &apos;X125&apos;, &apos;X126&apos;, &apos;X127&apos;, &apos;X128&apos;, &apos;X129&apos;, &apos;X130&apos;, &apos;X131&apos;, &apos;X132&apos;, &apos;X133&apos;, &apos;X134&apos;, &apos;X135&apos;, &apos;X136&apos;, &apos;X137&apos;, &apos;X138&apos;, &apos;X139&apos;, &apos;X140&apos;, &apos;X141&apos;, &apos;X142&apos;, &apos;X143&apos;, &apos;X144&apos;, &apos;X145&apos;, &apos;X146&apos;, &apos;X147&apos;, &apos;X148&apos;, &apos;X150&apos;, &apos;X151&apos;, &apos;X152&apos;, &apos;X153&apos;, &apos;X154&apos;, &apos;X155&apos;, &apos;X156&apos;, &apos;X157&apos;, &apos;X158&apos;, &apos;X159&apos;, &apos;X160&apos;, &apos;X161&apos;, &apos;X162&apos;, &apos;X163&apos;, &apos;X164&apos;, &apos;X165&apos;, &apos;X166&apos;, &apos;X167&apos;, &apos;X168&apos;, &apos;X169&apos;, &apos;X170&apos;, &apos;X171&apos;, &apos;X172&apos;, &apos;X173&apos;, &apos;X174&apos;, &apos;X175&apos;, &apos;X176&apos;, &apos;X177&apos;, &apos;X178&apos;, &apos;X179&apos;, &apos;X180&apos;, &apos;X181&apos;, &apos;X182&apos;, &apos;X183&apos;, &apos;X184&apos;, &apos;X185&apos;, &apos;X186&apos;, &apos;X187&apos;, &apos;X189&apos;, &apos;X190&apos;, &apos;X191&apos;, &apos;X192&apos;, &apos;X194&apos;, &apos;X195&apos;, &apos;X196&apos;, &apos;X197&apos;, &apos;X198&apos;, &apos;X199&apos;, &apos;X200&apos;, &apos;X201&apos;, &apos;X202&apos;, &apos;X203&apos;, &apos;X204&apos;, &apos;X205&apos;, &apos;X206&apos;, &apos;X207&apos;, &apos;X208&apos;, &apos;X209&apos;, &apos;X210&apos;, &apos;X211&apos;, &apos;X212&apos;, &apos;X213&apos;, &apos;X214&apos;, &apos;X215&apos;, &apos;X216&apos;, &apos;X217&apos;, &apos;X218&apos;, &apos;X219&apos;, &apos;X220&apos;, &apos;X221&apos;, &apos;X222&apos;, &apos;X223&apos;, &apos;X224&apos;, &apos;X225&apos;, &apos;X226&apos;, &apos;X227&apos;, &apos;X228&apos;, &apos;X229&apos;, &apos;X230&apos;, &apos;X231&apos;, &apos;X232&apos;, &apos;X234&apos;, &apos;X236&apos;, &apos;X237&apos;, &apos;X238&apos;, &apos;X239&apos;, &apos;X240&apos;, &apos;X241&apos;, &apos;X242&apos;, &apos;X243&apos;, &apos;X244&apos;, &apos;X245&apos;, &apos;X246&apos;, &apos;X247&apos;, &apos;X248&apos;, &apos;X249&apos;, &apos;X250&apos;, &apos;X251&apos;, &apos;X252&apos;, &apos;X253&apos;, &apos;X254&apos;, &apos;X255&apos;, &apos;X256&apos;, &apos;X257&apos;, &apos;X258&apos;, &apos;X259&apos;, &apos;X260&apos;, &apos;X261&apos;, &apos;X262&apos;, &apos;X263&apos;, &apos;X264&apos;, &apos;X265&apos;, &apos;X266&apos;, &apos;X267&apos;, &apos;X269&apos;, &apos;X270&apos;, &apos;X271&apos;, &apos;X272&apos;, &apos;X273&apos;, &apos;X274&apos;, &apos;X275&apos;, &apos;X276&apos;, &apos;X277&apos;, &apos;X278&apos;, &apos;X279&apos;, &apos;X280&apos;, &apos;X281&apos;, &apos;X282&apos;, &apos;X283&apos;, &apos;X284&apos;, &apos;X285&apos;, &apos;X286&apos;, &apos;X287&apos;, &apos;X288&apos;, &apos;X291&apos;, &apos;X292&apos;, &apos;X294&apos;, &apos;X295&apos;, &apos;X296&apos;, &apos;X298&apos;, &apos;X299&apos;, &apos;X300&apos;, &apos;X301&apos;, &apos;X302&apos;, &apos;X304&apos;, &apos;X305&apos;, &apos;X306&apos;, &apos;X307&apos;, &apos;X308&apos;, &apos;X309&apos;, &apos;X310&apos;, &apos;X311&apos;, &apos;X312&apos;, &apos;X313&apos;, &apos;X314&apos;, &apos;X315&apos;, &apos;X316&apos;, &apos;X317&apos;, &apos;X318&apos;, &apos;X319&apos;, &apos;X320&apos;, &apos;X321&apos;, &apos;X322&apos;, &apos;X323&apos;, &apos;X324&apos;, &apos;X325&apos;, &apos;X326&apos;, &apos;X327&apos;, &apos;X328&apos;, &apos;X329&apos;, &apos;X331&apos;, &apos;X332&apos;, &apos;X333&apos;, &apos;X334&apos;, &apos;X335&apos;, &apos;X336&apos;, &apos;X337&apos;, &apos;X338&apos;, &apos;X339&apos;, &apos;X340&apos;, &apos;X341&apos;, &apos;X342&apos;, &apos;X343&apos;, &apos;X344&apos;, &apos;X345&apos;, &apos;X346&apos;, &apos;X348&apos;, &apos;X349&apos;, &apos;X350&apos;, &apos;X351&apos;, &apos;X352&apos;, &apos;X353&apos;, &apos;X354&apos;, &apos;X355&apos;, &apos;X356&apos;, &apos;X357&apos;, &apos;X358&apos;, &apos;X359&apos;, &apos;X360&apos;, &apos;X361&apos;, &apos;X362&apos;, &apos;X363&apos;, &apos;X364&apos;, &apos;X365&apos;, &apos;X366&apos;, &apos;X367&apos;, &apos;X368&apos;, &apos;X369&apos;, &apos;X370&apos;, &apos;X371&apos;, &apos;X372&apos;, &apos;X373&apos;, &apos;X374&apos;, &apos;X375&apos;, &apos;X376&apos;, &apos;X377&apos;, &apos;X378&apos;, &apos;X379&apos;, &apos;X380&apos;, &apos;X382&apos;, &apos;X383&apos;, &apos;X384&apos;, &apos;X385&apos;]
+--------------------------------------------------
+Columns containing the unique values :  [0]
+[&apos;X11&apos;, &apos;X93&apos;, &apos;X107&apos;, &apos;X233&apos;, &apos;X235&apos;, &apos;X268&apos;, &apos;X289&apos;, &apos;X290&apos;, &apos;X293&apos;, &apos;X297&apos;, &apos;X330&apos;, &apos;X347&apos;]
+--------------------------------------------------
+</pre>
+<p>So all the integer columns are binary with some columns have only one unique value 0. Possibly we could exclude those columns in our modeling activity.</p>
+<p>&#x56E0;&#x6B64;&#xFF0C;&#x6240;&#x6709;&#x6574;&#x6570;&#x5217;&#x90FD;&#x662F;&#x4E8C;&#x8FDB;&#x5236;&#x7684;&#xFF0C;&#x6709;&#x4E9B;&#x5217;&#x53EA;&#x6709;&#x4E00;&#x4E2A;&#x552F;&#x4E00;&#x503C;0.&#x53EF;&#x80FD;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x5728;&#x5EFA;&#x6A21;&#x6D3B;&#x52A8;&#x4E2D;&#x6392;&#x9664;&#x8FD9;&#x4E9B;&#x5217;&#x3002;</p>
+<h4 class="mume-header" id="5-%E6%88%91%E4%BB%AC%E6%8E%A2%E7%B4%A2%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%AD%E5%AD%98%E5%9C%A8%E7%9A%84%E5%88%86%E7%B1%BB%E5%88%97">5. &#x6211;&#x4EEC;&#x63A2;&#x7D22;&#x6570;&#x636E;&#x96C6;&#x4E2D;&#x5B58;&#x5728;&#x7684;&#x5206;&#x7C7B;&#x5217;&#x3002;</h4>
+
+<pre data-role="codeBlock" data-info="python" class="language-python">var_name <span class="token operator">=</span> <span class="token string">&quot;X0&quot;</span>
+col_order <span class="token operator">=</span> np<span class="token punctuation">.</span>sort<span class="token punctuation">(</span>train_df<span class="token punctuation">[</span>var_name<span class="token punctuation">]</span><span class="token punctuation">.</span>unique<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>tolist<span class="token punctuation">(</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span>figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">12</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+sns<span class="token punctuation">.</span>stripplot<span class="token punctuation">(</span>x<span class="token operator">=</span>var_name<span class="token punctuation">,</span> y<span class="token operator">=</span><span class="token string">&apos;y&apos;</span><span class="token punctuation">,</span> data<span class="token operator">=</span>train_df<span class="token punctuation">,</span> order<span class="token operator">=</span>col_order<span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>xlabel<span class="token punctuation">(</span>var_name<span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">12</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>ylabel<span class="token punctuation">(</span><span class="token string">&apos;y&apos;</span><span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">12</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>title<span class="token punctuation">(</span><span class="token string">&quot;Distribution of y variable with &quot;</span><span class="token operator">+</span>var_name<span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">15</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><p><img src="https://i.loli.net/2019/08/21/UHGDgjF4mPewlO5.png" alt="output_19_0"></p>
+<pre data-role="codeBlock" data-info="python" class="language-python">var_name <span class="token operator">=</span> <span class="token string">&quot;X1&quot;</span>
+col_order <span class="token operator">=</span> np<span class="token punctuation">.</span>sort<span class="token punctuation">(</span>train_df<span class="token punctuation">[</span>var_name<span class="token punctuation">]</span><span class="token punctuation">.</span>unique<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>tolist<span class="token punctuation">(</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span>figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">12</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+sns<span class="token punctuation">.</span>stripplot<span class="token punctuation">(</span>x<span class="token operator">=</span>var_name<span class="token punctuation">,</span> y<span class="token operator">=</span><span class="token string">&apos;y&apos;</span><span class="token punctuation">,</span> data<span class="token operator">=</span>train_df<span class="token punctuation">,</span> order<span class="token operator">=</span>col_order<span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>xlabel<span class="token punctuation">(</span>var_name<span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">12</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>ylabel<span class="token punctuation">(</span><span class="token string">&apos;y&apos;</span><span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">12</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>title<span class="token punctuation">(</span><span class="token string">&quot;Distribution of y variable with &quot;</span><span class="token operator">+</span>var_name<span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">15</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><p><img src="https://i.loli.net/2019/08/21/mjelPpxz8UJiQCq.png" alt="output_20_0"></p>
+<pre data-role="codeBlock" data-info="python" class="language-python">var_name <span class="token operator">=</span> <span class="token string">&quot;X2&quot;</span>
+col_order <span class="token operator">=</span> np<span class="token punctuation">.</span>sort<span class="token punctuation">(</span>train_df<span class="token punctuation">[</span>var_name<span class="token punctuation">]</span><span class="token punctuation">.</span>unique<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>tolist<span class="token punctuation">(</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span>figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">12</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+sns<span class="token punctuation">.</span>boxplot<span class="token punctuation">(</span>x<span class="token operator">=</span>var_name<span class="token punctuation">,</span> y<span class="token operator">=</span><span class="token string">&apos;y&apos;</span><span class="token punctuation">,</span> data<span class="token operator">=</span>train_df<span class="token punctuation">,</span> order<span class="token operator">=</span>col_order<span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>xlabel<span class="token punctuation">(</span>var_name<span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">12</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>ylabel<span class="token punctuation">(</span><span class="token string">&apos;y&apos;</span><span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">12</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>title<span class="token punctuation">(</span><span class="token string">&quot;Distribution of y variable with &quot;</span><span class="token operator">+</span>var_name<span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">15</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><p><img src="https://i.loli.net/2019/08/21/pAskzYSiOlV9xR8.png" alt="output_21_0"></p>
+<pre data-role="codeBlock" data-info="python" class="language-python">var_name <span class="token operator">=</span> <span class="token string">&quot;X3&quot;</span>
+col_order <span class="token operator">=</span> np<span class="token punctuation">.</span>sort<span class="token punctuation">(</span>train_df<span class="token punctuation">[</span>var_name<span class="token punctuation">]</span><span class="token punctuation">.</span>unique<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>tolist<span class="token punctuation">(</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span>figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">12</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+sns<span class="token punctuation">.</span>violinplot<span class="token punctuation">(</span>x<span class="token operator">=</span>var_name<span class="token punctuation">,</span> y<span class="token operator">=</span><span class="token string">&apos;y&apos;</span><span class="token punctuation">,</span> data<span class="token operator">=</span>train_df<span class="token punctuation">,</span> order<span class="token operator">=</span>col_order<span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>xlabel<span class="token punctuation">(</span>var_name<span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">12</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>ylabel<span class="token punctuation">(</span><span class="token string">&apos;y&apos;</span><span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">12</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>title<span class="token punctuation">(</span><span class="token string">&quot;Distribution of y variable with &quot;</span><span class="token operator">+</span>var_name<span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">15</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><pre class="language-text">D:\Anaconda3\lib\site-packages\scipy\stats\stats.py:1713: FutureWarning: Using a non-tuple sequence for multidimensional indexing is deprecated; use `arr[tuple(seq)]` instead of `arr[seq]`. In the future this will be interpreted as an array index, `arr[np.array(seq)]`, which will result either in an error or a different result.
+  return np.add.reduce(sorted[indexer] * weights, axis=axis) / sumval
+</pre>
+<p><img src="https://i.loli.net/2019/08/21/sbAXKNgmpecWwBk.png" alt="output_22_1"></p>
+<pre data-role="codeBlock" data-info="python" class="language-python">var_name <span class="token operator">=</span> <span class="token string">&quot;X4&quot;</span>
+col_order <span class="token operator">=</span> np<span class="token punctuation">.</span>sort<span class="token punctuation">(</span>train_df<span class="token punctuation">[</span>var_name<span class="token punctuation">]</span><span class="token punctuation">.</span>unique<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>tolist<span class="token punctuation">(</span><span class="token punctuation">)</span>
+col_order
+
+plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span>figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">12</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+sns<span class="token punctuation">.</span>violinplot<span class="token punctuation">(</span>x<span class="token operator">=</span>var_name<span class="token punctuation">,</span> y<span class="token operator">=</span><span class="token string">&apos;y&apos;</span><span class="token punctuation">,</span> data<span class="token operator">=</span>train_df<span class="token punctuation">,</span> order<span class="token operator">=</span>col_order<span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>xlabel<span class="token punctuation">(</span>var_name<span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">12</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>ylabel<span class="token punctuation">(</span><span class="token string">&apos;y&apos;</span><span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">12</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>title<span class="token punctuation">(</span><span class="token string">&quot;Distribution of y variable with &quot;</span><span class="token operator">+</span>var_name<span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">15</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><pre class="language-text">D:\Anaconda3\lib\site-packages\scipy\stats\stats.py:1713: FutureWarning: Using a non-tuple sequence for multidimensional indexing is deprecated; use `arr[tuple(seq)]` instead of `arr[seq]`. In the future this will be interpreted as an array index, `arr[np.array(seq)]`, which will result either in an error or a different result.
+  return np.add.reduce(sorted[indexer] * weights, axis=axis) / sumval
+</pre>
+<p><img src="https://i.loli.net/2019/08/21/SjpZtO687w542fl.png" alt="output_23_1"></p>
+<pre data-role="codeBlock" data-info="python" class="language-python">var_name <span class="token operator">=</span> <span class="token string">&quot;X5&quot;</span>
+col_order <span class="token operator">=</span> np<span class="token punctuation">.</span>sort<span class="token punctuation">(</span>train_df<span class="token punctuation">[</span>var_name<span class="token punctuation">]</span><span class="token punctuation">.</span>unique<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>tolist<span class="token punctuation">(</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span>figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">12</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+sns<span class="token punctuation">.</span>boxplot<span class="token punctuation">(</span>x<span class="token operator">=</span>var_name<span class="token punctuation">,</span> y<span class="token operator">=</span><span class="token string">&apos;y&apos;</span><span class="token punctuation">,</span> data<span class="token operator">=</span>train_df<span class="token punctuation">,</span> order<span class="token operator">=</span>col_order<span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>xlabel<span class="token punctuation">(</span>var_name<span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">12</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>ylabel<span class="token punctuation">(</span><span class="token string">&apos;y&apos;</span><span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">12</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>title<span class="token punctuation">(</span><span class="token string">&quot;Distribution of y variable with &quot;</span><span class="token operator">+</span>var_name<span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">15</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><p><img src="https://i.loli.net/2019/08/21/UMwSVjTIK15yhv2.png" alt="output_24_0"></p>
+<pre data-role="codeBlock" data-info="python" class="language-python">var_name <span class="token operator">=</span> <span class="token string">&quot;X6&quot;</span>
+col_order <span class="token operator">=</span> np<span class="token punctuation">.</span>sort<span class="token punctuation">(</span>train_df<span class="token punctuation">[</span>var_name<span class="token punctuation">]</span><span class="token punctuation">.</span>unique<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>tolist<span class="token punctuation">(</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span>figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">12</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+sns<span class="token punctuation">.</span>boxplot<span class="token punctuation">(</span>x<span class="token operator">=</span>var_name<span class="token punctuation">,</span> y<span class="token operator">=</span><span class="token string">&apos;y&apos;</span><span class="token punctuation">,</span> data<span class="token operator">=</span>train_df<span class="token punctuation">,</span> order<span class="token operator">=</span>col_order<span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>xlabel<span class="token punctuation">(</span>var_name<span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">12</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>ylabel<span class="token punctuation">(</span><span class="token string">&apos;y&apos;</span><span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">12</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>title<span class="token punctuation">(</span><span class="token string">&quot;Distribution of y variable with &quot;</span><span class="token operator">+</span>var_name<span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">15</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><p><img src="https://i.loli.net/2019/08/21/beZFHQnAMh3itU1.png" alt="output_25_0"></p>
+<pre data-role="codeBlock" data-info="python" class="language-python">var_name <span class="token operator">=</span> <span class="token string">&quot;X8&quot;</span>
+col_order <span class="token operator">=</span> np<span class="token punctuation">.</span>sort<span class="token punctuation">(</span>train_df<span class="token punctuation">[</span>var_name<span class="token punctuation">]</span><span class="token punctuation">.</span>unique<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>tolist<span class="token punctuation">(</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span>figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">12</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+sns<span class="token punctuation">.</span>boxplot<span class="token punctuation">(</span>x<span class="token operator">=</span>var_name<span class="token punctuation">,</span> y<span class="token operator">=</span><span class="token string">&apos;y&apos;</span><span class="token punctuation">,</span> data<span class="token operator">=</span>train_df<span class="token punctuation">,</span> order<span class="token operator">=</span>col_order<span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>xlabel<span class="token punctuation">(</span>var_name<span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">12</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>ylabel<span class="token punctuation">(</span><span class="token string">&apos;y&apos;</span><span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">12</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>title<span class="token punctuation">(</span><span class="token string">&quot;Distribution of y variable with &quot;</span><span class="token operator">+</span>var_name<span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">15</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><p><img src="https://i.loli.net/2019/08/21/JOLeNwcsY9fmnKB.png" alt="output_26_0"></p>
+<h4 class="mume-header" id="6-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%8F%98%E9%87%8F%E5%88%86%E6%9E%90">6. &#x4E8C;&#x8FDB;&#x5236;&#x53D8;&#x91CF;&#x5206;&#x6790;</h4>
+
+<p><strong>Binary Variables:</strong></p>
+<p>Now we can look into the binary variables. There are quite a few of them as we have seen before. Let us start with getting the number of 0&apos;s and 1&apos;s in each of these variables.</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">zero_count_list <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+one_count_list <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+cols_list <span class="token operator">=</span> unique_values_dict<span class="token punctuation">[</span><span class="token string">&apos;[0, 1]&apos;</span><span class="token punctuation">]</span>
+<span class="token keyword">for</span> col <span class="token keyword">in</span> cols_list<span class="token punctuation">:</span>
+    zero_count_list<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">(</span>train_df<span class="token punctuation">[</span>col<span class="token punctuation">]</span><span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token builtin">sum</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    one_count_list<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">(</span>train_df<span class="token punctuation">[</span>col<span class="token punctuation">]</span><span class="token operator">==</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token builtin">sum</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+N <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>cols_list<span class="token punctuation">)</span>
+ind <span class="token operator">=</span> np<span class="token punctuation">.</span>arange<span class="token punctuation">(</span>N<span class="token punctuation">)</span>
+width <span class="token operator">=</span> <span class="token number">0.35</span>
+
+plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span>figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">,</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+p1 <span class="token operator">=</span> plt<span class="token punctuation">.</span>barh<span class="token punctuation">(</span>ind<span class="token punctuation">,</span> zero_count_list<span class="token punctuation">,</span> width<span class="token punctuation">,</span> color<span class="token operator">=</span><span class="token string">&apos;red&apos;</span><span class="token punctuation">)</span>
+p2 <span class="token operator">=</span> plt<span class="token punctuation">.</span>barh<span class="token punctuation">(</span>ind<span class="token punctuation">,</span> one_count_list<span class="token punctuation">,</span> width<span class="token punctuation">,</span> left<span class="token operator">=</span>zero_count_list<span class="token punctuation">,</span> color<span class="token operator">=</span><span class="token string">&quot;blue&quot;</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>yticks<span class="token punctuation">(</span>ind<span class="token punctuation">,</span> cols_list<span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>legend<span class="token punctuation">(</span><span class="token punctuation">(</span>p1<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> p2<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">&apos;Zero count&apos;</span><span class="token punctuation">,</span> <span class="token string">&apos;One Count&apos;</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><p><img src="https://i.loli.net/2019/08/21/yY3qShpubBvgZIO.png" alt="output_28_0"></p>
+<p>Now let us check the mean y value in each of the binary variable.</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">zero_mean_list <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+one_mean_list <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+cols_list <span class="token operator">=</span> unique_values_dict<span class="token punctuation">[</span><span class="token string">&apos;[0, 1]&apos;</span><span class="token punctuation">]</span>
+<span class="token keyword">for</span> col <span class="token keyword">in</span> cols_list<span class="token punctuation">:</span>
+    zero_mean_list<span class="token punctuation">.</span>append<span class="token punctuation">(</span>train_df<span class="token punctuation">.</span>loc<span class="token punctuation">[</span>train_df<span class="token punctuation">[</span>col<span class="token punctuation">]</span><span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>y<span class="token punctuation">.</span>mean<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    one_mean_list<span class="token punctuation">.</span>append<span class="token punctuation">(</span>train_df<span class="token punctuation">.</span>loc<span class="token punctuation">[</span>train_df<span class="token punctuation">[</span>col<span class="token punctuation">]</span><span class="token operator">==</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">.</span>y<span class="token punctuation">.</span>mean<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+new_df <span class="token operator">=</span> pd<span class="token punctuation">.</span>DataFrame<span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token string">&quot;column_name&quot;</span><span class="token punctuation">:</span>cols_list<span class="token operator">+</span>cols_list<span class="token punctuation">,</span> <span class="token string">&quot;value&quot;</span><span class="token punctuation">:</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">*</span><span class="token builtin">len</span><span class="token punctuation">(</span>cols_list<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">*</span><span class="token builtin">len</span><span class="token punctuation">(</span>cols_list<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">&quot;y_mean&quot;</span><span class="token punctuation">:</span>zero_mean_list<span class="token operator">+</span>one_mean_list<span class="token punctuation">}</span><span class="token punctuation">)</span>
+new_df <span class="token operator">=</span> new_df<span class="token punctuation">.</span>pivot<span class="token punctuation">(</span><span class="token string">&apos;column_name&apos;</span><span class="token punctuation">,</span> <span class="token string">&apos;value&apos;</span><span class="token punctuation">,</span> <span class="token string">&apos;y_mean&apos;</span><span class="token punctuation">)</span>
+
+plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span>figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">,</span><span class="token number">80</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+sns<span class="token punctuation">.</span>heatmap<span class="token punctuation">(</span>new_df<span class="token punctuation">,</span>cmap<span class="token operator">=</span><span class="token string">&quot;Blues_r&quot;</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>title<span class="token punctuation">(</span><span class="token string">&quot;Mean of y value across binary variables&quot;</span><span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">15</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><p><img src="https://i.loli.net/2019/08/21/bIEWOyfM7ZaQzFs.png" alt="output_30_0"></p>
+<p>Binary variables which shows a good color difference in the above graphs between 0 and 1 are likely to be more predictive given the the count distribution is also good between both the classes (can be seen from the previous graph). We will dive more into the important variables in the later part of the notebook.</p>
+<p><strong>ID variable:</strong></p>
+<p>One more important thing we need to look at it is ID variable. This will give an idea of how the splits are done across train and test (random or id based) and also to help see if ID has some potential prediction capability (probably not so useful for business)</p>
+<p>Let us first see how the &apos;y&apos; variable changes with ID variable.</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">var_name <span class="token operator">=</span> <span class="token string">&quot;ID&quot;</span>
+plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span>figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">12</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+sns<span class="token punctuation">.</span>regplot<span class="token punctuation">(</span>x<span class="token operator">=</span>var_name<span class="token punctuation">,</span> y<span class="token operator">=</span><span class="token string">&apos;y&apos;</span><span class="token punctuation">,</span> data<span class="token operator">=</span>train_df<span class="token punctuation">,</span> scatter_kws<span class="token operator">=</span><span class="token punctuation">{</span><span class="token string">&apos;alpha&apos;</span><span class="token punctuation">:</span><span class="token number">0.5</span><span class="token punctuation">,</span> <span class="token string">&apos;s&apos;</span><span class="token punctuation">:</span><span class="token number">30</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>xlabel<span class="token punctuation">(</span>var_name<span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">12</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>ylabel<span class="token punctuation">(</span><span class="token string">&apos;y&apos;</span><span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">12</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>title<span class="token punctuation">(</span><span class="token string">&quot;Distribution of y variable with &quot;</span><span class="token operator">+</span>var_name<span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">15</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><pre class="language-text">D:\Anaconda3\lib\site-packages\scipy\stats\stats.py:1713: FutureWarning: Using a non-tuple sequence for multidimensional indexing is deprecated; use `arr[tuple(seq)]` instead of `arr[seq]`. In the future this will be interpreted as an array index, `arr[np.array(seq)]`, which will result either in an error or a different result.
+  return np.add.reduce(sorted[indexer] * weights, axis=axis) / sumval
+</pre>
+<p><img src="https://i.loli.net/2019/08/21/XqjEyglnUYKT6e3.png" alt="output_32_1"></p>
+<p>There seems to be a slight decreasing trend with respect to ID variable. Now let us see how the IDs are distributed across train and test.</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span>figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+train_df<span class="token punctuation">[</span><span class="token string">&apos;eval_set&apos;</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">&quot;train&quot;</span>
+test_df<span class="token punctuation">[</span><span class="token string">&apos;eval_set&apos;</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">&quot;test&quot;</span>
+full_df <span class="token operator">=</span> pd<span class="token punctuation">.</span>concat<span class="token punctuation">(</span><span class="token punctuation">[</span>train_df<span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token string">&quot;ID&quot;</span><span class="token punctuation">,</span><span class="token string">&quot;eval_set&quot;</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">,</span> test_df<span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token string">&quot;ID&quot;</span><span class="token punctuation">,</span><span class="token string">&quot;eval_set&quot;</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span>
+
+plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span>figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">12</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+sns<span class="token punctuation">.</span>violinplot<span class="token punctuation">(</span>x<span class="token operator">=</span><span class="token string">&quot;eval_set&quot;</span><span class="token punctuation">,</span> y<span class="token operator">=</span><span class="token string">&apos;ID&apos;</span><span class="token punctuation">,</span> data<span class="token operator">=</span>full_df<span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>xlabel<span class="token punctuation">(</span><span class="token string">&quot;eval_set&quot;</span><span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">12</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>ylabel<span class="token punctuation">(</span><span class="token string">&apos;y&apos;</span><span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">12</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>title<span class="token punctuation">(</span><span class="token string">&quot;Distribution of ID variable with evaluation set&quot;</span><span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">15</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><pre class="language-text">D:\Anaconda3\lib\site-packages\scipy\stats\stats.py:1713: FutureWarning: Using a non-tuple sequence for multidimensional indexing is deprecated; use `arr[tuple(seq)]` instead of `arr[seq]`. In the future this will be interpreted as an array index, `arr[np.array(seq)]`, which will result either in an error or a different result.
+  return np.add.reduce(sorted[indexer] * weights, axis=axis) / sumval
+
+
+
+&lt;Figure size 432x720 with 0 Axes&gt;
+</pre>
+<p><img src="https://i.loli.net/2019/08/21/zS6e4ciBruUP5tG.png" alt="output_34_2"></p>
+<p>Seems like a random split of ID variable between train and test samples.</p>
+<p><strong>Important Variables:</strong></p>
+<p>Now let us run and xgboost model to get the important variables.</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">for</span> f <span class="token keyword">in</span> <span class="token punctuation">[</span><span class="token string">&quot;X0&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;X1&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;X2&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;X3&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;X4&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;X5&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;X6&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;X8&quot;</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+        lbl <span class="token operator">=</span> preprocessing<span class="token punctuation">.</span>LabelEncoder<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        lbl<span class="token punctuation">.</span>fit<span class="token punctuation">(</span><span class="token builtin">list</span><span class="token punctuation">(</span>train_df<span class="token punctuation">[</span>f<span class="token punctuation">]</span><span class="token punctuation">.</span>values<span class="token punctuation">)</span><span class="token punctuation">)</span> 
+        train_df<span class="token punctuation">[</span>f<span class="token punctuation">]</span> <span class="token operator">=</span> lbl<span class="token punctuation">.</span>transform<span class="token punctuation">(</span><span class="token builtin">list</span><span class="token punctuation">(</span>train_df<span class="token punctuation">[</span>f<span class="token punctuation">]</span><span class="token punctuation">.</span>values<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        
+train_y <span class="token operator">=</span> train_df<span class="token punctuation">[</span><span class="token string">&apos;y&apos;</span><span class="token punctuation">]</span><span class="token punctuation">.</span>values
+train_X <span class="token operator">=</span> train_df<span class="token punctuation">.</span>drop<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">&quot;ID&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;y&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;eval_set&quot;</span><span class="token punctuation">]</span><span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Thanks to anokas for this #</span>
+<span class="token keyword">def</span> <span class="token function">xgb_r2_score</span><span class="token punctuation">(</span>preds<span class="token punctuation">,</span> dtrain<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    labels <span class="token operator">=</span> dtrain<span class="token punctuation">.</span>get_label<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token string">&apos;r2&apos;</span><span class="token punctuation">,</span> r2_score<span class="token punctuation">(</span>labels<span class="token punctuation">,</span> preds<span class="token punctuation">)</span>
+
+xgb_params <span class="token operator">=</span> <span class="token punctuation">{</span>
+    <span class="token string">&apos;eta&apos;</span><span class="token punctuation">:</span> <span class="token number">0.05</span><span class="token punctuation">,</span>
+    <span class="token string">&apos;max_depth&apos;</span><span class="token punctuation">:</span> <span class="token number">6</span><span class="token punctuation">,</span>
+    <span class="token string">&apos;subsample&apos;</span><span class="token punctuation">:</span> <span class="token number">0.7</span><span class="token punctuation">,</span>
+    <span class="token string">&apos;colsample_bytree&apos;</span><span class="token punctuation">:</span> <span class="token number">0.7</span><span class="token punctuation">,</span>
+    <span class="token string">&apos;objective&apos;</span><span class="token punctuation">:</span> <span class="token string">&apos;reg:linear&apos;</span><span class="token punctuation">,</span>
+    <span class="token string">&apos;silent&apos;</span><span class="token punctuation">:</span> <span class="token number">1</span>
+<span class="token punctuation">}</span>
+dtrain <span class="token operator">=</span> xgb<span class="token punctuation">.</span>DMatrix<span class="token punctuation">(</span>train_X<span class="token punctuation">,</span> train_y<span class="token punctuation">,</span> feature_names<span class="token operator">=</span>train_X<span class="token punctuation">.</span>columns<span class="token punctuation">.</span>values<span class="token punctuation">)</span>
+model <span class="token operator">=</span> xgb<span class="token punctuation">.</span>train<span class="token punctuation">(</span><span class="token builtin">dict</span><span class="token punctuation">(</span>xgb_params<span class="token punctuation">,</span> silent<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> dtrain<span class="token punctuation">,</span> num_boost_round<span class="token operator">=</span><span class="token number">100</span><span class="token punctuation">,</span> feval<span class="token operator">=</span>xgb_r2_score<span class="token punctuation">,</span> maximize<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+
+<span class="token comment"># plot the important features #</span>
+fig<span class="token punctuation">,</span> ax <span class="token operator">=</span> plt<span class="token punctuation">.</span>subplots<span class="token punctuation">(</span>figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">12</span><span class="token punctuation">,</span><span class="token number">18</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+xgb<span class="token punctuation">.</span>plot_importance<span class="token punctuation">(</span>model<span class="token punctuation">,</span> max_num_features<span class="token operator">=</span><span class="token number">50</span><span class="token punctuation">,</span> height<span class="token operator">=</span><span class="token number">0.8</span><span class="token punctuation">,</span> ax<span class="token operator">=</span>ax<span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><pre class="language-text">[10:26:18] WARNING: C:/Jenkins/workspace/xgboost-win64_release_0.90/src/objective/regression_obj.cu:152: reg:linear is now deprecated in favor of reg:squarederror.
+</pre>
+<p><img src="https://i.loli.net/2019/08/21/XMJLEIqbovg9TyH.png" alt="output_36_1"></p>
+<p>Categorical occupy the top spots followed by binary variables.</p>
+<p>Let us also build a Random Forest model and check the important variables.</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">from</span> sklearn <span class="token keyword">import</span> ensemble
+model <span class="token operator">=</span> ensemble<span class="token punctuation">.</span>RandomForestRegressor<span class="token punctuation">(</span>n_estimators<span class="token operator">=</span><span class="token number">200</span><span class="token punctuation">,</span> max_depth<span class="token operator">=</span><span class="token number">10</span><span class="token punctuation">,</span> min_samples_leaf<span class="token operator">=</span><span class="token number">4</span><span class="token punctuation">,</span> max_features<span class="token operator">=</span><span class="token number">0.2</span><span class="token punctuation">,</span> n_jobs<span class="token operator">=</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> random_state<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span>
+model<span class="token punctuation">.</span>fit<span class="token punctuation">(</span>train_X<span class="token punctuation">,</span> train_y<span class="token punctuation">)</span>
+feat_names <span class="token operator">=</span> train_X<span class="token punctuation">.</span>columns<span class="token punctuation">.</span>values
+
+<span class="token comment">## plot the importances ##</span>
+importances <span class="token operator">=</span> model<span class="token punctuation">.</span>feature_importances_
+std <span class="token operator">=</span> np<span class="token punctuation">.</span>std<span class="token punctuation">(</span><span class="token punctuation">[</span>tree<span class="token punctuation">.</span>feature_importances_ <span class="token keyword">for</span> tree <span class="token keyword">in</span> model<span class="token punctuation">.</span>estimators_<span class="token punctuation">]</span><span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span>
+indices <span class="token operator">=</span> np<span class="token punctuation">.</span>argsort<span class="token punctuation">(</span>importances<span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">20</span><span class="token punctuation">]</span>
+
+plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span>figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">12</span><span class="token punctuation">,</span><span class="token number">12</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>title<span class="token punctuation">(</span><span class="token string">&quot;Feature importances&quot;</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>bar<span class="token punctuation">(</span><span class="token builtin">range</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>indices<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> importances<span class="token punctuation">[</span>indices<span class="token punctuation">]</span><span class="token punctuation">,</span> color<span class="token operator">=</span><span class="token string">&quot;r&quot;</span><span class="token punctuation">,</span> align<span class="token operator">=</span><span class="token string">&quot;center&quot;</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>xticks<span class="token punctuation">(</span><span class="token builtin">range</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>indices<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> feat_names<span class="token punctuation">[</span>indices<span class="token punctuation">]</span><span class="token punctuation">,</span> rotation<span class="token operator">=</span><span class="token string">&apos;vertical&apos;</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>xlim<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token builtin">len</span><span class="token punctuation">(</span>indices<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><pre class="language-text">D:\Anaconda3\lib\site-packages\sklearn\ensemble\weight_boosting.py:29: DeprecationWarning: numpy.core.umath_tests is an internal NumPy module and should not be imported. It will be removed in a future NumPy release.
+  from numpy.core.umath_tests import inner1d
+</pre>
+<p><img src="https://i.loli.net/2019/08/21/AyVdRhQj9Of8bUY.png" alt="output_38_1"></p>
+<p>Quite a few differences in the important variables between xgboost and random forest. Not sure why though.!</p>
+<p><strong>To do</strong></p>
+<ul>
+<li>&#x7EDF;&#x8BA1;&#x7684;&#x5404;&#x7C7B;&#x56FE;&#x6807;&#xFF0C;&#x4E0D;&#x80FD;&#x5C40;&#x9650;&#x4E8E;&#x4F20;&#x7EDF;&#x7684;&#x90A3;&#x51E0;&#x4E2A;&#x56FE;&#x3002;&#x4E0D;&#x591F;&#x82B1;&#x91CC;&#x80E1;&#x54E8;&#x54C8;&#x54C8;</li>
+<li>sns &#x8FD9;&#x4E2A;&#x53EF;&#x89C6;&#x5316;&#x5DE5;&#x5177;&#x9700;&#x8981;&#x603B;&#x7ED3;&#x4E00;&#x4E0B;</li>
+<li>xgboost &#x8FD9;&#x4E2A;&#x5305;&#x9700;&#x8981;&#x5B66;&#x4E60;&#x4E00;&#x4E0B;</li>
+</ul>
+
+      </div>
+      
+      
+    
+    
+    
+    
+    
+    
+    
+    
+  
+    </body></html>
