@@ -1,0 +1,17 @@
+[[series]]
+name = "python"
+img = "img/series/code.jpg"
+summary = "《利用Python进行数据分析》转载笔记系列"
+
+
+
+[[series]]
+name = "ai"
+img = "img/series/ml2.jpg"
+summary = "机器学习和深度学习系列"
+
+
+[[series]]
+name = "reading"
+img = "img/series/timg.jpeg"
+summary = "读书笔记，一点感悟"
