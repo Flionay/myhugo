@@ -1,0 +1,3011 @@
+<!DOCTYPE html>
+<html lang="zn-Hans">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1" />
+  <meta name="author" content="Angyi">
+  <meta name="description" content="第3章 本章讨论Python的内置功能，它们是和Python的内置数据处理工具一同使用的。然后会从Python最基础的数据结构开始：元组、列表、字典和集合。然后会讨论创建你自己的、可重复使用的Python函数。最后，会学习Python的文件对象，以及如何与本地硬盘交互。">
+  
+  <meta property="og:title" content="第03章 Python的数据结构、函数和文件" />
+<meta property="og:description" content="第3章 本章讨论Python的内置功能，它们是和Python的内置数据处理工具一同使用的。然后会从Python最基础的数据结构开始：元组、列表、字典和集合。然后会讨论创建你自己的、可重复使用的Python函数。最后，会学习Python的文件对象，以及如何与本地硬盘交互。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.com/%E7%AC%AC03%E7%AB%A0-python%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%87%BD%E6%95%B0%E5%92%8C%E6%96%87%E4%BB%B6/" />
+<meta property="article:published_time" content="2019-01-13T20:59:58+08:00" />
+<meta property="article:modified_time" content="2019-01-13T20:59:58+08:00" /><meta property="og:see_also" content="https://example.com/numpy_pandas_notebook/" /><meta property="og:see_also" content="https://example.com/%E7%AC%AC14%E7%AB%A0-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E6%A1%88%E4%BE%8B/" /><meta property="og:see_also" content="https://example.com/%E7%AC%AC13%E7%AB%A0-python%E5%BB%BA%E6%A8%A1%E5%BA%93%E4%BB%8B%E7%BB%8D/" /><meta property="og:see_also" content="https://example.com/%E7%AC%AC12%E7%AB%A0-pandas%E9%AB%98%E7%BA%A7%E5%BA%94%E7%94%A8/" /><meta property="og:see_also" content="https://example.com/%E7%AC%AC11%E7%AB%A0-%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97/" /><meta property="og:see_also" content="https://example.com/%E7%AC%AC10%E7%AB%A0-%E6%95%B0%E6%8D%AE%E8%81%9A%E5%90%88%E4%B8%8E%E5%88%86%E7%BB%84%E8%BF%90%E7%AE%97/" />
+
+
+
+  <title>
+  
+       第03章 Python的数据结构、函数和文件 | Angyi 
+  
+  </title>
+
+  <link rel="canonical" href="https://example.com/%E7%AC%AC03%E7%AB%A0-python%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%87%BD%E6%95%B0%E5%92%8C%E6%96%87%E4%BB%B6/">
+
+  
+  
+
+  
+  <link href="https://example.com/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
+
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Ubuntu+Mono:400,400i,700,700i|Raleway:300,400,500,600">
+  <link href="https://example.com/css/font.css" rel="stylesheet"> 
+    
+  
+  <link href="https://example.com/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
+  <link href="https://example.com/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
+  <link href="https://example.com/css/vendors/mdb/style.min.css" rel="stylesheet"> 
+  <link href="https://example.com/css/main.css" rel="stylesheet">
+
+
+  
+  <link rel="shortcut icon"
+  
+      href="https://example.com/img/pig.png"
+  
+  >
+
+
+  
+  
+
+  <style type="text/css">
+      @media (min-width: 800px) and (max-width: 850px) {
+              .navbar:not(.top-nav-collapse) {
+                  background: #1C2331!important;
+              }
+          }
+  </style>
+
+
+  
+    
+    <link rel="stylesheet" href="https://example.com/js/vendors/katex/katex.min.css">
+  
+  
+
+  
+    
+    <link rel="stylesheet" href="https://example.com/css/vendors/highlight/github-gist.css">
+  
+
+</head>
+
+  <body class="bg-light" data-spy="scroll" data-target="#page-scrollspy" data-offset="90">
+  
+    
+    
+
+    
+      
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+    <div class="container">
+
+      
+      <a class="navbar-brand" href="https://example.com">
+          
+        <img class="avatar" src="https://example.com/img/pig.png" style="width: 40px!important;height: auto;"  class="d-inline-block align-top" alt="" >
+        
+        <strong> Angyi</strong>
+      </a>
+
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item ">
+            <a class="nav-link" href="https://example.com">Home</a>
+          </li>
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://example.com/categories/python/" >Python  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://example.com/categories/mldl/" >MLDL  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://example.com/categories/others/" >Others  </a>
+            </li>
+          
+          
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  
+ 
+      
+ 
+
+
+
+
+
+
+<div id="site-header" class="carousel slide carousel-fade" data-ride="carousel" style="height: 18rem;" >  
+
+  
+  
+  
+
+  
+  <div class="carousel-inner" role="listbox">
+    
+      
+
+        
+        <div class="carousel-item active">
+          <div class="view" style="background-image: url('https://example.com/img/header-slides/QQ%e5%9b%be%e7%89%8720191022135950.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+              
+              
+              
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('https://example.com/img/header-slides//big12.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('https://example.com/img/header-slides//wallhaven-132789.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('https://example.com/img/header-slides//wallhaven-73lk19.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+
+  
+  </div>
+  
+
+  
+  <div class="carousel-content text-center white-text wow fadeIn">
+    <div class="row mx-0 headfont mt-3 pt-4">
+      
+      <div class="col-12 col-sm-5 align-middle">
+        <a href="https://example.com">
+          
+            <img class="pull-right avatar avatar-md" src="https://example.com/img/11.png" alt="" >
+          
+        </a>
+      </div>
+      
+      <div class="col-12 col-sm-7 text-left pl-2">
+        <a href="https://example.com">
+          <h1 class="mb-2 h1" style="font-weight: 300;" >
+            <strong>Angyi</strong>
+          </h1>
+        </a>
+        
+
+             
+        <div class="mt-2" style="font-size: 1rem; color: white;">
+            
+              <a href="//github.com/Flionay" target="_blank" rel="noopener"><i class="fab fa-github pr-1" aria-hidden="true"></i></a>    
+            
+            
+
+            
+
+            
+
+            
+
+            
+                <a href="//instagram.com/luckyflion" target="_blank" rel="noopener"><i class="fab fa-instagram pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+                <a href="//weibo.com/u/5792963723" target="_blank" rel="noopener"><i class="fab fa-500px pr-1" aria-hidden="true"></i></a>
+            
+    
+        
+            
+                <a href="mailto:angyi_jq@163.com"><i class="far fa-envelope-open pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  
+  
+  
+
+</div>
+  
+    
+
+    
+  
+  <main class="post-main-wrapper">
+    
+    
+    <div class="row">
+
+      
+
+      
+      <div class="col-md-10">
+      
+
+        
+        <div class="z-depth-1  post-wrapper white-bg single-post">
+
+          <div class="post-header text-center" >
+  <ul class="post-meta li-x">
+    
+      
+        <li><a href="https://example.com/categories/python"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> python </a></li>
+      
+    
+    
+      
+        <li><a href="https://example.com/series/python"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>python</a></li>
+      
+    
+  </ul>
+
+  <div class="px-4 post-heading">第03章 Python的数据结构、函数和文件</div>
+
+  <ul class="post-meta li-x mt-1">
+    
+      <li>Jan 13, 2019</li>
+    
+
+    
+      <li class="middot"></li>
+      <li>26 minutes read</li>
+    
+  </ul>
+  
+
+</div>
+
+
+          <div class="post-content markdown">
+            
+
+<p>本章讨论Python的内置功能，这些功能本书会用到很多。虽然扩展库，比如pandas和Numpy，使处理大数据集很方便，但它们是和Python的内置数据处理工具一同使用的。</p>
+
+<p>我们会从Python最基础的数据结构开始：元组、列表、字典和集合。然后会讨论创建你自己的、可重复使用的Python函数。最后，会学习Python的文件对象，以及如何与本地硬盘交互。</p>
+
+<h1 id="3-1-数据结构和序列">3.1 数据结构和序列</h1>
+
+<p>Python的数据结构简单而强大。通晓它们才能成为熟练的Python程序员。</p>
+
+<h2 id="元组">元组</h2>
+
+<p>元组是一个固定长度，不可改变的Python序列对象。创建元组的最简单方式，是用逗号分隔一列值：</p>
+
+<pre><code class="language-python">In [1]: tup = 4, 5, 6
+
+In [2]: tup
+Out[2]: (4, 5, 6)
+</code></pre>
+
+<p>当用复杂的表达式定义元组，最好将值放到圆括号内，如下所示：</p>
+
+<pre><code class="language-python">In [3]: nested_tup = (4, 5, 6), (7, 8)
+
+In [4]: nested_tup
+Out[4]: ((4, 5, 6), (7, 8))
+</code></pre>
+
+<p>用<code>tuple</code>可以将任意序列或迭代器转换成元组：</p>
+
+<pre><code class="language-python">In [5]: tuple([4, 0, 2])
+Out[5]: (4, 0, 2)
+
+In [6]: tup = tuple('string')
+
+In [7]: tup
+Out[7]: ('s', 't', 'r', 'i', 'n', 'g')
+</code></pre>
+
+<p>可以用方括号访问元组中的元素。和C、C++、JAVA等语言一样，序列是从0开始的：</p>
+
+<pre><code class="language-python">In [8]: tup[0]
+Out[8]: 's'
+</code></pre>
+
+<p>元组中存储的对象可能是可变对象。一旦创建了元组，元组中的对象就不能修改了：</p>
+
+<pre><code class="language-python">In [9]: tup = tuple(['foo', [1, 2], True])
+
+In [10]: tup[2] = False
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+&lt;ipython-input-10-c7308343b841&gt; in &lt;module&gt;()
+----&gt; 1 tup[2] = False
+TypeError: 'tuple' object does not support item assignment
+</code></pre>
+
+<p>如果元组中的某个对象是可变的，比如列表，可以在原位进行修改：</p>
+
+<pre><code class="language-python">In [11]: tup[1].append(3)
+
+In [12]: tup
+Out[12]: ('foo', [1, 2, 3], True)
+</code></pre>
+
+<p>可以用加号运算符将元组串联起来：</p>
+
+<pre><code class="language-python">In [13]: (4, None, 'foo') + (6, 0) + ('bar',)
+Out[13]: (4, None, 'foo', 6, 0, 'bar')
+</code></pre>
+
+<p>元组乘以一个整数，像列表一样，会将几个元组的复制串联起来：</p>
+
+<pre><code class="language-python">In [14]: ('foo', 'bar') * 4
+Out[14]: ('foo', 'bar', 'foo', 'bar', 'foo', 'bar', 'foo', 'bar')
+</code></pre>
+
+<p>对象本身并没有被复制，只是引用了它。</p>
+
+<h2 id="拆分元组">拆分元组</h2>
+
+<p>如果你想将元组赋值给类似元组的变量，Python会试图拆分等号右边的值：</p>
+
+<pre><code class="language-python">In [15]: tup = (4, 5, 6)
+
+In [16]: a, b, c = tup
+
+In [17]: b
+Out[17]: 5
+</code></pre>
+
+<p>即使含有元组的元组也会被拆分：</p>
+
+<pre><code class="language-python">In [18]: tup = 4, 5, (6, 7)
+
+In [19]: a, b, (c, d) = tup
+
+In [20]: d
+Out[20]: 7
+</code></pre>
+
+<p>使用这个功能，你可以很容易地替换变量的名字，其它语言可能是这样：</p>
+
+<pre><code class="language-python">tmp = a
+a = b
+b = tmp
+</code></pre>
+
+<p>但是在Python中，替换可以这样做：</p>
+
+<pre><code class="language-python">In [21]: a, b = 1, 2
+
+In [22]: a
+Out[22]: 1
+
+In [23]: b
+Out[23]: 2
+
+In [24]: b, a = a, b
+
+In [25]: a
+Out[25]: 2
+
+In [26]: b
+Out[26]: 1
+</code></pre>
+
+<p>变量拆分常用来迭代元组或列表序列：</p>
+
+<pre><code class="language-python">In [27]: seq = [(1, 2, 3), (4, 5, 6), (7, 8, 9)]
+
+In [28]: for a, b, c in seq:
+   ....:     print('a={0}, b={1}, c={2}'.format(a, b, c))
+a=1, b=2, c=3
+a=4, b=5, c=6
+a=7, b=8, c=9
+</code></pre>
+
+<p>另一个常见用法是从函数返回多个值。后面会详解。</p>
+
+<p>Python最近新增了更多高级的元组拆分功能，允许从元组的开头“摘取”几个元素。它使用了特殊的语法<code>*rest</code>，这也用在函数签名中以抓取任意长度列表的位置参数：</p>
+
+<pre><code class="language-python">In [29]: values = 1, 2, 3, 4, 5
+
+In [30]: a, b, *rest = values
+
+In [31]: a, b
+Out[31]: (1, 2)
+
+In [32]: rest
+Out[32]: [3, 4, 5]
+</code></pre>
+
+<p><code>rest</code>的部分是想要舍弃的部分，rest的名字不重要。作为惯用写法，许多Python程序员会将不需要的变量使用下划线：</p>
+
+<pre><code class="language-python">In [33]: a, b, *_ = values
+</code></pre>
+
+<h2 id="tuple方法">tuple方法</h2>
+
+<p>因为元组的大小和内容不能修改，它的实例方法都很轻量。其中一个很有用的就是<code>count</code>（也适用于列表），它可以统计某个值得出现频率：</p>
+
+<pre><code class="language-python">In [34]: a = (1, 2, 2, 2, 3, 4, 2)
+
+In [35]: a.count(2)
+Out[35]: 4
+</code></pre>
+
+<h2 id="列表">列表</h2>
+
+<p>与元组对比，列表的长度可变、内容可以被修改。你可以用方括号定义，或用<code>list</code>函数：</p>
+
+<pre><code class="language-python">In [36]: a_list = [2, 3, 7, None]
+
+In [37]: tup = ('foo', 'bar', 'baz')
+
+In [38]: b_list = list(tup)
+
+In [39]: b_list
+Out[39]: ['foo', 'bar', 'baz']
+
+In [40]: b_list[1] = 'peekaboo'
+
+In [41]: b_list
+Out[41]: ['foo', 'peekaboo', 'baz']
+</code></pre>
+
+<p>列表和元组的语义接近，在许多函数中可以交叉使用。</p>
+
+<p><code>list</code>函数常用来在数据处理中实体化迭代器或生成器：</p>
+
+<pre><code class="language-python">In [42]: gen = range(10)
+
+In [43]: gen
+Out[43]: range(0, 10)
+
+In [44]: list(gen)
+Out[44]: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+</code></pre>
+
+<h2 id="添加和删除元素">添加和删除元素</h2>
+
+<p>可以用<code>append</code>在列表末尾添加元素：</p>
+
+<pre><code class="language-python">In [45]: b_list.append('dwarf')
+
+In [46]: b_list
+Out[46]: ['foo', 'peekaboo', 'baz', 'dwarf']
+</code></pre>
+
+<p><code>insert</code>可以在特定的位置插入元素：</p>
+
+<pre><code class="language-python">In [47]: b_list.insert(1, 'red')
+
+In [48]: b_list
+Out[48]: ['foo', 'red', 'peekaboo', 'baz', 'dwarf']
+</code></pre>
+
+<p>插入的序号必须在0和列表长度之间。</p>
+
+<blockquote>
+<p>警告：与<code>append</code>相比，<code>insert</code>耗费的计算量大，因为对后续元素的引用必须在内部迁移，以便为新元素提供空间。如果要在序列的头部和尾部插入元素，你可能需要使用<code>collections.deque</code>，一个双尾部队列。</p>
+</blockquote>
+
+<p>insert的逆运算是pop，它移除并返回指定位置的元素：</p>
+
+<pre><code class="language-python">In [49]: b_list.pop(2)
+Out[49]: 'peekaboo'
+
+In [50]: b_list
+Out[50]: ['foo', 'red', 'baz', 'dwarf']
+</code></pre>
+
+<p>可以用<code>remove</code>去除某个值，<code>remove</code>会先寻找第一个值并除去：</p>
+
+<pre><code class="language-python">In [51]: b_list.append('foo')
+
+In [52]: b_list
+Out[52]: ['foo', 'red', 'baz', 'dwarf', 'foo']
+
+In [53]: b_list.remove('foo')
+
+In [54]: b_list
+Out[54]: ['red', 'baz', 'dwarf', 'foo']
+</code></pre>
+
+<p>如果不考虑性能，使用<code>append</code>和<code>remove</code>，可以把Python的列表当做完美的“多重集”数据结构。</p>
+
+<p>用<code>in</code>可以检查列表是否包含某个值：</p>
+
+<pre><code class="language-python">In [55]: 'dwarf' in b_list
+Out[55]: True
+</code></pre>
+
+<p>否定<code>in</code>可以再加一个not：</p>
+
+<pre><code class="language-python">In [56]: 'dwarf' not in b_list
+Out[56]: False
+</code></pre>
+
+<p>在列表中检查是否存在某个值远比字典和集合速度慢，因为Python是线性搜索列表中的值，但在字典和集合中，在同样的时间内还可以检查其它项（基于哈希表）。</p>
+
+<h2 id="串联和组合列表">串联和组合列表</h2>
+
+<p>与元组类似，可以用加号将两个列表串联起来：</p>
+
+<pre><code class="language-python">In [57]: [4, None, 'foo'] + [7, 8, (2, 3)]
+Out[57]: [4, None, 'foo', 7, 8, (2, 3)]
+</code></pre>
+
+<p>如果已经定义了一个列表，用<code>extend</code>方法可以追加多个元素：</p>
+
+<pre><code class="language-python">In [58]: x = [4, None, 'foo']
+
+In [59]: x.extend([7, 8, (2, 3)])
+
+In [60]: x
+Out[60]: [4, None, 'foo', 7, 8, (2, 3)]
+</code></pre>
+
+<p>通过加法将列表串联的计算量较大，因为要新建一个列表，并且要复制对象。用<code>extend</code>追加元素，尤其是到一个大列表中，更为可取。因此：</p>
+
+<pre><code class="language-python">everything = []
+for chunk in list_of_lists:
+    everything.extend(chunk)
+</code></pre>
+
+<p>要比串联方法快：</p>
+
+<pre><code class="language-python">everything = []
+for chunk in list_of_lists:
+    everything = everything + chunk
+</code></pre>
+
+<h2 id="排序">排序</h2>
+
+<p>你可以用<code>sort</code>函数将一个列表原地排序（不创建新的对象）：</p>
+
+<pre><code class="language-python">In [61]: a = [7, 2, 5, 1, 3]
+
+In [62]: a.sort()
+
+In [63]: a
+Out[63]: [1, 2, 3, 5, 7]
+</code></pre>
+
+<p><code>sort</code>有一些选项，有时会很好用。其中之一是二级排序key，可以用这个key进行排序。例如，我们可以按长度对字符串进行排序：</p>
+
+<pre><code class="language-python">In [64]: b = ['saw', 'small', 'He', 'foxes', 'six']
+
+In [65]: b.sort(key=len)
+
+In [66]: b
+Out[66]: ['He', 'saw', 'six', 'small', 'foxes']
+</code></pre>
+
+<p>稍后，我们会学习<code>sorted</code>函数，它可以产生一个排好序的序列副本。</p>
+
+<h2 id="二分搜索和维护已排序的列表">二分搜索和维护已排序的列表</h2>
+
+<p><code>bisect</code>模块支持二分查找，和向已排序的列表插入值。<code>bisect.bisect</code>可以找到插入值后仍保证排序的位置，<code>bisect.insort</code>是向这个位置插入值：</p>
+
+<pre><code class="language-python">In [67]: import bisect
+
+In [68]: c = [1, 2, 2, 2, 3, 4, 7]
+
+In [69]: bisect.bisect(c, 2)
+Out[69]: 4
+
+In [70]: bisect.bisect(c, 5)
+Out[70]: 6
+
+In [71]: bisect.insort(c, 6)
+
+In [72]: c
+Out[72]: [1, 2, 2, 2, 3, 4, 6, 7]
+</code></pre>
+
+<blockquote>
+<p>注意：<code>bisect</code>模块不会检查列表是否已排好序，进行检查的话会耗费大量计算。因此，对未排序的列表使用<code>bisect</code>不会产生错误，但结果不一定正确。</p>
+</blockquote>
+
+<h2 id="切片">切片</h2>
+
+<p>用切边可以选取大多数序列类型的一部分，切片的基本形式是在方括号中使用<code>start:stop</code>：</p>
+
+<pre><code class="language-python">In [73]: seq = [7, 2, 3, 7, 5, 6, 0, 1]
+
+In [74]: seq[1:5]
+Out[74]: [2, 3, 7, 5]
+</code></pre>
+
+<p>切片也可以被序列赋值：</p>
+
+<pre><code class="language-python">In [75]: seq[3:4] = [6, 3]
+
+In [76]: seq
+Out[76]: [7, 2, 3, 6, 3, 5, 6, 0, 1]
+</code></pre>
+
+<p>切片的起始元素是包括的，不包含结束元素。因此，结果中包含的元素个数是<code>stop - start</code>。</p>
+
+<p><code>start</code>或<code>stop</code>都可以被省略，省略之后，分别默认序列的开头和结尾：</p>
+
+<pre><code class="language-python">In [77]: seq[:5]
+Out[77]: [7, 2, 3, 6, 3]
+
+In [78]: seq[3:]
+Out[78]: [6, 3, 5, 6, 0, 1]
+</code></pre>
+
+<p>负数表明从后向前切片：</p>
+
+<pre><code class="language-python">In [79]: seq[-4:]
+Out[79]: [5, 6, 0, 1]
+
+In [80]: seq[-6:-2]
+Out[80]: [6, 3, 5, 6]
+</code></pre>
+
+<p>需要一段时间来熟悉使用切片，尤其是当你之前学的是R或MATLAB。图3-1展示了正整数和负整数的切片。在图中，指数标示在边缘以表明切片是在哪里开始哪里结束的。</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/7178691-522e2b688b755ff3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图3-1 Python切片演示" /></p>
+
+<p>在第二个冒号后面使用<code>step</code>，可以隔一个取一个元素：</p>
+
+<pre><code class="language-python">In [81]: seq[::2]
+Out[81]: [7, 3, 3, 6, 1]
+</code></pre>
+
+<p>一个聪明的方法是使用<code>-1</code>，它可以将列表或元组颠倒过来：</p>
+
+<pre><code class="language-python">In [82]: seq[::-1]
+Out[82]: [1, 0, 6, 5, 3, 6, 3, 2, 7]
+</code></pre>
+
+<h2 id="序列函数">序列函数</h2>
+
+<p>Python有一些有用的序列函数。</p>
+
+<h2 id="enumerate函数">enumerate函数</h2>
+
+<p>迭代一个序列时，你可能想跟踪当前项的序号。手动的方法可能是下面这样：</p>
+
+<pre><code class="language-python">i = 0
+for value in collection:
+   # do something with value
+   i += 1
+</code></pre>
+
+<p>因为这么做很常见，Python内建了一个<code>enumerate</code>函数，可以返回<code>(i, value)</code>元组序列：</p>
+
+<pre><code class="language-python">for i, value in enumerate(collection):
+   # do something with value
+</code></pre>
+
+<p>当你索引数据时，使用<code>enumerate</code>的一个好方法是计算序列（唯一的）<code>dict</code>映射到位置的值：</p>
+
+<pre><code class="language-python">In [83]: some_list = ['foo', 'bar', 'baz']
+
+In [84]: mapping = {}
+
+In [85]: for i, v in enumerate(some_list):
+   ....:     mapping[v] = i
+
+In [86]: mapping
+Out[86]: {'bar': 1, 'baz': 2, 'foo': 0}
+</code></pre>
+
+<h2 id="sorted函数">sorted函数</h2>
+
+<p><code>sorted</code>函数可以从任意序列的元素返回一个新的排好序的列表：</p>
+
+<pre><code class="language-python">In [87]: sorted([7, 1, 2, 6, 0, 3, 2])
+Out[87]: [0, 1, 2, 2, 3, 6, 7]
+
+In [88]: sorted('horse race')
+Out[88]: [' ', 'a', 'c', 'e', 'e', 'h', 'o', 'r', 'r', 's']
+</code></pre>
+
+<p><code>sorted</code>函数可以接受和<code>sort</code>相同的参数。</p>
+
+<h2 id="zip函数">zip函数</h2>
+
+<p><code>zip</code>可以将多个列表、元组或其它序列成对组合成一个元组列表：</p>
+
+<pre><code class="language-python">In [89]: seq1 = ['foo', 'bar', 'baz']
+
+In [90]: seq2 = ['one', 'two', 'three']
+
+In [91]: zipped = zip(seq1, seq2)
+
+In [92]: list(zipped)
+Out[92]: [('foo', 'one'), ('bar', 'two'), ('baz', 'three')]
+</code></pre>
+
+<p><code>zip</code>可以处理任意多的序列，元素的个数取决于最短的序列：</p>
+
+<pre><code class="language-python">In [93]: seq3 = [False, True]
+
+In [94]: list(zip(seq1, seq2, seq3))
+Out[94]: [('foo', 'one', False), ('bar', 'two', True)]
+</code></pre>
+
+<p><code>zip</code>的常见用法之一是同时迭代多个序列，可能结合<code>enumerate</code>使用：</p>
+
+<pre><code class="language-python">In [95]: for i, (a, b) in enumerate(zip(seq1, seq2)):
+   ....:     print('{0}: {1}, {2}'.format(i, a, b))
+   ....:
+0: foo, one
+1: bar, two
+2: baz, three
+</code></pre>
+
+<p>给出一个“被压缩的”序列，<code>zip</code>可以被用来解压序列。也可以当作把行的列表转换为列的列表。这个方法看起来有点神奇：</p>
+
+<pre><code class="language-python">In [96]: pitchers = [('Nolan', 'Ryan'), ('Roger', 'Clemens'),
+   ....:             ('Schilling', 'Curt')]
+
+In [97]: first_names, last_names = zip(*pitchers)
+
+In [98]: first_names
+Out[98]: ('Nolan', 'Roger', 'Schilling')
+
+In [99]: last_names
+Out[99]: ('Ryan', 'Clemens', 'Curt')
+</code></pre>
+
+<h2 id="reversed函数">reversed函数</h2>
+
+<p><code>reversed</code>可以从后向前迭代一个序列：</p>
+
+<pre><code class="language-python">In [100]: list(reversed(range(10)))
+Out[100]: [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
+</code></pre>
+
+<p>要记住<code>reversed</code>是一个生成器（后面详细介绍），只有实体化（即列表或for循环）之后才能创建翻转的序列。</p>
+
+<h2 id="字典">字典</h2>
+
+<p>字典可能是Python最为重要的数据结构。它更为常见的名字是哈希映射或关联数组。它是键值对的大小可变集合，键和值都是Python对象。创建字典的方法之一是使用尖括号，用冒号分隔键和值：</p>
+
+<pre><code class="language-python">In [101]: empty_dict = {}
+
+In [102]: d1 = {'a' : 'some value', 'b' : [1, 2, 3, 4]}
+
+In [103]: d1
+Out[103]: {'a': 'some value', 'b': [1, 2, 3, 4]}
+</code></pre>
+
+<p>你可以像访问列表或元组中的元素一样，访问、插入或设定字典中的元素：</p>
+
+<pre><code class="language-python">In [104]: d1[7] = 'an integer'
+
+In [105]: d1
+Out[105]: {'a': 'some value', 'b': [1, 2, 3, 4], 7: 'an integer'}
+
+In [106]: d1['b']
+Out[106]: [1, 2, 3, 4]
+</code></pre>
+
+<p>你可以用检查列表和元组是否包含某个值的方法，检查字典中是否包含某个键：</p>
+
+<pre><code class="language-python">In [107]: 'b' in d1
+Out[107]: True
+</code></pre>
+
+<p>可以用<code>del</code>关键字或<code>pop</code>方法（返回值的同时删除键）删除值：</p>
+
+<pre><code class="language-python">In [108]: d1[5] = 'some value'
+
+In [109]: d1
+Out[109]: 
+{'a': 'some value',
+ 'b': [1, 2, 3, 4],
+ 7: 'an integer',
+ 5: 'some value'}
+
+In [110]: d1['dummy'] = 'another value'
+
+In [111]: d1
+Out[111]: 
+{'a': 'some value',
+ 'b': [1, 2, 3, 4],
+ 7: 'an integer',
+ 5: 'some value',
+ 'dummy': 'another value'}
+
+In [112]: del d1[5]
+
+In [113]: d1
+Out[113]: 
+{'a': 'some value',
+ 'b': [1, 2, 3, 4],
+ 7: 'an integer',
+ 'dummy': 'another value'}
+
+In [114]: ret = d1.pop('dummy')
+
+In [115]: ret
+Out[115]: 'another value'
+
+In [116]: d1
+Out[116]: {'a': 'some value', 'b': [1, 2, 3, 4], 7: 'an integer'}
+</code></pre>
+
+<p><code>keys</code>和<code>values</code>是字典的键和值的迭代器方法。虽然键值对没有顺序，这两个方法可以用相同的顺序输出键和值：</p>
+
+<pre><code class="language-python">In [117]: list(d1.keys())
+Out[117]: ['a', 'b', 7]
+
+In [118]: list(d1.values())
+Out[118]: ['some value', [1, 2, 3, 4], 'an integer']
+</code></pre>
+
+<p>用<code>update</code>方法可以将一个字典与另一个融合：</p>
+
+<pre><code class="language-python">In [119]: d1.update({'b' : 'foo', 'c' : 12})
+
+In [120]: d1
+Out[120]: {'a': 'some value', 'b': 'foo', 7: 'an integer', 'c': 12}
+</code></pre>
+
+<p><code>update</code>方法是原地改变字典，因此任何传递给<code>update</code>的键的旧的值都会被舍弃。</p>
+
+<h2 id="用序列创建字典">用序列创建字典</h2>
+
+<p>常常，你可能想将两个序列配对组合成字典。下面是一种写法：</p>
+
+<pre><code class="language-python">mapping = {}
+for key, value in zip(key_list, value_list):
+    mapping[key] = value
+</code></pre>
+
+<p>因为字典本质上是2元元组的集合，dict可以接受2元元组的列表：</p>
+
+<pre><code class="language-python">In [121]: mapping = dict(zip(range(5), reversed(range(5))))
+
+In [122]: mapping
+Out[122]: {0: 4, 1: 3, 2: 2, 3: 1, 4: 0}
+</code></pre>
+
+<p>后面会谈到<code>dict comprehensions</code>，另一种构建字典的优雅方式。</p>
+
+<h2 id="默认值">默认值</h2>
+
+<p>下面的逻辑很常见：</p>
+
+<pre><code class="language-python">if key in some_dict:
+    value = some_dict[key]
+else:
+    value = default_value
+</code></pre>
+
+<p>因此，dict的方法get和pop可以取默认值进行返回，上面的if-else语句可以简写成下面：</p>
+
+<pre><code class="language-python">value = some_dict.get(key, default_value)
+</code></pre>
+
+<p>get默认会返回None，如果不存在键，pop会抛出一个例外。关于设定值，常见的情况是在字典的值是属于其它集合，如列表。例如，你可以通过首字母，将一个列表中的单词分类：</p>
+
+<pre><code class="language-python">In [123]: words = ['apple', 'bat', 'bar', 'atom', 'book']
+
+In [124]: by_letter = {}
+
+In [125]: for word in words:
+   .....:     letter = word[0]
+   .....:     if letter not in by_letter:
+   .....:         by_letter[letter] = [word]
+   .....:     else:
+   .....:         by_letter[letter].append(word)
+   .....:
+
+In [126]: by_letter
+Out[126]: {'a': ['apple', 'atom'], 'b': ['bat', 'bar', 'book']}
+</code></pre>
+
+<p><code>setdefault</code>方法就正是干这个的。前面的for循环可以改写为：</p>
+
+<pre><code class="language-python">for word in words:
+    letter = word[0]
+    by_letter.setdefault(letter, []).append(word)
+</code></pre>
+
+<p><code>collections</code>模块有一个很有用的类，<code>defaultdict</code>，它可以进一步简化上面。传递类型或函数以生成每个位置的默认值：</p>
+
+<pre><code class="language-python">from collections import defaultdict
+by_letter = defaultdict(list)
+for word in words:
+    by_letter[word[0]].append(word)
+</code></pre>
+
+<h2 id="有效的键类型">有效的键类型</h2>
+
+<p>字典的值可以是任意Python对象，而键通常是不可变的标量类型（整数、浮点型、字符串）或元组（元组中的对象必须是不可变的）。这被称为“可哈希性”。可以用<code>hash</code>函数检测一个对象是否是可哈希的（可被用作字典的键）：</p>
+
+<pre><code class="language-python">In [127]: hash('string')
+Out[127]: 5023931463650008331
+
+In [128]: hash((1, 2, (2, 3)))
+Out[128]: 1097636502276347782
+
+In [129]: hash((1, 2, [2, 3])) # fails because lists are mutable
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+&lt;ipython-input-129-800cd14ba8be&gt; in &lt;module&gt;()
+----&gt; 1 hash((1, 2, [2, 3])) # fails because lists are mutable
+TypeError: unhashable type: 'list'
+</code></pre>
+
+<p>要用列表当做键，一种方法是将列表转化为元组，只要内部元素可以被哈希，它也就可以被哈希：</p>
+
+<pre><code class="language-python">In [130]: d = {}
+
+In [131]: d[tuple([1, 2, 3])] = 5
+
+In [132]: d
+Out[132]: {(1, 2, 3): 5}
+</code></pre>
+
+<h2 id="集合">集合</h2>
+
+<p>集合是无序的不可重复的元素的集合。你可以把它当做字典，但是只有键没有值。可以用两种方式创建集合：通过set函数或使用尖括号set语句：</p>
+
+<pre><code class="language-python">In [133]: set([2, 2, 2, 1, 3, 3])
+Out[133]: {1, 2, 3}
+
+In [134]: {2, 2, 2, 1, 3, 3}
+Out[134]: {1, 2, 3}
+</code></pre>
+
+<p>集合支持合并、交集、差分和对称差等数学集合运算。考虑两个示例集合：</p>
+
+<pre><code class="language-python">In [135]: a = {1, 2, 3, 4, 5}
+
+In [136]: b = {3, 4, 5, 6, 7, 8}
+</code></pre>
+
+<p>合并是取两个集合中不重复的元素。可以用<code>union</code>方法，或者<code>|</code>运算符：</p>
+
+<pre><code class="language-python">In [137]: a.union(b)
+Out[137]: {1, 2, 3, 4, 5, 6, 7, 8}
+
+In [138]: a | b
+Out[138]: {1, 2, 3, 4, 5, 6, 7, 8}
+</code></pre>
+
+<p>交集的元素包含在两个集合中。可以用<code>intersection</code>或<code>&amp;</code>运算符：</p>
+
+<pre><code class="language-python">In [139]: a.intersection(b)
+Out[139]: {3, 4, 5}
+
+In [140]: a &amp; b
+Out[140]: {3, 4, 5}
+</code></pre>
+
+<p>表3-1列出了常用的集合方法。</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/7178691-980efe5d98ecc4d6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="表3-1 Python的集合操作" /></p>
+
+<p>所有逻辑集合操作都有另外的原地实现方法，可以直接用结果替代集合的内容。对于大的集合，这么做效率更高：</p>
+
+<pre><code class="language-python">In [141]: c = a.copy()
+
+In [142]: c |= b
+
+In [143]: c
+Out[143]: {1, 2, 3, 4, 5, 6, 7, 8}
+
+In [144]: d = a.copy()
+
+In [145]: d &amp;= b
+
+In [146]: d
+Out[146]: {3, 4, 5}
+</code></pre>
+
+<p>与字典类似，集合元素通常都是不可变的。要获得类似列表的元素，必须转换成元组：</p>
+
+<pre><code class="language-python">In [147]: my_data = [1, 2, 3, 4]
+
+In [148]: my_set = {tuple(my_data)}
+
+In [149]: my_set
+Out[149]: {(1, 2, 3, 4)}
+</code></pre>
+
+<p>你还可以检测一个集合是否是另一个集合的子集或父集：</p>
+
+<pre><code class="language-python">In [150]: a_set = {1, 2, 3, 4, 5}
+
+In [151]: {1, 2, 3}.issubset(a_set)
+Out[151]: True
+
+In [152]: a_set.issuperset({1, 2, 3})
+Out[152]: True
+</code></pre>
+
+<p>集合的内容相同时，集合才对等：</p>
+
+<pre><code class="language-python">In [153]: {1, 2, 3} == {3, 2, 1}
+Out[153]: True
+</code></pre>
+
+<h2 id="列表-集合和字典推导式">列表、集合和字典推导式</h2>
+
+<p>列表推导式是Python最受喜爱的特性之一。它允许用户方便的从一个集合过滤元素，形成列表，在传递参数的过程中还可以修改元素。形式如下：</p>
+
+<pre><code class="language-python">[expr for val in collection if condition]
+</code></pre>
+
+<p>它等同于下面的for循环;</p>
+
+<pre><code class="language-python">result = []
+for val in collection:
+    if condition:
+        result.append(expr)
+</code></pre>
+
+<p>filter条件可以被忽略，只留下表达式就行。例如，给定一个字符串列表，我们可以过滤出长度在2及以下的字符串，并将其转换成大写：</p>
+
+<pre><code class="language-python">In [154]: strings = ['a', 'as', 'bat', 'car', 'dove', 'python']
+
+In [155]: [x.upper() for x in strings if len(x) &gt; 2]
+Out[155]: ['BAT', 'CAR', 'DOVE', 'PYTHON']
+</code></pre>
+
+<p>用相似的方法，还可以推导集合和字典。字典的推导式如下所示：</p>
+
+<pre><code class="language-python">dict_comp = {key-expr : value-expr for value in collection if condition}
+</code></pre>
+
+<p>集合的推导式与列表很像，只不过用的是尖括号：</p>
+
+<pre><code class="language-python">set_comp = {expr for value in collection if condition}
+</code></pre>
+
+<p>与列表推导式类似，集合与字典的推导也很方便，而且使代码的读写都很容易。来看前面的字符串列表。假如我们只想要字符串的长度，用集合推导式的方法非常方便：</p>
+
+<pre><code class="language-python">In [156]: unique_lengths = {len(x) for x in strings}
+
+In [157]: unique_lengths
+Out[157]: {1, 2, 3, 4, 6}
+</code></pre>
+
+<p><code>map</code>函数可以进一步简化：</p>
+
+<pre><code class="language-python">In [158]: set(map(len, strings))
+Out[158]: {1, 2, 3, 4, 6}
+</code></pre>
+
+<p>作为一个字典推导式的例子，我们可以创建一个字符串的查找映射表以确定它在列表中的位置：</p>
+
+<pre><code class="language-python">In [159]: loc_mapping = {val : index for index, val in enumerate(strings)}
+
+In [160]: loc_mapping
+Out[160]: {'a': 0, 'as': 1, 'bat': 2, 'car': 3, 'dove': 4, 'python': 5}
+</code></pre>
+
+<h2 id="嵌套列表推导式">嵌套列表推导式</h2>
+
+<p>假设我们有一个包含列表的列表，包含了一些英文名和西班牙名：</p>
+
+<pre><code class="language-python">In [161]: all_data = [['John', 'Emily', 'Michael', 'Mary', 'Steven'],
+   .....:             ['Maria', 'Juan', 'Javier', 'Natalia', 'Pilar']]
+</code></pre>
+
+<p>你可能是从一些文件得到的这些名字，然后想按照语言进行分类。现在假设我们想用一个列表包含所有的名字，这些名字中包含两个或更多的e。可以用for循环来做：</p>
+
+<pre><code class="language-python">names_of_interest = []
+for names in all_data:
+    enough_es = [name for name in names if name.count('e') &gt;= 2]
+    names_of_interest.extend(enough_es)
+</code></pre>
+
+<p>可以用嵌套列表推导式的方法，将这些写在一起，如下所示：</p>
+
+<pre><code class="language-python">In [162]: result = [name for names in all_data for name in names
+   .....:           if name.count('e') &gt;= 2]
+
+In [163]: result
+Out[163]: ['Steven']
+</code></pre>
+
+<p>嵌套列表推导式看起来有些复杂。列表推导式的for部分是根据嵌套的顺序，过滤条件还是放在最后。下面是另一个例子，我们将一个整数元组的列表扁平化成了一个整数列表：</p>
+
+<pre><code class="language-python">In [164]: some_tuples = [(1, 2, 3), (4, 5, 6), (7, 8, 9)]
+
+In [165]: flattened = [x for tup in some_tuples for x in tup]
+
+In [166]: flattened
+Out[166]: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+</code></pre>
+
+<p>记住，for表达式的顺序是与嵌套for循环的顺序一样（而不是列表推导式的顺序）：</p>
+
+<pre><code class="language-python">flattened = []
+
+for tup in some_tuples:
+    for x in tup:
+        flattened.append(x)
+</code></pre>
+
+<p>你可以有任意多级别的嵌套，但是如果你有两三个以上的嵌套，你就应该考虑下代码可读性的问题了。分辨列表推导式的列表推导式中的语法也是很重要的：</p>
+
+<pre><code class="language-python">In [167]: [[x for x in tup] for tup in some_tuples]
+Out[167]: [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+</code></pre>
+
+<p>这段代码产生了一个列表的列表，而不是扁平化的只包含元素的列表。</p>
+
+<h1 id="3-2-函数">3.2 函数</h1>
+
+<p>函数是Python中最主要也是最重要的代码组织和复用手段。作为最重要的原则，如果你要重复使用相同或非常类似的代码，就需要写一个函数。通过给函数起一个名字，还可以提高代码的可读性。</p>
+
+<p>函数使用<code>def</code>关键字声明，用<code>return</code>关键字返回值：</p>
+
+<pre><code class="language-python">def my_function(x, y, z=1.5):
+    if z &gt; 1:
+        return z * (x + y)
+    else:
+        return z / (x + y)
+</code></pre>
+
+<p>同时拥有多条return语句也是可以的。如果到达函数末尾时没有遇到任何一条return语句，则返回None。</p>
+
+<p>函数可以有一些位置参数（positional）和一些关键字参数（keyword）。关键字参数通常用于指定默认值或可选参数。在上面的函数中，x和y是位置参数，而z则是关键字参数。也就是说，该函数可以下面这两种方式进行调用：</p>
+
+<pre><code class="language-python">my_function(5, 6, z=0.7)
+my_function(3.14, 7, 3.5)
+my_function(10, 20)
+</code></pre>
+
+<p>函数参数的主要限制在于：关键字参数必须位于位置参数（如果有的话）之后。你可以任何顺序指定关键字参数。也就是说，你不用死记硬背函数参数的顺序，只要记得它们的名字就可以了。</p>
+
+<blockquote>
+<p>笔记：也可以用关键字传递位置参数。前面的例子，也可以写为：</p>
+
+<pre><code class="language-python">&gt;my_function(x=5, y=6, z=7)
+&gt;my_function(y=6, x=5, z=7)
+&gt;```
+&gt;这种写法可以提高可读性。
+
+## 命名空间、作用域，和局部函数
+函数可以访问两种不同作用域中的变量：全局（global）和局部（local）。Python有一种更科学的用于描述变量作用域的名称，即命名空间（namespace）。任何在函数中赋值的变量默认都是被分配到局部命名空间（local namespace）中的。局部命名空间是在函数被调用时创建的，函数参数会立即填入该命名空间。在函数执行完毕之后，局部命名空间就会被销毁（会有一些例外的情况，具体请参见后面介绍闭包的那一节）。看看下面这个函数：
+
+</code></pre>
+
+<p>python
+def func():
+    a = []
+    for i in range(5):
+        a.append(i)</p>
+
+<pre><code>
+调用func()之后，首先会创建出空列表a，然后添加5个元素，最后a会在该函数退出的时候被销毁。假如我们像下面这样定义a：
+
+</code></pre>
+
+<p>python
+a = []
+def func():
+    for i in range(5):
+        a.append(i)</p>
+
+<pre><code>
+虽然可以在函数中对全局变量进行赋值操作，但是那些变量必须用global关键字声明成全局的才行：
+
+</code></pre>
+
+<p>python
+In [168]: a = None</p>
+</blockquote>
+
+<p>In [169]: def bind_a_variable():
+   &hellip;..:     global a
+   &hellip;..:     a = []
+   &hellip;..: bind_a_variable()
+   &hellip;..:</p>
+
+<p>In [170]: print(a)
+[]</p>
+
+<pre><code>
+&gt;注意：我常常建议人们不要频繁使用global关键字。因为全局变量一般是用于存放系统的某些状态的。如果你发现自己用了很多，那可能就说明得要来点儿面向对象编程了（即使用类）。
+
+## 返回多个值
+在我第一次用Python编程时（之前已经习惯了Java和C++），最喜欢的一个功能是：函数可以返回多个值。下面是一个简单的例子：
+
+</code></pre>
+
+<p>python
+def f():
+    a = 5
+    b = 6
+    c = 7
+    return a, b, c</p>
+
+<p>a, b, c = f()</p>
+
+<pre><code>
+在数据分析和其他科学计算应用中，你会发现自己常常这么干。该函数其实只返回了一个对象，也就是一个元组，最后该元组会被拆包到各个结果变量中。在上面的例子中，我们还可以这样写：
+
+</code></pre>
+
+<p>python
+return_value = f()</p>
+
+<pre><code>
+这里的return_value将会是一个含有3个返回值的三元元组。此外，还有一种非常具有吸引力的多值返回方式——返回字典：
+
+</code></pre>
+
+<p>python
+def f():
+    a = 5
+    b = 6
+    c = 7
+    return {&lsquo;a&rsquo; : a, &lsquo;b&rsquo; : b, &lsquo;c&rsquo; : c}</p>
+
+<pre><code>
+取决于工作内容，第二种方法可能很有用。
+
+## 函数也是对象
+由于Python函数都是对象，因此，在其他语言中较难表达的一些设计思想在Python中就要简单很多了。假设我们有下面这样一个字符串数组，希望对其进行一些数据清理工作并执行一堆转换：
+
+</code></pre>
+
+<p>python
+In [171]: states = [&rsquo;   Alabama &lsquo;, &lsquo;Georgia!&rsquo;, &lsquo;Georgia&rsquo;, &lsquo;georgia&rsquo;, &lsquo;FlOrIda&rsquo;,
+   &hellip;..:           &lsquo;south   carolina##&rsquo;, &lsquo;West virginia?&rsquo;]</p>
+
+<pre><code>
+不管是谁，只要处理过由用户提交的调查数据，就能明白这种乱七八糟的数据是怎么一回事。为了得到一组能用于分析工作的格式统一的字符串，需要做很多事情：去除空白符、删除各种标点符号、正确的大写格式等。做法之一是使用内建的字符串方法和正则表达式``re``模块：
+
+</code></pre>
+
+<p>python
+import re</p>
+
+<p>def clean_strings(strings):
+    result = []
+    for value in strings:
+        value = value.strip()
+        value = re.sub(&rsquo;[!#?]&lsquo;, &ldquo;, value)
+        value = value.title()
+        result.append(value)
+    return result</p>
+
+<pre><code>
+结果如下所示：
+
+</code></pre>
+
+<p>python
+In [173]: clean_strings(states)
+Out[173]:
+[&lsquo;Alabama&rsquo;,
+ &lsquo;Georgia&rsquo;,
+ &lsquo;Georgia&rsquo;,
+ &lsquo;Georgia&rsquo;,
+ &lsquo;Florida&rsquo;,
+ &lsquo;South   Carolina&rsquo;,
+ &lsquo;West Virginia&rsquo;]</p>
+
+<pre><code>
+其实还有另外一种不错的办法：将需要在一组给定字符串上执行的所有运算做成一个列表：
+
+</code></pre>
+
+<p>python
+def remove_punctuation(value):
+    return re.sub(&rsquo;[!#?]&lsquo;, &ldquo;, value)</p>
+
+<p>clean_ops = [str.strip, remove_punctuation, str.title]</p>
+
+<p>def clean_strings(strings, ops):
+    result = []
+    for value in strings:
+        for function in ops:
+            value = function(value)
+        result.append(value)
+    return result</p>
+
+<pre><code>
+然后我们就有了：
+
+</code></pre>
+
+<p>python
+In [175]: clean_strings(states, clean_ops)
+Out[175]:
+[&lsquo;Alabama&rsquo;,
+ &lsquo;Georgia&rsquo;,
+ &lsquo;Georgia&rsquo;,
+ &lsquo;Georgia&rsquo;,
+ &lsquo;Florida&rsquo;,
+ &lsquo;South   Carolina&rsquo;,
+ &lsquo;West Virginia&rsquo;]</p>
+
+<pre><code>
+这种多函数模式使你能在很高的层次上轻松修改字符串的转换方式。此时的clean_strings也更具可复用性！
+
+还可以将函数用作其他函数的参数，比如内置的map函数，它用于在一组数据上应用一个函数：
+
+</code></pre>
+
+<p>python
+In [176]: for x in map(remove_punctuation, states):
+   &hellip;..:     print(x)
+Alabama
+Georgia
+Georgia
+georgia
+FlOrIda
+south   carolina
+West virginia</p>
+
+<pre><code>
+## 匿名（lambda）函数
+Python支持一种被称为匿名的、或lambda函数。它仅由单条语句组成，该语句的结果就是返回值。它是通过lambda关键字定义的，这个关键字没有别的含义，仅仅是说“我们正在声明的是一个匿名函数”。
+
+</code></pre>
+
+<p>python
+def short_function(x):
+    return x * 2</p>
+
+<p>equiv_anon = lambda x: x * 2</p>
+
+<pre><code>
+本书其余部分一般将其称为lambda函数。它们在数据分析工作中非常方便，因为你会发现很多数据转换函数都以函数作为参数的。直接传入lambda函数比编写完整函数声明要少输入很多字（也更清晰），甚至比将lambda函数赋值给一个变量还要少输入很多字。看看下面这个简单得有些傻的例子：
+
+</code></pre>
+
+<p>python
+def apply_to_list(some_list, f):
+    return [f(x) for x in some_list]</p>
+
+<p>ints = [4, 0, 1, 5, 6]
+apply_to_list(ints, lambda x: x * 2)</p>
+
+<pre><code>
+虽然你可以直接编写[x *2for x in ints]，但是这里我们可以非常轻松地传入一个自定义运算给apply_to_list函数。
+
+再来看另外一个例子。假设有一组字符串，你想要根据各字符串不同字母的数量对其进行排序：
+
+</code></pre>
+
+<p>python
+In [177]: strings = [&lsquo;foo&rsquo;, &lsquo;card&rsquo;, &lsquo;bar&rsquo;, &lsquo;aaaa&rsquo;, &lsquo;abab&rsquo;]</p>
+
+<pre><code>
+这里，我们可以传入一个lambda函数到列表的sort方法：
+
+</code></pre>
+
+<p>python
+In [178]: strings.sort(key=lambda x: len(set(list(x))))</p>
+
+<p>In [179]: strings
+Out[179]: [&lsquo;aaaa&rsquo;, &lsquo;foo&rsquo;, &lsquo;abab&rsquo;, &lsquo;bar&rsquo;, &lsquo;card&rsquo;]</p>
+
+<pre><code>
+&gt;笔记：lambda函数之所以会被称为匿名函数，与def声明的函数不同，原因之一就是这种函数对象本身是没有提供名称__name__属性。
+
+## 柯里化：部分参数应用
+柯里化（currying）是一个有趣的计算机科学术语，它指的是通过“部分参数应用”（partial argument application）从现有函数派生出新函数的技术。例如，假设我们有一个执行两数相加的简单函数：
+
+</code></pre>
+
+<p>python
+def add_numbers(x, y):
+    return x + y</p>
+
+<pre><code>
+通过这个函数，我们可以派生出一个新的只有一个参数的函数——add_five，它用于对其参数加5：
+
+</code></pre>
+
+<p>python
+add_five = lambda y: add_numbers(5, y)</p>
+
+<pre><code>
+add_numbers的第二个参数称为“柯里化的”（curried）。这里没什么特别花哨的东西，因为我们其实就只是定义了一个可以调用现有函数的新函数而已。内置的functools模块可以用partial函数将此过程简化：
+</code></pre>
+
+<p>python
+from functools import partial
+add_five = partial(add_numbers, 5)</p>
+
+<pre><code>
+## 生成器
+能以一种一致的方式对序列进行迭代（比如列表中的对象或文件中的行）是Python的一个重要特点。这是通过一种叫做迭代器协议（iterator protocol，它是一种使对象可迭代的通用方式）的方式实现的，一个原生的使对象可迭代的方法。比如说，对字典进行迭代可以得到其所有的键：
+
+</code></pre>
+
+<p>python
+In [180]: some_dict = {&lsquo;a&rsquo;: 1, &lsquo;b&rsquo;: 2, &lsquo;c&rsquo;: 3}</p>
+
+<p>In [181]: for key in some_dict:
+   &hellip;..:     print(key)
+a
+b
+c</p>
+
+<pre><code>
+当你编写for key in some_dict时，Python解释器首先会尝试从some_dict创建一个迭代器：
+
+</code></pre>
+
+<p>python
+In [182]: dict_iterator = iter(some_dict)</p>
+
+<p>In [183]: dict_iterator
+Out[183]: <dict_keyiterator at 0x7fbbd5a9f908></p>
+
+<pre><code>
+迭代器是一种特殊对象，它可以在诸如for循环之类的上下文中向Python解释器输送对象。大部分能接受列表之类的对象的方法也都可以接受任何可迭代对象。比如min、max、sum等内置方法以及list、tuple等类型构造器：
+
+</code></pre>
+
+<p>python
+In [184]: list(dict_iterator)
+Out[184]: [&lsquo;a&rsquo;, &lsquo;b&rsquo;, &lsquo;c&rsquo;]</p>
+
+<pre><code>
+生成器（generator）是构造新的可迭代对象的一种简单方式。一般的函数执行之后只会返回单个值，而生成器则是以延迟的方式返回一个值序列，即每返回一个值之后暂停，直到下一个值被请求时再继续。要创建一个生成器，只需将函数中的return替换为yeild即可：
+
+</code></pre>
+
+<p>python
+def squares(n=10):
+    print(&lsquo;Generating squares from 1 to {0}&rsquo;.format(n ** 2))
+    for i in range(1, n + 1):
+        yield i ** 2</p>
+
+<pre><code>
+调用该生成器时，没有任何代码会被立即执行：
+
+</code></pre>
+
+<p>python
+In [186]: gen = squares()</p>
+
+<p>In [187]: gen
+Out[187]: <generator object squares at 0x7fbbd5ab4570></p>
+
+<pre><code>
+直到你从该生成器中请求元素时，它才会开始执行其代码：
+</code></pre>
+
+<p>python
+In [188]: for x in gen:
+   &hellip;..:     print(x, end=&rsquo; &lsquo;)
+Generating squares from 1 to 100
+1 4 9 16 25 36 49 64 81 100</p>
+
+<pre><code>
+## 生成器表达式
+另一种更简洁的构造生成器的方法是使用生成器表达式（generator expression）。这是一种类似于列表、字典、集合推导式的生成器。其创建方式为，把列表推导式两端的方括号改成圆括号：
+
+</code></pre>
+
+<p>python
+In [189]: gen = (x ** 2 for x in range(100))</p>
+
+<p>In [190]: gen
+Out[190]: <generator object <genexpr> at 0x7fbbd5ab29e8&gt;</p>
+
+<pre><code>
+它跟下面这个冗长得多的生成器是完全等价的：
+
+</code></pre>
+
+<p>python
+def _make_gen():
+    for x in range(100):
+        yield x ** 2
+gen = _make_gen()</p>
+
+<pre><code>
+生成器表达式也可以取代列表推导式，作为函数参数：
+</code></pre>
+
+<p>python
+In [191]: sum(x ** 2 for x in range(100))
+Out[191]: 328350</p>
+
+<p>In [192]: dict((i, i **2) for i in range(5))
+Out[192]: {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}</p>
+
+<pre><code>
+## itertools模块
+标准库itertools模块中有一组用于许多常见数据算法的生成器。例如，groupby可以接受任何序列和一个函数。它根据函数的返回值对序列中的连续元素进行分组。下面是一个例子：
+
+</code></pre>
+
+<p>python
+In [193]: import itertools</p>
+
+<p>In [194]: first_letter = lambda x: x[0]</p>
+
+<p>In [195]: names = [&lsquo;Alan&rsquo;, &lsquo;Adam&rsquo;, &lsquo;Wes&rsquo;, &lsquo;Will&rsquo;, &lsquo;Albert&rsquo;, &lsquo;Steven&rsquo;]</p>
+
+<p>In [196]: for letter, names in itertools.groupby(names, first_letter):
+   &hellip;..:     print(letter, list(names)) # names is a generator
+A [&lsquo;Alan&rsquo;, &lsquo;Adam&rsquo;]
+W [&lsquo;Wes&rsquo;, &lsquo;Will&rsquo;]
+A [&lsquo;Albert&rsquo;]
+S [&lsquo;Steven&rsquo;]</p>
+
+<pre><code>
+表3-2中列出了一些我经常用到的itertools函数。建议参阅Python官方文档，进一步学习。
+
+![表3-2 一些有用的itertools函数](http://upload-images.jianshu.io/upload_images/7178691-111823d8767a104d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+## 错误和异常处理
+优雅地处理Python的错误和异常是构建健壮程序的重要部分。在数据分析中，许多函数函数只用于部分输入。例如，Python的float函数可以将字符串转换成浮点数，但输入有误时，有``ValueError``错误：
+
+</code></pre>
+
+<p>python
+In [197]: float(&lsquo;1.2345&rsquo;)
+Out[197]: 1.2345</p>
+
+<h2 id="in-198-float-something">In [198]: float(&lsquo;something&rsquo;)</h2>
+
+<p>ValueError                                Traceback (most recent call last)
+<ipython-input-198-439904410854> in <module>()
+&mdash;-&gt; 1 float(&lsquo;something&rsquo;)
+ValueError: could not convert string to float: &lsquo;something&rsquo;</p>
+
+<pre><code>
+假如想优雅地处理float的错误，让它返回输入值。我们可以写一个函数，在try/except中调用float：
+
+</code></pre>
+
+<p>python
+def attempt_float(x):
+    try:
+        return float(x)
+    except:
+        return x</p>
+
+<pre><code>
+当float(x)抛出异常时，才会执行except的部分：
+
+</code></pre>
+
+<p>python
+In [200]: attempt_float(&lsquo;1.2345&rsquo;)
+Out[200]: 1.2345</p>
+
+<p>In [201]: attempt_float(&lsquo;something&rsquo;)
+Out[201]: &lsquo;something&rsquo;</p>
+
+<pre><code>
+你可能注意到float抛出的异常不仅是ValueError：
+
+</code></pre>
+
+<p>python</p>
+
+<h2 id="in-202-float-1-2">In [202]: float((1, 2))</h2>
+
+<p>TypeError                                 Traceback (most recent call last)
+<ipython-input-202-842079ebb635> in <module>()
+&mdash;-&gt; 1 float((1, 2))
+TypeError: float() argument must be a string or a number, not &lsquo;tuple&rsquo;</p>
+
+<pre><code>
+你可能只想处理ValueError，TypeError错误（输入不是字符串或数值）可能是合理的bug。可以写一个异常类型：
+
+</code></pre>
+
+<p>python
+def attempt_float(x):
+    try:
+        return float(x)
+    except ValueError:
+        return x</p>
+
+<pre><code>
+然后有：
+
+</code></pre>
+
+<p>python</p>
+
+<h2 id="in-204-attempt-float-1-2">In [204]: attempt_float((1, 2))</h2>
+
+<p>TypeError                                 Traceback (most recent call last)
+<ipython-input-204-9bdfd730cead> in <module>()
+&mdash;-&gt; 1 attempt_float((1, 2))
+<ipython-input-203-3e06b8379b6b> in attempt_float(x)
+      1 def attempt_float(x):
+      2     try:
+&mdash;-&gt; 3         return float(x)
+      4     except ValueError:
+      5         return x
+TypeError: float() argument must be a string or a number, not &lsquo;tuple&rsquo;</p>
+
+<pre><code>
+可以用元组包含多个异常：
+
+</code></pre>
+
+<p>python
+def attempt_float(x):
+    try:
+        return float(x)
+    except (TypeError, ValueError):
+        return x</p>
+
+<pre><code>
+某些情况下，你可能不想抑制异常，你想无论try部分的代码是否成功，都执行一段代码。可以使用finally：
+
+</code></pre>
+
+<p>python
+f = open(path, &lsquo;w&rsquo;)</p>
+
+<p>try:
+    write_to_file(f)
+finally:
+    f.close()</p>
+
+<pre><code>
+这里，文件处理f总会被关闭。相似的，你可以用else让只在try部分成功的情况下，才执行代码：
+
+</code></pre>
+
+<p>python
+f = open(path, &lsquo;w&rsquo;)</p>
+
+<p>try:
+    write_to_file(f)
+except:
+    print(&lsquo;Failed&rsquo;)
+else:
+    print(&lsquo;Succeeded&rsquo;)
+finally:
+    f.close()</p>
+
+<pre><code>
+## IPython的异常
+如果是在%run一个脚本或一条语句时抛出异常，IPython默认会打印完整的调用栈（traceback），在栈的每个点都会有几行上下文：
+
+</code></pre>
+
+<p>python</p>
+
+<h2 id="in-10-run-examples-ipython-bug-py">In [10]: %run examples/ipython_bug.py</h2>
+
+<p>AssertionError                            Traceback (most recent call last)
+/home/wesm/code/pydata-book/examples/ipython_bug.py in <module>()
+     13     throws_an_exception()
+     14
+&mdash;&gt; 15 calling_things()</p>
+
+<p>/home/wesm/code/pydata-book/examples/ipython_bug.py in calling_things()
+     11 def calling_things():
+     12     works_fine()
+&mdash;&gt; 13     throws_an_exception()
+     14
+     15 calling_things()</p>
+
+<p>/home/wesm/code/pydata-book/examples/ipython_bug.py in throws_an_exception()
+      7     a = 5
+      8     b = 6
+&mdash;-&gt; 9     assert(a + b == 10)
+     10
+     11 def calling_things():</p>
+
+<p>AssertionError:</p>
+
+<pre><code>
+自身就带有文本是相对于Python标准解释器的极大优点。你可以用魔术命令``%xmode``，从Plain（与Python标准解释器相同）到Verbose（带有函数的参数值）控制文本显示的数量。后面可以看到，发生错误之后，（用%debug或%pdb magics）可以进入stack进行事后调试。
+
+# 3.3 文件和操作系统
+本书的代码示例大多使用诸如pandas.read_csv之类的高级工具将磁盘上的数据文件读入Python数据结构。但我们还是需要了解一些有关Python文件处理方面的基础知识。好在它本来就很简单，这也是Python在文本和文件处理方面的如此流行的原因之一。
+
+为了打开一个文件以便读写，可以使用内置的open函数以及一个相对或绝对的文件路径：
+
+</code></pre>
+
+<p>python
+In [207]: path = &lsquo;examples/segismundo.txt&rsquo;</p>
+
+<p>In [208]: f = open(path)</p>
+
+<pre><code>
+默认情况下，文件是以只读模式（'r'）打开的。然后，我们就可以像处理列表那样来处理这个文件句柄f了，比如对行进行迭代：
+
+</code></pre>
+
+<p>python
+for line in f:
+    pass</p>
+
+<pre><code>
+从文件中取出的行都带有完整的行结束符（EOL），因此你常常会看到下面这样的代码（得到一组没有EOL的行）：
+
+</code></pre>
+
+<p>python
+In [209]: lines = [x.rstrip() for x in open(path)]</p>
+
+<p>In [210]: lines
+Out[210]:
+[&lsquo;Sueña el rico en su riqueza,&rsquo;,
+ &lsquo;que más cuidados le ofrece;&rsquo;,
+ &ldquo;,
+ &lsquo;sueña el pobre que padece&rsquo;,
+ &lsquo;su miseria y su pobreza;&rsquo;,
+ &ldquo;,
+ &lsquo;sueña el que a medrar empieza,&rsquo;,
+ &lsquo;sueña el que afana y pretende,&rsquo;,
+ &lsquo;sueña el que agravia y ofende,&rsquo;,
+ &ldquo;,
+ &lsquo;y en el mundo, en conclusión,&rsquo;,
+ &lsquo;todos sueñan lo que son,&rsquo;,
+ &lsquo;aunque ninguno lo entiende.&rsquo;,
+ &ldquo;]</p>
+
+<pre><code>
+如果使用open创建文件对象，一定要用close关闭它。关闭文件可以返回操作系统资源：
+
+</code></pre>
+
+<p>python
+In [211]: f.close()</p>
+
+<pre><code>
+用with语句可以可以更容易地清理打开的文件：
+</code></pre>
+
+<p>python
+In [212]: with open(path) as f:
+   &hellip;..:     lines = [x.rstrip() for x in f]</p>
+
+<pre><code>
+这样可以在退出代码块时，自动关闭文件。
+
+如果输入f =open(path,'w')，就会有一个新文件被创建在examples/segismundo.txt，并覆盖掉该位置原来的任何数据。另外有一个x文件模式，它可以创建可写的文件，但是如果文件路径存在，就无法创建。表3-3列出了所有的读/写模式。
+
+![表3-3 Python的文件模式](http://upload-images.jianshu.io/upload_images/7178691-28274484129f0ea7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+对于可读文件，一些常用的方法是read、seek和tell。read会从文件返回字符。字符的内容是由文件的编码决定的（如UTF-8），如果是二进制模式打开的就是原始字节：
+
+</code></pre>
+
+<p>python
+In [213]: f = open(path)</p>
+
+<p>In [214]: f.read(10)
+Out[214]: &lsquo;Sueña el r&rsquo;</p>
+
+<p>In [215]: f2 = open(path, &lsquo;rb&rsquo;)  # Binary mode</p>
+
+<p>In [216]: f2.read(10)
+Out[216]: b&rsquo;Sue\xc3\xb1a el &lsquo;</p>
+
+<pre><code>
+read模式会将文件句柄的位置提前，提前的数量是读取的字节数。tell可以给出当前的位置：
+
+</code></pre>
+
+<p>python
+In [217]: f.tell()
+Out[217]: 11</p>
+
+<p>In [218]: f2.tell()
+Out[218]: 10</p>
+
+<pre><code>
+尽管我们从文件读取了10个字符，位置却是11，这是因为用默认的编码用了这么多字节才解码了这10个字符。你可以用sys模块检查默认的编码：
+
+</code></pre>
+
+<p>python
+In [219]: import sys</p>
+
+<p>In [220]: sys.getdefaultencoding()
+Out[220]: &lsquo;utf-8&rsquo;</p>
+
+<pre><code>
+seek将文件位置更改为文件中的指定字节：
+
+</code></pre>
+
+<p>python
+In [221]: f.seek(3)
+Out[221]: 3</p>
+
+<p>In [222]: f.read(1)
+Out[222]: &lsquo;ñ&rsquo;</p>
+
+<pre><code>
+最后，关闭文件：
+
+</code></pre>
+
+<p>python
+In [223]: f.close()</p>
+
+<p>In [224]: f2.close()</p>
+
+<pre><code>
+向文件写入，可以使用文件的write或writelines方法。例如，我们可以创建一个无空行版的prof_mod.py：
+
+</code></pre>
+
+<p>python
+In [225]: with open(&lsquo;tmp.txt&rsquo;, &lsquo;w&rsquo;) as handle:
+   &hellip;..:     handle.writelines(x for x in open(path) if len(x) &gt; 1)</p>
+
+<p>In [226]: with open(&lsquo;tmp.txt&rsquo;) as f:
+   &hellip;..:     lines = f.readlines()</p>
+
+<p>In [227]: lines
+Out[227]:
+[&lsquo;Sueña el rico en su riqueza,\n&rsquo;,
+ &lsquo;que más cuidados le ofrece;\n&rsquo;,
+ &lsquo;sueña el pobre que padece\n&rsquo;,
+ &lsquo;su miseria y su pobreza;\n&rsquo;,
+ &lsquo;sueña el que a medrar empieza,\n&rsquo;,
+ &lsquo;sueña el que afana y pretende,\n&rsquo;,
+ &lsquo;sueña el que agravia y ofende,\n&rsquo;,
+ &lsquo;y en el mundo, en conclusión,\n&rsquo;,
+ &lsquo;todos sueñan lo que son,\n&rsquo;,
+ &lsquo;aunque ninguno lo entiende.\n&rsquo;]</p>
+
+<pre><code>
+表3-4列出了一些最常用的文件方法。
+
+![表3-4 Python重要的文件方法或属性](http://upload-images.jianshu.io/upload_images/7178691-d25bd6e730afeb39.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+## 文件的字节和Unicode
+Python文件的默认操作是“文本模式”，也就是说，你需要处理Python的字符串（即Unicode）。它与“二进制模式”相对，文件模式加一个b。我们来看上一节的文件（UTF-8编码、包含非ASCII字符）：
+
+</code></pre>
+
+<p>python
+In [230]: with open(path) as f:
+   &hellip;..:     chars = f.read(10)</p>
+
+<p>In [231]: chars
+Out[231]: &lsquo;Sueña el r&rsquo;</p>
+
+<pre><code>
+UTF-8是长度可变的Unicode编码，所以当我从文件请求一定数量的字符时，Python会从文件读取足够多（可能少至10或多至40字节）的字节进行解码。如果以“rb”模式打开文件，则读取确切的请求字节数：
+
+</code></pre>
+
+<p>python
+In [232]: with open(path, &lsquo;rb&rsquo;) as f:
+   &hellip;..:     data = f.read(10)</p>
+
+<p>In [233]: data
+Out[233]: b&rsquo;Sue\xc3\xb1a el &lsquo;</p>
+
+<pre><code>
+取决于文本的编码，你可以将字节解码为str对象，但只有当每个编码的Unicode字符都完全成形时才能这么做：
+
+</code></pre>
+
+<p>python
+In [234]: data.decode(&lsquo;utf8&rsquo;)
+Out[234]: &lsquo;Sueña el &lsquo;</p>
+
+<h2 id="in-235-data-4-decode-utf8">In [235]: data[:4].decode(&lsquo;utf8&rsquo;)</h2>
+
+<p>UnicodeDecodeError                        Traceback (most recent call last)
+<ipython-input-235-300e0af10bb7> in <module>()
+&mdash;-&gt; 1 data[:4].decode(&lsquo;utf8&rsquo;)
+UnicodeDecodeError: &lsquo;utf-8&rsquo; codec can&rsquo;t decode byte 0xc3 in position 3: unexpecte
+d end of data</p>
+
+<pre><code>
+文本模式结合了open的编码选项，提供了一种更方便的方法将Unicode转换为另一种编码：
+
+</code></pre>
+
+<p>python
+In [236]: sink_path = &lsquo;sink.txt&rsquo;</p>
+
+<p>In [237]: with open(path) as source:
+   &hellip;..:     with open(sink_path, &lsquo;xt&rsquo;, encoding=&lsquo;iso-8859-1&rsquo;) as sink:
+   &hellip;..:         sink.write(source.read())</p>
+
+<p>In [238]: with open(sink_path, encoding=&lsquo;iso-8859-1&rsquo;) as f:
+   &hellip;..:     print(f.read(10))
+Sueña el r</p>
+
+<pre><code>
+注意，不要在二进制模式中使用seek。如果文件位置位于定义Unicode字符的字节的中间位置，读取后面会产生错误：
+
+</code></pre>
+
+<p>python
+In [240]: f = open(path)</p>
+
+<p>In [241]: f.read(5)
+Out[241]: &lsquo;Sueña&rsquo;</p>
+
+<p>In [242]: f.seek(4)
+Out[242]: 4</p>
+
+<h2 id="in-243-f-read-1">In [243]: f.read(1)</h2>
+
+<p>UnicodeDecodeError                        Traceback (most recent call last)
+<ipython-input-243-7841103e33f5> in <module>()
+&mdash;-&gt; 1 f.read(1)
+/miniconda/envs/book-env/lib/python3.6/codecs.py in decode(self, input, final)
+    319         # decode input (taking the buffer into account)
+    320         data = self.buffer + input
+&ndash;&gt; 321         (result, consumed) = self._buffer_decode(data, self.errors, final
+)
+    322         # keep undecoded input until the next call
+    323         self.buffer = data[consumed:]
+UnicodeDecodeError: &lsquo;utf-8&rsquo; codec can&rsquo;t decode byte 0xb1 in position 0: invalid s
+tart byte</p>
+
+<p>In [244]: f.close()
+```</p>
+
+<p>如果你经常要对非ASCII字符文本进行数据分析，通晓Python的Unicode功能是非常重要的。更多内容，参阅Python官方文档。</p>
+
+<h1 id="3-4-结论">3.4 结论</h1>
+
+<p>我们已经学过了Python的基础、环境和语法，接下来学习NumPy和Python的面向数组计算。</p>
+
+          </div>
+
+          
+          <div class="row">
+            <div class="col-md-8">
+            
+              <div class="mb-5">
+                
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://example.com/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://example.com/tags/python%E5%9F%BA%E7%A1%80" role="button">Python基础 </a></li>
+      
+    
+  </div>
+</div>
+              </div>
+            
+            </div>
+            
+          </div>
+          
+
+          
+          <div class="row pt-3">
+            <div class="col-md-6">
+              
+                <a href=https://example.com/%E7%AC%AC02%E7%AB%A0-python%E8%AF%AD%E6%B3%95%E5%9F%BA%E7%A1%80ipython%E5%92%8Cjupyter-notebooks/ class="post-meta">Previous
+                  <div class="pt-2 pb-5 d-flex">
+                    <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
+                    <span>第02章 Python语法基础，IPython和Jupyter Notebooks</span>
+                  </div>
+                </a>
+              
+            </div>
+            
+            <div class="col-md-6 text-right" >
+              
+                <a href=https://example.com/%E7%AC%AC04%E7%AB%A0-numpy%E5%9F%BA%E7%A1%80%E6%95%B0%E7%BB%84%E5%92%8C%E7%9F%A2%E9%87%8F%E8%AE%A1%E7%AE%97/ class="post-meta">Next
+                  <div class="pt-2 pb-5 flex-reverse">
+                    <i class="fas fa-angle-right text-grey font-weight-bold ml-2 active-color"></i>
+                    <span>第04章 Numpy 基础</span>
+                  </div>
+                </a>
+              
+            </div>
+          </div>
+
+          
+
+        </div>
+        
+
+      </div>
+      
+
+      
+	
+	
+	
+	
+		
+		
+		
+	
+
+		
+		<div class="col-md-2 pl-0">
+
+			
+			<div id="page-scrollspy" class="toc-nav">
+				
+				<ul class="nav nav-pills ml-0">
+					
+					<li class="nav-item pb-3 text-center">
+						<span class="font-weight-bold mb-2">- CATALOG - </span>
+					</li>
+
+					
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#3-1-%e6%95%b0%e6%8d%ae%e7%bb%93%e6%9e%84%e5%92%8c%e5%ba%8f%e5%88%97">
+												 3.1 数据结构和序列
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%85%83%e7%bb%84">
+												 元组
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e6%8b%86%e5%88%86%e5%85%83%e7%bb%84">
+												 拆分元组
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#tuple%e6%96%b9%e6%b3%95">
+												 tuple方法
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%88%97%e8%a1%a8">
+												 列表
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e6%b7%bb%e5%8a%a0%e5%92%8c%e5%88%a0%e9%99%a4%e5%85%83%e7%b4%a0">
+												 添加和删除元素
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e4%b8%b2%e8%81%94%e5%92%8c%e7%bb%84%e5%90%88%e5%88%97%e8%a1%a8">
+												 串联和组合列表
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e6%8e%92%e5%ba%8f">
+												 排序
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e4%ba%8c%e5%88%86%e6%90%9c%e7%b4%a2%e5%92%8c%e7%bb%b4%e6%8a%a4%e5%b7%b2%e6%8e%92%e5%ba%8f%e7%9a%84%e5%88%97%e8%a1%a8">
+												 二分搜索和维护已排序的列表
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%88%87%e7%89%87">
+												 切片
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%ba%8f%e5%88%97%e5%87%bd%e6%95%b0">
+												 序列函数
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#enumerate%e5%87%bd%e6%95%b0">
+												 enumerate函数
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#sorted%e5%87%bd%e6%95%b0">
+												 sorted函数
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#zip%e5%87%bd%e6%95%b0">
+												 zip函数
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#reversed%e5%87%bd%e6%95%b0">
+												 reversed函数
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%ad%97%e5%85%b8">
+												 字典
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e7%94%a8%e5%ba%8f%e5%88%97%e5%88%9b%e5%bb%ba%e5%ad%97%e5%85%b8">
+												 用序列创建字典
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e9%bb%98%e8%ae%a4%e5%80%bc">
+												 默认值
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e6%9c%89%e6%95%88%e7%9a%84%e9%94%ae%e7%b1%bb%e5%9e%8b">
+												 有效的键类型
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e9%9b%86%e5%90%88">
+												 集合
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%88%97%e8%a1%a8-%e9%9b%86%e5%90%88%e5%92%8c%e5%ad%97%e5%85%b8%e6%8e%a8%e5%af%bc%e5%bc%8f">
+												 列表、集合和字典推导式
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%b5%8c%e5%a5%97%e5%88%97%e8%a1%a8%e6%8e%a8%e5%af%bc%e5%bc%8f">
+												 嵌套列表推导式
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#3-2-%e5%87%bd%e6%95%b0">
+												 3.2 函数
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#in-198-float-something">
+												 In [198]: float(‘something’)
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#in-202-float-1-2">
+												 In [202]: float((1, 2))
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#in-204-attempt-float-1-2">
+												 In [204]: attempt_float((1, 2))
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#in-10-run-examples-ipython-bug-py">
+												 In [10]: %run examples/ipython_bug.py
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#in-235-data-4-decode-utf8">
+												 In [235]: data[:4].decode(‘utf8’)
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#in-243-f-read-1">
+												 In [243]: f.read(1)
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#3-4-%e7%bb%93%e8%ae%ba">
+												 3.4 结论
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+
+				</ul>
+			</div>
+			
+
+		</div>
+		
+	
+
+    </div>
+    
+
+
+  </main>
+  
+
+
+    
+    
+
+<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+
+  
+  <div class="pb-2 mt-5 pt-5">
+    
+      <a href="//github.com/Flionay " target="_blank" rel="noopener"><i class="fab fa-github mr-3" aria-hidden="true"></i></a>    
+    
+    
+
+    
+
+    
+
+    
+
+    
+        <a href="//instagram.com/luckyflion" target="_blank" rel="noopener"><i class="fab fa-instagram mr-3" aria-hidden="true"></i></a>
+    
+
+    
+        <a href="//weibo.com/u/5792963723" target="_blank" rel="noopener"><i class="fab fa-500px mr-3" aria-hidden="true"></i></a>
+    
+
+
+    
+        <a href="mailto:angyi_jq@163.com"><i class="far fa-envelope-open mr-3" aria-hidden="true"></i></a>
+    
+
+    
+
+    
+
+  </div>
+  
+
+  
+  <div class="copyright py-4">
+    
+    <span>  2016 - 2019 &copy; | Theme <a href='https://github.com/orianna-zzo/AllinOne' target="_blank">AllinOne</a> by <a href='https://github.com/orianna-zzo' target="_blank">Orianna</a>  </span>
+  </div>
+  
+
+</footer>
+
+
+    
+
+
+
+
+
+
+<script type="text/javascript" src="https://example.com/js/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://example.com/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://example.com/js/vendors/popper.min.js"></script>
+<script type="text/javascript" src="https://example.com/js/vendors/holder.min.js"></script>
+<script type="text/javascript" src="https://example.com/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
+
+<script type="text/javascript" src="https://example.com/js/vendors/mdb/mdb.min.js"></script>
+
+<script type="text/javascript" src="https://example.com/js/main.js"></script>
+
+
+
+  
+  <script src="https://example.com/js/vendors/highlight.pack.js"> </script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+ 
+  <script src="https://example.com/js/vendors/katex/katex.min.js"> </script>
+  <script src="https://example.com/js/vendors/katex/contrib/auto-render.min.js"></script>
+
+  <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          renderMathInElement(document.body);
+      });
+  </script>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  
+  new WOW().init();
+</script>
+
+
+
+
+  </body>
+</html>

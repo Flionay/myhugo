@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="zn-Hans">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1" />
+  <meta name="author" content="Angyi">
+  <meta name="description" content="Java 廖雪峰教程跟学笔记">
+  
+  <meta property="og:title" content="Java 基础" />
+<meta property="og:description" content="Java 廖雪峰教程跟学笔记" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.com/java%E5%9F%BA%E7%A1%80/" />
+<meta property="article:published_time" content="2019-02-10T09:59:58+08:00" />
+<meta property="article:modified_time" content="2019-02-10T09:59:58+08:00" />
+
+
+  <title>
+  
+       Java 基础 | Angyi 
+  
+  </title>
+
+  <link rel="canonical" href="https://example.com/java%E5%9F%BA%E7%A1%80/">
+
+  
+  
+
+  
+  <link href="https://example.com/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
+
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Ubuntu+Mono:400,400i,700,700i|Raleway:300,400,500,600">
+  <link href="https://example.com/css/font.css" rel="stylesheet"> 
+    
+  
+  <link href="https://example.com/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
+  <link href="https://example.com/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
+  <link href="https://example.com/css/vendors/mdb/style.min.css" rel="stylesheet"> 
+  <link href="https://example.com/css/main.css" rel="stylesheet">
+
+
+  
+  <link rel="shortcut icon"
+  
+      href="https://example.com/img/pig.png"
+  
+  >
+
+
+  
+  
+
+  <style type="text/css">
+      @media (min-width: 800px) and (max-width: 850px) {
+              .navbar:not(.top-nav-collapse) {
+                  background: #1C2331!important;
+              }
+          }
+  </style>
+
+
+  
+    
+    <link rel="stylesheet" href="https://example.com/js/vendors/katex/katex.min.css">
+  
+  
+
+  
+    
+    <link rel="stylesheet" href="https://example.com/css/vendors/highlight/github-gist.css">
+  
+
+</head>
+
+  <body class="bg-light" data-spy="scroll" data-target="#page-scrollspy" data-offset="90">
+  
+    
+    
+
+    
+      
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+    <div class="container">
+
+      
+      <a class="navbar-brand" href="https://example.com">
+          
+        <img class="avatar" src="https://example.com/img/pig.png" style="width: 40px!important;height: auto;"  class="d-inline-block align-top" alt="" >
+        
+        <strong> Angyi</strong>
+      </a>
+
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item ">
+            <a class="nav-link" href="https://example.com">Home</a>
+          </li>
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://example.com/categories/python/" >Python  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://example.com/categories/mldl/" >MLDL  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://example.com/categories/others/" >Others  </a>
+            </li>
+          
+          
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  
+ 
+      
+ 
+
+
+
+
+
+
+<div id="site-header" class="carousel slide carousel-fade" data-ride="carousel" style="height: 18rem;" >  
+
+  
+  
+  
+
+  
+  <div class="carousel-inner" role="listbox">
+    
+      
+
+        
+        <div class="carousel-item active">
+          <div class="view" style="background-image: url('https://example.com/img/header-slides/QQ%e5%9b%be%e7%89%8720191022135950.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+              
+              
+              
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('https://example.com/img/header-slides//big12.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('https://example.com/img/header-slides//wallhaven-132789.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('https://example.com/img/header-slides//wallhaven-73lk19.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+
+  
+  </div>
+  
+
+  
+  <div class="carousel-content text-center white-text wow fadeIn">
+    <div class="row mx-0 headfont mt-3 pt-4">
+      
+      <div class="col-12 col-sm-5 align-middle">
+        <a href="https://example.com">
+          
+            <img class="pull-right avatar avatar-md" src="https://example.com/img/11.png" alt="" >
+          
+        </a>
+      </div>
+      
+      <div class="col-12 col-sm-7 text-left pl-2">
+        <a href="https://example.com">
+          <h1 class="mb-2 h1" style="font-weight: 300;" >
+            <strong>Angyi</strong>
+          </h1>
+        </a>
+        
+
+             
+        <div class="mt-2" style="font-size: 1rem; color: white;">
+            
+              <a href="//github.com/Flionay" target="_blank" rel="noopener"><i class="fab fa-github pr-1" aria-hidden="true"></i></a>    
+            
+            
+
+            
+
+            
+
+            
+
+            
+                <a href="//instagram.com/luckyflion" target="_blank" rel="noopener"><i class="fab fa-instagram pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+                <a href="//weibo.com/u/5792963723" target="_blank" rel="noopener"><i class="fab fa-500px pr-1" aria-hidden="true"></i></a>
+            
+    
+        
+            
+                <a href="mailto:angyi_jq@163.com"><i class="far fa-envelope-open pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  
+  
+  
+
+</div>
+  
+    
+
+    
+  
+  <main class="post-main-wrapper">
+    
+    
+    <div class="row">
+
+      
+
+      
+      <div class="col-md-10">
+      
+
+        
+        <div class="z-depth-1  post-wrapper white-bg single-post">
+
+          <div class="post-header text-center" >
+  <ul class="post-meta li-x">
+    
+      
+        <li><a href="https://example.com/categories/%E5%85%B6%E4%BB%96"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 其他 </a></li>
+      
+    
+    
+  </ul>
+
+  <div class="px-4 post-heading">Java 基础</div>
+
+  <ul class="post-meta li-x mt-1">
+    
+      <li>Feb 10, 2019</li>
+    
+
+    
+      <li class="middot"></li>
+      <li>6 minutes read</li>
+    
+  </ul>
+  
+
+</div>
+
+
+          <div class="post-content markdown">
+            
+
+<p><img src="https://raw.githubusercontent.com/Flionay/myhugo/master/hugoblog/static/images/java_s.jpg" alt="" /></p>
+
+<h2 id="java的-hello-world">Java的 <code>Hello world</code></h2>
+
+<pre><code class="language-java">/**
+可以用来自动创建文档的注释
+*/
+
+public class hello{
+    public static void main(String[] args){
+        //向屏幕输出文本
+        System.out.println(&quot;hello world !&quot;)
+            /* 多行注释开始
+            注释content
+            注释结束
+            */
+            
+    }
+}// class 定义结束
+</code></pre>
+
+<h2 id="程序基本结构和程序规范">程序基本结构和程序规范</h2>
+
+<blockquote>
+<p>类名要求： 大写字母开头</p>
+
+<p><code>public</code>是访问修饰符，表示该<code>class</code>公开的，不写的话，外部不能使用</p>
+
+<p>这里的方法是<code>main</code>  返回值是<code>void</code> 表示没有任何返回值</p>
+
+<p>方法也需要修饰词，而关键字<code>static</code>是另一种修饰符，表示静态方法</p>
+
+<p>java程序入口规定的方法必须是静态方法，方法名为<code>main</code>,括号内的参数必须是<code>String</code>数组</p>
+
+<p>方法名的命名是首字母小写</p>
+</blockquote>
+
+<p><strong>在方法内部，语句才是真正的执行代码。Java的每一行语句必须以分号结束：</strong></p>
+
+<h2 id="注释">注释</h2>
+
+<pre><code class="language-java">// 单行注释
+/*
+多行注释
+*/
+
+/** 
+* 用来生成注释文档
+*标题
+*第一章
+*
+*/
+</code></pre>
+
+<h2 id="变量和数据类型">变量和数据类型</h2>
+
+<pre><code class="language-java">//int x = 1;
+// 定义并打印变量
+public class Main{
+    public static void innt(String[] args){
+        int x = 100;
+        System.out.println(x)
+    }
+}
+
+</code></pre>
+
+<pre><code class="language-java">public class Main {
+    public static void main(String[] args) {
+        int n = 100; // 定义变量n，同时赋值为100
+        System.out.println(&quot;n = &quot; + n); // 打印n的值
+
+        n = 200; // 变量n赋值为200
+        System.out.println(&quot;n = &quot; + n); // 打印n的值
+
+        int x = n; // 变量x赋值为n（n的值为200，因此赋值后x的值也是200）
+        System.out.println(&quot;x = &quot; + x); // 打印x的值
+
+        x = x + 100; // 变量x赋值为x+100（x的值为200，因此赋值后x的值是200+100=300）
+        System.out.println(&quot;x = &quot; + x); // 打印x的值
+        System.out.println(&quot;n = &quot; + n); // 再次打印n的值，n应该是200还是300？
+   }
+}
+/**
+*int x =100 之后，第二次不需要int 因为x 已经存在 只要x = 200
+*/
+
+</code></pre>
+
+<h3 id="基本数据类型">基本数据类型</h3>
+
+<p>基本数据类型是CPU可以直接进行运算的类型。Java定义了以下几种基本数据类型：</p>
+
+<ul>
+<li>整数类型：byte，short，int，long</li>
+<li>浮点数类型：float，double</li>
+<li>字符类型：char</li>
+<li>布尔类型：boolean</li>
+</ul>
+
+<p>Java定义的这些基本数据类型有什么区别呢？要了解这些区别，我们就必须简单了解一下计算机内存的基本结构。</p>
+
+<p>计算机内存的最小存储单元是字节（byte），一个字节就是一个8位二进制数，即8个bit。它的二进制表示范围从<code>00000000</code>~<code>11111111</code>，换算成十进制是0~255，换算成十六进制是<code>00</code>~<code>ff</code>。</p>
+
+<p>内存单元从0开始编号，称为内存地址。每个内存单元可以看作一间房间，内存地址就是门牌号。</p>
+
+<pre><code class="language-ascii">  0   1   2   3   4   5   6  ...
+┌───┬───┬───┬───┬───┬───┬───┐
+│   │   │   │   │   │   │   │...
+└───┴───┴───┴───┴───┴───┴───┘
+</code></pre>
+
+<p>一个字节是1byte，1024字节是1K，1024K是1M，1024M是1G，1024G是1T。一个拥有4T内存的计算机的字节数量就是：</p>
+
+<pre><code>4T = 4 x 1024G
+   = 4 x 1024 x 1024M
+   = 4 x 1024 x 1024 x 1024K
+   = 4 x 1024 x 1024 x 1024 x 1024
+   = 4398046511104
+</code></pre>
+
+<p>不同的数据类型占用的字节数不一样。我们看一下Java基本数据类型占用的字节数：</p>
+
+<pre><code class="language-ascii">       ┌───┐
+  byte │   │
+       └───┘
+       ┌───┬───┐
+ short │   │   │
+       └───┴───┘
+       ┌───┬───┬───┬───┐
+   int │   │   │   │   │
+       └───┴───┴───┴───┘
+       ┌───┬───┬───┬───┬───┬───┬───┬───┐
+  long │   │   │   │   │   │   │   │   │
+       └───┴───┴───┴───┴───┴───┴───┴───┘
+       ┌───┬───┬───┬───┐
+ float │   │   │   │   │
+       └───┴───┴───┴───┘
+       ┌───┬───┬───┬───┬───┬───┬───┬───┐
+double │   │   │   │   │   │   │   │   │
+       └───┴───┴───┴───┴───┴───┴───┴───┘
+       ┌───┬───┐
+  char │   │   │
+       └───┴───┘
+</code></pre>
+
+<p><code>byte</code>恰好就是一个字节，而<code>long</code>和<code>double</code>需要8个字节。</p>
+
+<h4 id="整型">整型</h4>
+
+<p>对于整型类型，Java只定义了带符号的整型，因此，最高位的bit表示符号位（0表示正数，1表示负数）。各种整型能表示的最大范围如下：</p>
+
+<ul>
+<li>byte：-128 ~ 127</li>
+<li>short: -32768 ~ 32767</li>
+<li>int: -2147483648 ~ 2147483647</li>
+<li>long: -9223372036854775808 ~ 9223372036854775807</li>
+</ul>
+
+<p>我们来看定义整型的例子：</p>
+
+<pre><code class="language-java">public class Main {
+    public static void main(String[] args) {
+        int i = 2147483647;
+        int i2 = -2147483648;
+        int i3 = 2_000_000_000; // 加下划线更容易识别
+        int i4 = 0xff0000; // 十六进制表示的16711680
+        int i5 = 0b1000000000; // 二进制表示的512
+        long l = 9000000000000000000L; // long型的结尾需要加L
+    }
+}
+</code></pre>
+
+<p><strong>特别注意</strong>：同一个数的不同进制的表示是完全相同的，例如<code>15</code>=<code>0xf</code>＝<code>0b1111</code>。</p>
+
+<h4 id="浮点型">浮点型</h4>
+
+<pre><code class="language-java">float f1 = 3.14f;  //float 类型需要加f后缀
+float f2 = 3.14e38f;
+double d=1.79e308;
+double d1 = -1.79e308;
+double d2 = 4.9e-324;
+</code></pre>
+
+<h4 id="布尔类型">布尔类型</h4>
+
+<pre><code class="language-java">boolean b1 = true;
+boolean b2 =false;
+boolean isGreater = 5&gt;3;
+int age =12;
+boolean isAdult = age &gt;18;
+
+</code></pre>
+
+<h4 id="字符类型">字符类型</h4>
+
+<pre><code class="language-java">public class Main {
+    public static void main(String[] argfs) {
+        char a = 'A';
+        char zh = '中';
+        System.out.println(a);
+        System.out.println(zh);
+    }
+}
+
+</code></pre>
+
+<blockquote>
+<p><strong>单引号</strong>，表示<code>'char'</code></p>
+
+<p><strong>双引号</strong>，表示<code>&quot;string&quot;</code></p>
+</blockquote>
+
+<h4 id="常量">常量</h4>
+
+<p>定义变量的时候，如果加上<code>final</code>修饰符，这个变量就变成了常量：</p>
+
+<pre><code class="language-java">final double PI = 3.14; // PI是一个常量
+double r = 5.0;
+double area = PI * r * r;
+PI = 300; // compile error!
+</code></pre>
+
+<p>常量在定义时进行初始化后就不可再次赋值，再次赋值会导致编译错误。</p>
+
+<p>常量的作用是用有意义的变量名来避免魔术数字（Magic number），例如，不要在代码中到处写<code>3.14</code>，而是定义一个常量。如果将来需要提高计算精度，我们只需要在常量的定义处修改，例如，改成<code>3.1416</code>，而不必在所有地方替换<code>3.14</code>。</p>
+
+<p>根据习惯，<strong>常量名通常全部大写</strong>。</p>
+
+<h4 id="var-关键字">Var 关键字</h4>
+
+<p>有些时候，类型的名字太长，写起来比较麻烦。例如：</p>
+
+<pre><code>StringBuilder sb = new StringBuilder();
+</code></pre>
+
+<p>这个时候，如果想省略变量类型，可以使用<code>var</code>关键字：</p>
+
+<pre><code>var sb = new StringBuilder();
+</code></pre>
+
+<p>编译器会根据赋值语句自动推断出变量<code>sb</code>的类型是<code>StringBuilder</code>。对编译器来说，语句：</p>
+
+<pre><code>var sb = new StringBuilder();
+</code></pre>
+
+<p>实际上会自动变成：</p>
+
+<pre><code>StringBuilder sb = new StringBuilder();
+</code></pre>
+
+<p>因此，使用<code>var</code>定义变量，仅仅是少写了变量类型而已。</p>
+
+<blockquote>
+<p>万物皆对象，变量也是有类型的</p>
+
+<p>java 中的{} 是用来控制程序模块的  相当于Python的缩进</p>
+
+<p>同时 {} 也控制着变量的作用域</p>
+</blockquote>
+
+<h3 id="整数运算">整数运算</h3>
+
+<h3 id="布尔运算">布尔运算</h3>
+
+<pre><code class="language-java">boolean isGreater = 5&gt;3; //true
+int age =12;
+boolean isZero = age ==0; //false
+boolean isNonzero = !isZero; 
+boolean isAdult = age &gt;= 18;
+boolean isTeenager =age &gt;6 &amp;&amp; age&lt;18;
+</code></pre>
+
+<p>运算符的优先级从高到低依次是：</p>
+
+<ul>
+<li><code>!</code></li>
+<li><code>&gt;</code>，<code>&gt;=</code>，<code>&lt;</code>，<code>&lt;=</code></li>
+<li><code>==</code>，<code>!=</code></li>
+<li><code>&amp;&amp;</code></li>
+<li><code>||</code></li>
+</ul>
+
+<p>布尔运算的一个重要特点是短路运算，</p>
+
+<h3 id="数组类型">数组类型</h3>
+
+<h3 id="流程控制">流程控制</h3>
+
+<h4 id="输入和输出">输入和输出</h4>
+
+<pre><code class="language-java">public class Main{
+    public static void main(String[],args){
+        System.out.print(&quot;A,&quot;);
+        System.out.print(&quot;B,&quot;);
+        System.out.println(&quot;换行输出&quot;)
+    }
+}
+
+
+
+</code></pre>
+
+<p><strong>格式化输出</strong></p>
+
+<pre><code class="language-java">public class Main{
+    public static void main(String[] args){
+        doubole d = 1290000;
+        System.out.println(d); //1.29E6
+        System.out.printf(&quot;%.2f\n&quot;,d)
+        System.out.printf(&quot;%.4f\n&quot;,d)
+    }
+}
+</code></pre>
+
+<p>Java的格式化功能提供了多种占位符，可以把各种数据类型“格式化”成指定的字符串：</p>
+
+<p>占位符 说明
+%d  格式化输出整数
+%x  格式化输出十六进制整数
+%f  格式化输出浮点数
+%e  格式化输出科学计数法表示的浮点数
+%s  格式化字符串
+注意，由于%表示占位符，因此，连续两个%%表示一个%字符本身。</p>
+
+          </div>
+
+          
+          <div class="row">
+            <div class="col-md-8">
+            
+              <div class="mb-5">
+                
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://example.com/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://example.com/tags/java" role="button">Java </a></li>
+      
+    
+  </div>
+</div>
+              </div>
+            
+            </div>
+            
+          </div>
+          
+
+          
+          <div class="row pt-3">
+            <div class="col-md-6">
+              
+                <a href=https://example.com/%E7%AC%AC12%E7%AB%A0-pandas%E9%AB%98%E7%BA%A7%E5%BA%94%E7%94%A8/ class="post-meta">Previous
+                  <div class="pt-2 pb-5 d-flex">
+                    <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
+                    <span>第12章 pandas 高级应用</span>
+                  </div>
+                </a>
+              
+            </div>
+            
+            <div class="col-md-6 text-right" >
+              
+                <a href=https://example.com/%E7%AC%AC13%E7%AB%A0-python%E5%BB%BA%E6%A8%A1%E5%BA%93%E4%BB%8B%E7%BB%8D/ class="post-meta">Next
+                  <div class="pt-2 pb-5 flex-reverse">
+                    <i class="fas fa-angle-right text-grey font-weight-bold ml-2 active-color"></i>
+                    <span>第13章 Python 建模库</span>
+                  </div>
+                </a>
+              
+            </div>
+          </div>
+
+          
+
+        </div>
+        
+
+      </div>
+      
+
+      
+	
+	
+	
+	
+		
+		
+		
+	
+
+		
+		<div class="col-md-2 pl-0">
+
+			
+			<div id="page-scrollspy" class="toc-nav">
+				
+				<ul class="nav nav-pills ml-0">
+					
+					<li class="nav-item pb-3 text-center">
+						<span class="font-weight-bold mb-2">- CATALOG - </span>
+					</li>
+
+					
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#java%e7%9a%84-hello-world">
+												 Java的 Hello world
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e7%a8%8b%e5%ba%8f%e5%9f%ba%e6%9c%ac%e7%bb%93%e6%9e%84%e5%92%8c%e7%a8%8b%e5%ba%8f%e8%a7%84%e8%8c%83">
+												 程序基本结构和程序规范
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e6%b3%a8%e9%87%8a">
+												 注释
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%8f%98%e9%87%8f%e5%92%8c%e6%95%b0%e6%8d%ae%e7%b1%bb%e5%9e%8b">
+												 变量和数据类型
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%9f%ba%e6%9c%ac%e6%95%b0%e6%8d%ae%e7%b1%bb%e5%9e%8b">
+												 基本数据类型
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e6%95%b4%e5%9e%8b">
+												 整型
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e6%b5%ae%e7%82%b9%e5%9e%8b">
+												 浮点型
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%b8%83%e5%b0%94%e7%b1%bb%e5%9e%8b">
+												 布尔类型
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%ad%97%e7%ac%a6%e7%b1%bb%e5%9e%8b">
+												 字符类型
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%b8%b8%e9%87%8f">
+												 常量
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#var-%e5%85%b3%e9%94%ae%e5%ad%97">
+												 Var 关键字
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e6%95%b4%e6%95%b0%e8%bf%90%e7%ae%97">
+												 整数运算
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%b8%83%e5%b0%94%e8%bf%90%e7%ae%97">
+												 布尔运算
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e6%95%b0%e7%bb%84%e7%b1%bb%e5%9e%8b">
+												 数组类型
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e6%b5%81%e7%a8%8b%e6%8e%a7%e5%88%b6">
+												 流程控制
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e8%be%93%e5%85%a5%e5%92%8c%e8%be%93%e5%87%ba">
+												 输入和输出
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+
+				</ul>
+			</div>
+			
+
+		</div>
+		
+	
+
+    </div>
+    
+
+
+  </main>
+  
+
+
+    
+    
+
+<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+
+  
+  <div class="pb-2 mt-5 pt-5">
+    
+      <a href="//github.com/Flionay " target="_blank" rel="noopener"><i class="fab fa-github mr-3" aria-hidden="true"></i></a>    
+    
+    
+
+    
+
+    
+
+    
+
+    
+        <a href="//instagram.com/luckyflion" target="_blank" rel="noopener"><i class="fab fa-instagram mr-3" aria-hidden="true"></i></a>
+    
+
+    
+        <a href="//weibo.com/u/5792963723" target="_blank" rel="noopener"><i class="fab fa-500px mr-3" aria-hidden="true"></i></a>
+    
+
+
+    
+        <a href="mailto:angyi_jq@163.com"><i class="far fa-envelope-open mr-3" aria-hidden="true"></i></a>
+    
+
+    
+
+    
+
+  </div>
+  
+
+  
+  <div class="copyright py-4">
+    
+    <span>  2016 - 2019 &copy; | Theme <a href='https://github.com/orianna-zzo/AllinOne' target="_blank">AllinOne</a> by <a href='https://github.com/orianna-zzo' target="_blank">Orianna</a>  </span>
+  </div>
+  
+
+</footer>
+
+
+    
+
+
+
+
+
+
+<script type="text/javascript" src="https://example.com/js/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://example.com/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://example.com/js/vendors/popper.min.js"></script>
+<script type="text/javascript" src="https://example.com/js/vendors/holder.min.js"></script>
+<script type="text/javascript" src="https://example.com/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
+
+<script type="text/javascript" src="https://example.com/js/vendors/mdb/mdb.min.js"></script>
+
+<script type="text/javascript" src="https://example.com/js/main.js"></script>
+
+
+
+  
+  <script src="https://example.com/js/vendors/highlight.pack.js"> </script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+ 
+  <script src="https://example.com/js/vendors/katex/katex.min.js"> </script>
+  <script src="https://example.com/js/vendors/katex/contrib/auto-render.min.js"></script>
+
+  <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          renderMathInElement(document.body);
+      });
+  </script>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  
+  new WOW().init();
+</script>
+
+
+
+
+  </body>
+</html>

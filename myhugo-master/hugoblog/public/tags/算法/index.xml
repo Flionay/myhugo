@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>算法 on Angyi</title>
+    <link>https://example.com/tags/%E7%AE%97%E6%B3%95/</link>
+    <description>Recent content in 算法 on Angyi</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zn-Hans</language>
+    <lastBuildDate>Sun, 29 Sep 2019 17:35:00 +0800</lastBuildDate>
+    
+	<atom:link href="https://example.com/tags/%E7%AE%97%E6%B3%95/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>决策树和随机森林代码实现</title>
+      <link>https://example.com/%E5%86%B3%E7%AD%96%E6%A0%91%E5%92%8C%E9%9A%8F%E6%9C%BA%E6%A3%AE%E6%9E%97/</link>
+      <pubDate>Sun, 29 Sep 2019 17:35:00 +0800</pubDate>
+      
+      <guid>https://example.com/%E5%86%B3%E7%AD%96%E6%A0%91%E5%92%8C%E9%9A%8F%E6%9C%BA%E6%A3%AE%E6%9E%97/</guid>
+      <description>决策树和随机森林的代码实现，采用面向对象的编程方式。</description>
+    </item>
+    
+    <item>
+      <title>GA遗传算法</title>
+      <link>https://example.com/ga/</link>
+      <pubDate>Wed, 25 Sep 2019 21:25:45 +0800</pubDate>
+      
+      <guid>https://example.com/ga/</guid>
+      <description>学长的论文遇到多元非线性方程的优化问题，复习一下遗传算法。手写一篇代码总结一下。</description>
+    </item>
+    
+  </channel>
+</rss>

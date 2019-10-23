@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>python on Angyi</title>
+    <link>https://example.com/categories/python/</link>
+    <description>Recent content in python on Angyi</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zn-Hans</language>
+    <lastBuildDate>Sun, 09 Jun 2019 09:59:58 +0800</lastBuildDate>
+    
+	<atom:link href="https://example.com/categories/python/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Numpy and Pandas</title>
+      <link>https://example.com/numpy_pandas_notebook/</link>
+      <pubDate>Sun, 09 Jun 2019 09:59:58 +0800</pubDate>
+      
+      <guid>https://example.com/numpy_pandas_notebook/</guid>
+      <description>Numpy and Pandas 莫烦教程笔记</description>
+    </item>
+    
+    <item>
+      <title>第14章 数据分析实例</title>
+      <link>https://example.com/%E7%AC%AC14%E7%AB%A0-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E6%A1%88%E4%BE%8B/</link>
+      <pubDate>Thu, 28 Feb 2019 23:35:38 +0800</pubDate>
+      
+      <guid>https://example.com/%E7%AC%AC14%E7%AB%A0-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E6%A1%88%E4%BE%8B/</guid>
+      <description>第14章 数据分析实例：本书正文的最后一章，我们来看一些真实世界的数据集。对于每个数据集，我们会用之前介绍的方法，从原始数据中提取有意义的内容。展示的方法适用于其它数据集，也包括你的。本章包含了一些各种各样的案例数据集，可以用来练习。</description>
+    </item>
+    
+    <item>
+      <title>第13章 Python 建模库</title>
+      <link>https://example.com/%E7%AC%AC13%E7%AB%A0-python%E5%BB%BA%E6%A8%A1%E5%BA%93%E4%BB%8B%E7%BB%8D/</link>
+      <pubDate>Mon, 18 Feb 2019 22:35:38 +0800</pubDate>
+      
+      <guid>https://example.com/%E7%AC%AC13%E7%AB%A0-python%E5%BB%BA%E6%A8%A1%E5%BA%93%E4%BB%8B%E7%BB%8D/</guid>
+      <description>第13章 Python 建模库：本章中，我会回顾一些pandas的特点，在你胶着于pandas数据规整和模型拟合和评分时，它们可能派上用场。然后我会简短介绍两个流行的建模工具，statsmodels和scikit-learn。这二者每个都值得再写一本书，我就不做全面的介绍，而是建议你学习两个项目的线上文档和其它基于Python的数据科学、统计和机器学习的书籍。</description>
+    </item>
+    
+    <item>
+      <title>第12章 pandas 高级应用</title>
+      <link>https://example.com/%E7%AC%AC12%E7%AB%A0-pandas%E9%AB%98%E7%BA%A7%E5%BA%94%E7%94%A8/</link>
+      <pubDate>Fri, 08 Feb 2019 22:35:38 +0800</pubDate>
+      
+      <guid>https://example.com/%E7%AC%AC12%E7%AB%A0-pandas%E9%AB%98%E7%BA%A7%E5%BA%94%E7%94%A8/</guid>
+      <description>第12章 pandas 高级应用：这一节介绍的是pandas的分类类型。我会向你展示通过使用它，提高性能和内存的使用率。我还会介绍一些在统计和机器学习中使用分类数据的工具。</description>
+    </item>
+    
+    <item>
+      <title>第11章 时间序列</title>
+      <link>https://example.com/%E7%AC%AC11%E7%AB%A0-%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97/</link>
+      <pubDate>Tue, 05 Feb 2019 22:35:38 +0800</pubDate>
+      
+      <guid>https://example.com/%E7%AC%AC11%E7%AB%A0-%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97/</guid>
+      <description>第11章 时间序列数据的处理：本章主要讲解3种时间序列。许多技术都可用于处理实验型时间序列，其索引可能是一个整数或浮点数（表示从实验开始算起已经过去的时间）。最简单也最常见的时间序列都是用时间戳进行索引的。</description>
+    </item>
+    
+    <item>
+      <title>第10章 数据聚合与分组运算</title>
+      <link>https://example.com/%E7%AC%AC10%E7%AB%A0-%E6%95%B0%E6%8D%AE%E8%81%9A%E5%90%88%E4%B8%8E%E5%88%86%E7%BB%84%E8%BF%90%E7%AE%97/</link>
+      <pubDate>Tue, 29 Jan 2019 22:35:38 +0800</pubDate>
+      
+      <guid>https://example.com/%E7%AC%AC10%E7%AB%A0-%E6%95%B0%E6%8D%AE%E8%81%9A%E5%90%88%E4%B8%8E%E5%88%86%E7%BB%84%E8%BF%90%E7%AE%97/</guid>
+      <description>第10章 数据聚合与分组运算：数据处理的高级应用，统计DataFrame必备技能，当然也是重难点。学会了这些，在看一些R基础，基本上也就可以在R语言中畅游了</description>
+    </item>
+    
+    <item>
+      <title>第09章 绘图和可视化</title>
+      <link>https://example.com/%E7%AC%AC09%E7%AB%A0-%E7%BB%98%E5%9B%BE%E5%92%8C%E5%8F%AF%E8%A7%86%E5%8C%96/</link>
+      <pubDate>Fri, 25 Jan 2019 12:35:38 +0800</pubDate>
+      
+      <guid>https://example.com/%E7%AC%AC09%E7%AB%A0-%E7%BB%98%E5%9B%BE%E5%92%8C%E5%8F%AF%E8%A7%86%E5%8C%96/</guid>
+      <description>第09章 绘图和可视化：matplotlib是一个用于创建出版质量图表的桌面绘图包（主要是2D方面）。该项目是由John Hunter于2002年启动的，其目的是为Python构建一个MATLAB式的绘图接口。matplotlib和IPython社区进行合作，简化了从IPython shell（包括现在的Jupyter notebook）进行交互式绘图。matplotlib支持各种操作系统上许多不同的GUI后端，而且还能将图片导出为各种常见的矢量（vector）和光栅（raster）图：PDF、SVG、JPG、PNG、BMP、GIF等。除了几张，本书中的大部分图都是用它生成的。</description>
+    </item>
+    
+    <item>
+      <title>第08章 数据规整</title>
+      <link>https://example.com/%E7%AC%AC08%E7%AB%A0-%E6%95%B0%E6%8D%AE%E8%A7%84%E6%95%B4%E8%81%9A%E5%90%88%E5%90%88%E5%B9%B6%E5%92%8C%E9%87%8D%E5%A1%91/</link>
+      <pubDate>Wed, 23 Jan 2019 22:45:38 +0800</pubDate>
+      
+      <guid>https://example.com/%E7%AC%AC08%E7%AB%A0-%E6%95%B0%E6%8D%AE%E8%A7%84%E6%95%B4%E8%81%9A%E5%90%88%E5%90%88%E5%B9%B6%E5%92%8C%E9%87%8D%E5%A1%91/</guid>
+      <description>第08章 数据规整：聚合、合并、重塑；在许多应用中，数据可能分散在许多文件或数据库中，存储的形式也不利于分析。本章关注可以聚合、合并、重塑数据的方法。</description>
+    </item>
+    
+    <item>
+      <title>第07章 数据清洗和准备</title>
+      <link>https://example.com/%E7%AC%AC07%E7%AB%A0-%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97%E5%92%8C%E5%87%86%E5%A4%87/</link>
+      <pubDate>Sat, 19 Jan 2019 22:45:38 +0800</pubDate>
+      
+      <guid>https://example.com/%E7%AC%AC07%E7%AB%A0-%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97%E5%92%8C%E5%87%86%E5%A4%87/</guid>
+      <description>第07章 数据清洗和准备；在数据分析和建模的过程中，相当多的时间要用在数据准备上：加载、清理、转换以及重塑。这些工作会占到分析师时间的80%或更多。有时，存储在文件和数据库中的数据的格式不适合某个特定的任务。许多研究者都选择使用通用编程语言（如Python、Perl、R或Java）或UNIX文本处理工具（如sed或awk）对数据格式进行专门处理。幸运的是，pandas和内置的Python标准库提供了一组高级的、灵活的、快速的工具，可以让你轻松地将数据规整为想要的格式。</description>
+    </item>
+    
+    <item>
+      <title>第06章 数据加载、存储与文件格式</title>
+      <link>https://example.com/%E7%AC%AC06%E7%AB%A0-%E6%95%B0%E6%8D%AE%E5%8A%A0%E8%BD%BD%E5%AD%98%E5%82%A8%E4%B8%8E%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F/</link>
+      <pubDate>Thu, 17 Jan 2019 23:45:38 +0800</pubDate>
+      
+      <guid>https://example.com/%E7%AC%AC06%E7%AB%A0-%E6%95%B0%E6%8D%AE%E5%8A%A0%E8%BD%BD%E5%AD%98%E5%82%A8%E4%B8%8E%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F/</guid>
+      <description>第06章 数据加载、存储与文件格式；pandas 操作数据</description>
+    </item>
+    
+    <item>
+      <title>第05章 Pandas 基础</title>
+      <link>https://example.com/%E7%AC%AC05%E7%AB%A0-pandas%E5%85%A5%E9%97%A8/</link>
+      <pubDate>Wed, 16 Jan 2019 13:45:38 +0800</pubDate>
+      
+      <guid>https://example.com/%E7%AC%AC05%E7%AB%A0-pandas%E5%85%A5%E9%97%A8/</guid>
+      <description>第5章 pandas基础；虽然pandas采用了大量的NumPy编码风格，但二者最大的不同是pandas是专门为处理表格和混杂数据设计的。而NumPy更适合处理统一的数值数组数据。</description>
+    </item>
+    
+    <item>
+      <title>第04章 Numpy 基础</title>
+      <link>https://example.com/%E7%AC%AC04%E7%AB%A0-numpy%E5%9F%BA%E7%A1%80%E6%95%B0%E7%BB%84%E5%92%8C%E7%9F%A2%E9%87%8F%E8%AE%A1%E7%AE%97/</link>
+      <pubDate>Tue, 15 Jan 2019 23:45:38 +0800</pubDate>
+      
+      <guid>https://example.com/%E7%AC%AC04%E7%AB%A0-numpy%E5%9F%BA%E7%A1%80%E6%95%B0%E7%BB%84%E5%92%8C%E7%9F%A2%E9%87%8F%E8%AE%A1%E7%AE%97/</guid>
+      <description>第4章 Numpy基础：数组和向量化运算；NumPy（Numerical Python的简称）是Python数值计算最重要的基础包。大多数提供科学计算的包都是用NumPy的数组作为构建基础。</description>
+    </item>
+    
+    <item>
+      <title>第03章 Python的数据结构、函数和文件</title>
+      <link>https://example.com/%E7%AC%AC03%E7%AB%A0-python%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%87%BD%E6%95%B0%E5%92%8C%E6%96%87%E4%BB%B6/</link>
+      <pubDate>Sun, 13 Jan 2019 20:59:58 +0800</pubDate>
+      
+      <guid>https://example.com/%E7%AC%AC03%E7%AB%A0-python%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%87%BD%E6%95%B0%E5%92%8C%E6%96%87%E4%BB%B6/</guid>
+      <description>第3章 本章讨论Python的内置功能，它们是和Python的内置数据处理工具一同使用的。然后会从Python最基础的数据结构开始：元组、列表、字典和集合。然后会讨论创建你自己的、可重复使用的Python函数。最后，会学习Python的文件对象，以及如何与本地硬盘交互。</description>
+    </item>
+    
+    <item>
+      <title>第02章 Python语法基础，IPython和Jupyter Notebooks</title>
+      <link>https://example.com/%E7%AC%AC02%E7%AB%A0-python%E8%AF%AD%E6%B3%95%E5%9F%BA%E7%A1%80ipython%E5%92%8Cjupyter-notebooks/</link>
+      <pubDate>Sat, 12 Jan 2019 20:59:58 +0800</pubDate>
+      
+      <guid>https://example.com/%E7%AC%AC02%E7%AB%A0-python%E8%AF%AD%E6%B3%95%E5%9F%BA%E7%A1%80ipython%E5%92%8Cjupyter-notebooks/</guid>
+      <description>第2章 Python语法基础，IPython和Jupyter Notebooks，如果不是初学者，可以跳过，但还是建议读一下jupyter的快捷键操作和一些小技巧，可以很大程度提高效率</description>
+    </item>
+    
+    <item>
+      <title>第01章 Python语言和重要的库介绍</title>
+      <link>https://example.com/%E7%AC%AC01%E7%AB%A0-%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/</link>
+      <pubDate>Fri, 11 Jan 2019 20:59:58 +0800</pubDate>
+      
+      <guid>https://example.com/%E7%AC%AC01%E7%AB%A0-%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/</guid>
+      <description>第1章 准备工作  书本基本表述格式，以及重要的Python库介绍</description>
+    </item>
+    
+    <item>
+      <title>利用Python进行数据分析</title>
+      <link>https://example.com/%E7%AC%AC0%E7%AB%A0-python-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/</link>
+      <pubDate>Wed, 09 Jan 2019 09:59:58 +0800</pubDate>
+      
+      <guid>https://example.com/%E7%AC%AC0%E7%AB%A0-python-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/</guid>
+      <description>第 01 章  书本概述 利用Python进行数据分析笔记，转载系列</description>
+    </item>
+    
+  </channel>
+</rss>

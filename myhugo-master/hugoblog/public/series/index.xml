@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Series on Angyi</title>
+    <link>https://example.com/series/</link>
+    <description>Recent content in Series on Angyi</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zn-Hans</language>
+    <lastBuildDate>Sun, 20 Oct 2019 19:59:58 +0800</lastBuildDate>
+    
+	<atom:link href="https://example.com/series/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>ai</title>
+      <link>https://example.com/series/ai/</link>
+      <pubDate>Sun, 20 Oct 2019 19:59:58 +0800</pubDate>
+      
+      <guid>https://example.com/series/ai/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>python</title>
+      <link>https://example.com/series/python/</link>
+      <pubDate>Sun, 09 Jun 2019 09:59:58 +0800</pubDate>
+      
+      <guid>https://example.com/series/python/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

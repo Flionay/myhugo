@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>其他 on Angyi</title>
+    <link>https://example.com/categories/%E5%85%B6%E4%BB%96/</link>
+    <description>Recent content in 其他 on Angyi</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zn-Hans</language>
+    <lastBuildDate>Wed, 25 Sep 2019 21:25:45 +0800</lastBuildDate>
+    
+	<atom:link href="https://example.com/categories/%E5%85%B6%E4%BB%96/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>GA遗传算法</title>
+      <link>https://example.com/ga/</link>
+      <pubDate>Wed, 25 Sep 2019 21:25:45 +0800</pubDate>
+      
+      <guid>https://example.com/ga/</guid>
+      <description>学长的论文遇到多元非线性方程的优化问题，复习一下遗传算法。手写一篇代码总结一下。</description>
+    </item>
+    
+    <item>
+      <title>利用ACE打造Python在线代码编辑器 </title>
+      <link>https://example.com/ace/</link>
+      <pubDate>Thu, 18 Jul 2019 19:59:58 +0800</pubDate>
+      
+      <guid>https://example.com/ace/</guid>
+      <description>网页中的代码编辑器，支持多种语言，高亮以及智能提示&amp;hellip;..</description>
+    </item>
+    
+    <item>
+      <title>Java 基础</title>
+      <link>https://example.com/java%E5%9F%BA%E7%A1%80/</link>
+      <pubDate>Sun, 10 Feb 2019 09:59:58 +0800</pubDate>
+      
+      <guid>https://example.com/java%E5%9F%BA%E7%A1%80/</guid>
+      <description>Java 廖雪峰教程跟学笔记</description>
+    </item>
+    
+  </channel>
+</rss>

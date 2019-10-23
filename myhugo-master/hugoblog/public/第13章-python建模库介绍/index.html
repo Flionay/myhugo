@@ -1,0 +1,1660 @@
+<!DOCTYPE html>
+<html lang="zn-Hans">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1" />
+  <meta name="author" content="Angyi">
+  <meta name="description" content="第13章 Python 建模库：本章中，我会回顾一些pandas的特点，在你胶着于pandas数据规整和模型拟合和评分时，它们可能派上用场。然后我会简短介绍两个流行的建模工具，statsmodels和scikit-learn。这二者每个都值得再写一本书，我就不做全面的介绍，而是建议你学习两个项目的线上文档和其它基于Python的数据科学、统计和机器学习的书籍。">
+  
+  <meta property="og:title" content="第13章 Python 建模库" />
+<meta property="og:description" content="第13章 Python 建模库：本章中，我会回顾一些pandas的特点，在你胶着于pandas数据规整和模型拟合和评分时，它们可能派上用场。然后我会简短介绍两个流行的建模工具，statsmodels和scikit-learn。这二者每个都值得再写一本书，我就不做全面的介绍，而是建议你学习两个项目的线上文档和其它基于Python的数据科学、统计和机器学习的书籍。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.com/%E7%AC%AC13%E7%AB%A0-python%E5%BB%BA%E6%A8%A1%E5%BA%93%E4%BB%8B%E7%BB%8D/" />
+<meta property="article:published_time" content="2019-02-18T22:35:38+08:00" />
+<meta property="article:modified_time" content="2019-02-18T22:35:38+08:00" /><meta property="og:see_also" content="https://example.com/numpy_pandas_notebook/" /><meta property="og:see_also" content="https://example.com/%E7%AC%AC14%E7%AB%A0-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E6%A1%88%E4%BE%8B/" /><meta property="og:see_also" content="https://example.com/%E7%AC%AC12%E7%AB%A0-pandas%E9%AB%98%E7%BA%A7%E5%BA%94%E7%94%A8/" /><meta property="og:see_also" content="https://example.com/%E7%AC%AC11%E7%AB%A0-%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97/" /><meta property="og:see_also" content="https://example.com/%E7%AC%AC10%E7%AB%A0-%E6%95%B0%E6%8D%AE%E8%81%9A%E5%90%88%E4%B8%8E%E5%88%86%E7%BB%84%E8%BF%90%E7%AE%97/" />
+
+
+
+  <title>
+  
+       第13章 Python 建模库 | Angyi 
+  
+  </title>
+
+  <link rel="canonical" href="https://example.com/%E7%AC%AC13%E7%AB%A0-python%E5%BB%BA%E6%A8%A1%E5%BA%93%E4%BB%8B%E7%BB%8D/">
+
+  
+  
+
+  
+  <link href="https://example.com/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
+
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Ubuntu+Mono:400,400i,700,700i|Raleway:300,400,500,600">
+  <link href="https://example.com/css/font.css" rel="stylesheet"> 
+    
+  
+  <link href="https://example.com/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
+  <link href="https://example.com/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
+  <link href="https://example.com/css/vendors/mdb/style.min.css" rel="stylesheet"> 
+  <link href="https://example.com/css/main.css" rel="stylesheet">
+
+
+  
+  <link rel="shortcut icon"
+  
+      href="https://example.com/img/pig.png"
+  
+  >
+
+
+  
+  
+
+  <style type="text/css">
+      @media (min-width: 800px) and (max-width: 850px) {
+              .navbar:not(.top-nav-collapse) {
+                  background: #1C2331!important;
+              }
+          }
+  </style>
+
+
+  
+    
+    <link rel="stylesheet" href="https://example.com/js/vendors/katex/katex.min.css">
+  
+  
+
+  
+    
+    <link rel="stylesheet" href="https://example.com/css/vendors/highlight/github-gist.css">
+  
+
+</head>
+
+  <body class="bg-light" data-spy="scroll" data-target="#page-scrollspy" data-offset="90">
+  
+    
+    
+
+    
+      
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+    <div class="container">
+
+      
+      <a class="navbar-brand" href="https://example.com">
+          
+        <img class="avatar" src="https://example.com/img/pig.png" style="width: 40px!important;height: auto;"  class="d-inline-block align-top" alt="" >
+        
+        <strong> Angyi</strong>
+      </a>
+
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item ">
+            <a class="nav-link" href="https://example.com">Home</a>
+          </li>
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://example.com/categories/python/" >Python  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://example.com/categories/mldl/" >MLDL  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://example.com/categories/others/" >Others  </a>
+            </li>
+          
+          
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  
+ 
+      
+ 
+
+
+
+
+
+
+<div id="site-header" class="carousel slide carousel-fade" data-ride="carousel" style="height: 18rem;" >  
+
+  
+  
+  
+
+  
+  <div class="carousel-inner" role="listbox">
+    
+      
+
+        
+        <div class="carousel-item active">
+          <div class="view" style="background-image: url('https://example.com/img/header-slides/QQ%e5%9b%be%e7%89%8720191022135950.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+              
+              
+              
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('https://example.com/img/header-slides//big12.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('https://example.com/img/header-slides//wallhaven-132789.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('https://example.com/img/header-slides//wallhaven-73lk19.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+
+  
+  </div>
+  
+
+  
+  <div class="carousel-content text-center white-text wow fadeIn">
+    <div class="row mx-0 headfont mt-3 pt-4">
+      
+      <div class="col-12 col-sm-5 align-middle">
+        <a href="https://example.com">
+          
+            <img class="pull-right avatar avatar-md" src="https://example.com/img/11.png" alt="" >
+          
+        </a>
+      </div>
+      
+      <div class="col-12 col-sm-7 text-left pl-2">
+        <a href="https://example.com">
+          <h1 class="mb-2 h1" style="font-weight: 300;" >
+            <strong>Angyi</strong>
+          </h1>
+        </a>
+        
+
+             
+        <div class="mt-2" style="font-size: 1rem; color: white;">
+            
+              <a href="//github.com/Flionay" target="_blank" rel="noopener"><i class="fab fa-github pr-1" aria-hidden="true"></i></a>    
+            
+            
+
+            
+
+            
+
+            
+
+            
+                <a href="//instagram.com/luckyflion" target="_blank" rel="noopener"><i class="fab fa-instagram pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+                <a href="//weibo.com/u/5792963723" target="_blank" rel="noopener"><i class="fab fa-500px pr-1" aria-hidden="true"></i></a>
+            
+    
+        
+            
+                <a href="mailto:angyi_jq@163.com"><i class="far fa-envelope-open pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  
+  
+  
+
+</div>
+  
+    
+
+    
+  
+  <main class="post-main-wrapper">
+    
+    
+    <div class="row">
+
+      
+
+      
+      <div class="col-md-10">
+      
+
+        
+        <div class="z-depth-1  post-wrapper white-bg single-post">
+
+          <div class="post-header text-center" >
+  <ul class="post-meta li-x">
+    
+      
+        <li><a href="https://example.com/categories/python"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> python </a></li>
+      
+    
+    
+      
+        <li><a href="https://example.com/series/python"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>python</a></li>
+      
+    
+  </ul>
+
+  <div class="px-4 post-heading">第13章 Python 建模库</div>
+
+  <ul class="post-meta li-x mt-1">
+    
+      <li>Feb 18, 2019</li>
+    
+
+    
+      <li class="middot"></li>
+      <li>14 minutes read</li>
+    
+  </ul>
+  
+
+</div>
+
+
+          <div class="post-content markdown">
+            
+
+<p>本书中，我已经介绍了Python数据分析的编程基础。因为数据分析师和科学家总是在数据规整和准备上花费大量时间，这本书的重点在于掌握这些功能。</p>
+
+<p>开发模型选用什么库取决于应用本身。许多统计问题可以用简单方法解决，比如普通的最小二乘回归，其它问题可能需要复杂的机器学习方法。幸运的是，Python已经成为了运用这些分析方法的语言之一，因此读完此书，你可以探索许多工具。</p>
+
+<p>本章中，我会回顾一些pandas的特点，在你胶着于pandas数据规整和模型拟合和评分时，它们可能派上用场。然后我会简短介绍两个流行的建模工具，statsmodels和scikit-learn。这二者每个都值得再写一本书，我就不做全面的介绍，而是建议你学习两个项目的线上文档和其它基于Python的数据科学、统计和机器学习的书籍。</p>
+
+<h1 id="13-1-pandas与模型代码的接口">13.1 pandas与模型代码的接口</h1>
+
+<p>模型开发的通常工作流是使用pandas进行数据加载和清洗，然后切换到建模库进行建模。开发模型的重要一环是机器学习中的“特征工程”。它可以描述从原始数据集中提取信息的任何数据转换或分析，这些数据集可能在建模中有用。本书中学习的数据聚合和GroupBy工具常用于特征工程中。</p>
+
+<p>优秀的特征工程超出了本书的范围，我会尽量直白地介绍一些用于数据操作和建模切换的方法。</p>
+
+<p>pandas与其它分析库通常是靠NumPy的数组联系起来的。将DataFrame转换为NumPy数组，可以使用.values属性：</p>
+
+<pre><code class="language-python">In [10]: import pandas as pd
+
+In [11]: import numpy as np
+
+In [12]: data = pd.DataFrame({
+   ....:     'x0': [1, 2, 3, 4, 5],
+   ....:     'x1': [0.01, -0.01, 0.25, -4.1, 0.],
+   ....:     'y': [-1.5, 0., 3.6, 1.3, -2.]})
+
+In [13]: data
+Out[13]: 
+   x0    x1    y
+0   1  0.01 -1.5
+1   2 -0.01  0.0
+2   3  0.25  3.6
+3   4 -4.10  1.3
+4   5  0.00 -2.0
+
+In [14]: data.columns
+Out[14]: Index(['x0', 'x1', 'y'], dtype='object')
+
+In [15]: data.values
+Out[15]: 
+array([[ 1.  ,  0.01, -1.5 ],
+       [ 2.  , -0.01,  0.  ],
+       [ 3.  ,  0.25,  3.6 ],
+       [ 4.  , -4.1 ,  1.3 ],
+       [ 5.  ,  0.  , -2.  ]])
+</code></pre>
+
+<p>要转换回DataFrame，可以传递一个二维ndarray，可带有列名：</p>
+
+<pre><code class="language-python">In [16]: df2 = pd.DataFrame(data.values, columns=['one', 'two', 'three'])
+
+In [17]: df2
+Out[17]: 
+   one   two  three
+0  1.0  0.01   -1.5
+1  2.0 -0.01    0.0
+2  3.0  0.25    3.6
+3  4.0 -4.10    1.3
+4  5.0  0.00   -2.0
+</code></pre>
+
+<blockquote>
+<p>笔记：最好当数据是均匀的时候使用.values属性。例如，全是数值类型。如果数据是不均匀的，结果会是Python对象的ndarray：</p>
+
+<pre><code class="language-python">&gt;In [18]: df3 = data.copy()
+&gt;
+&gt;In [19]: df3['strings'] = ['a', 'b', 'c', 'd', 'e']
+&gt;
+&gt;In [20]: df3
+&gt;Out[20]: 
+&gt;   x0    x1    y strings
+&gt;0   1  0.01 -1.5       a
+&gt;1   2 -0.01  0.0       b
+&gt;2   3  0.25  3.6       c
+&gt;3   4 -4.10  1.3       d
+&gt;4   5  0.00 -2.0       e
+&gt;
+&gt;In [21]: df3.values
+&gt;Out[21]: 
+&gt;array([[1, 0.01, -1.5, 'a'],
+&gt;       [2, -0.01, 0.0, 'b'],
+&gt;       [3, 0.25, 3.6, 'c'],
+&gt;       [4, -4.1, 1.3, 'd'],
+&gt;       [5, 0.0, -2.0, 'e']], dtype=object)
+&gt;```
+
+对于一些模型，你可能只想使用列的子集。我建议你使用loc，用values作索引：
+</code></pre>
+
+<p>python
+In [22]: model_cols = [&lsquo;x0&rsquo;, &lsquo;x1&rsquo;]</p>
+</blockquote>
+
+<p>In [23]: data.loc[:, model_cols].values
+Out[23]:
+array([[ 1.  ,  0.01],
+       [ 2.  , -0.01],
+       [ 3.  ,  0.25],
+       [ 4.  , -4.1 ],
+       [ 5.  ,  0.  ]])</p>
+
+<pre><code>
+一些库原生支持pandas，会自动完成工作：从DataFrame转换到NumPy，将模型的参数名添加到输出表的列或Series。其它情况，你可以手工进行“元数据管理”。
+
+在第12章，我们学习了pandas的Categorical类型和pandas.get_dummies函数。假设数据集中有一个非数值列：
+</code></pre>
+
+<p>python
+In [24]: data[&lsquo;category&rsquo;] = pd.Categorical([&lsquo;a&rsquo;, &lsquo;b&rsquo;, &lsquo;a&rsquo;, &lsquo;a&rsquo;, &lsquo;b&rsquo;],
+   &hellip;.:                                   categories=[&lsquo;a&rsquo;, &lsquo;b&rsquo;])</p>
+
+<p>In [25]: data
+Out[25]:
+   x0    x1    y category
+0   1  0.01 -1.5        a
+1   2 -0.01  0.0        b
+2   3  0.25  3.6        a
+3   4 -4.10  1.3        a
+4   5  0.00 -2.0        b</p>
+
+<pre><code>
+如果我们想替换category列为虚变量，我们可以创建虚变量，删除category列，然后添加到结果：
+</code></pre>
+
+<p>python
+In [26]: dummies = pd.get_dummies(data.category, prefix=&lsquo;category&rsquo;)</p>
+
+<p>In [27]: data_with_dummies = data.drop(&lsquo;category&rsquo;, axis=1).join(dummies)</p>
+
+<p>In [28]: data_with_dummies
+Out[28]:
+   x0    x1    y  category_a  category_b
+0   1  0.01 -1.5           1           0
+1   2 -0.01  0.0           0           1
+2   3  0.25  3.6           1           0
+3   4 -4.10  1.3           1           0
+4   5  0.00 -2.0           0           1</p>
+
+<pre><code>
+用虚变量拟合某些统计模型会有一些细微差别。当你不只有数字列时，使用Patsy（下一节的主题）可能更简单，更不容易出错。
+
+# 13.2 用Patsy创建模型描述
+
+Patsy是Python的一个库，使用简短的字符串“公式语法”描述统计模型（尤其是线性模型），可能是受到了R和S统计编程语言的公式语法的启发。
+
+Patsy适合描述statsmodels的线性模型，因此我会关注于它的主要特点，让你尽快掌握。Patsy的公式是一个特殊的字符串语法，如下所示：
+</code></pre>
+
+<p>python
+y ~ x0 + x1</p>
+
+<pre><code>
+a+b不是将a与b相加的意思，而是为模型创建的设计矩阵。patsy.dmatrices函数接收一个公式字符串和一个数据集（可以是DataFrame或数组的字典），为线性模型创建设计矩阵：
+</code></pre>
+
+<p>python
+In [29]: data = pd.DataFrame({
+   &hellip;.:     &lsquo;x0&rsquo;: [1, 2, 3, 4, 5],
+   &hellip;.:     &lsquo;x1&rsquo;: [0.01, -0.01, 0.25, -4.1, 0.],
+   &hellip;.:     &lsquo;y&rsquo;: [-1.5, 0., 3.6, 1.3, -2.]})</p>
+
+<p>In [30]: data
+Out[30]:
+   x0    x1    y
+0   1  0.01 -1.5
+1   2 -0.01  0.0
+2   3  0.25  3.6
+3   4 -4.10  1.3
+4   5  0.00 -2.0</p>
+
+<p>In [31]: import patsy</p>
+
+<p>In [32]: y, X = patsy.dmatrices(&lsquo;y ~ x0 + x1&rsquo;, data)</p>
+
+<pre><code>
+现在有：
+</code></pre>
+
+<p>python
+In [33]: y
+Out[33]:
+DesignMatrix with shape (5, 1)
+     y
+  -1.5
+   0.0
+   3.6
+   1.3
+  -2.0
+  Terms:
+    &lsquo;y&rsquo; (column 0)</p>
+
+<p>In [34]: X
+Out[34]:
+DesignMatrix with shape (5, 3)
+  Intercept  x0     x1
+          1   1   0.01
+          1   2  -0.01
+          1   3   0.25
+          1   4  -4.10
+          1   5   0.00
+  Terms:
+    &lsquo;Intercept&rsquo; (column 0)
+    &lsquo;x0&rsquo; (column 1)
+    &lsquo;x1&rsquo; (column 2)</p>
+
+<pre><code>
+这些Patsy的DesignMatrix实例是NumPy的ndarray，带有附加元数据：
+</code></pre>
+
+<p>python
+In [35]: np.asarray(y)
+Out[35]:
+array([[-1.5],
+       [ 0. ],
+       [ 3.6],
+       [ 1.3],
+       [-2. ]])</p>
+
+<p>In [36]: np.asarray(X)
+Out[36]:
+array([[ 1.  ,  1.  ,  0.01],
+       [ 1.  ,  2.  , -0.01],
+       [ 1.  ,  3.  ,  0.25],
+       [ 1.  ,  4.  , -4.1 ],
+       [ 1.  ,  5.  ,  0.  ]])</p>
+
+<pre><code>
+你可能想Intercept是哪里来的。这是线性模型（比如普通最小二乘回归）的惯例用法。添加 +0 到模型可以不显示intercept：
+</code></pre>
+
+<p>python
+In [37]: patsy.dmatrices(&lsquo;y ~ x0 + x1 + 0&rsquo;, data)[1]
+Out[37]:
+DesignMatrix with shape (5, 2)
+  x0     x1
+   1   0.01
+   2  -0.01
+   3   0.25
+   4  -4.10
+   5   0.00
+  Terms:
+    &lsquo;x0&rsquo; (column 0)
+    &lsquo;x1&rsquo; (column 1)</p>
+
+<pre><code>
+Patsy对象可以直接传递到算法（比如numpy.linalg.lstsq）中，它执行普通最小二乘回归：
+</code></pre>
+
+<p>python
+In [38]: coef, resid, _, _ = np.linalg.lstsq(X, y)</p>
+
+<pre><code>
+模型的元数据保留在design_info属性中，因此你可以重新附加列名到拟合系数，以获得一个Series，例如：
+</code></pre>
+
+<p>python
+In [39]: coef
+Out[39]:
+array([[ 0.3129],
+       [-0.0791],
+       [-0.2655]])</p>
+
+<p>In [40]: coef = pd.Series(coef.squeeze(), index=X.design_info.column_names)</p>
+
+<p>In [41]: coef
+Out[41]:
+Intercept    0.312910
+x0          -0.079106
+x1          -0.265464
+dtype: float64</p>
+
+<pre><code>
+## 用Patsy公式进行数据转换
+
+你可以将Python代码与patsy公式结合。在评估公式时，库将尝试查找在封闭作用域内使用的函数：
+</code></pre>
+
+<p>python
+In [42]: y, X = patsy.dmatrices(&lsquo;y ~ x0 + np.log(np.abs(x1) + 1)&lsquo;, data)</p>
+
+<p>In [43]: X
+Out[43]:
+DesignMatrix with shape (5, 3)
+  Intercept  x0  np.log(np.abs(x1) + 1)
+          1   1                 0.00995
+          1   2                 0.00995
+          1   3                 0.22314
+          1   4                 1.62924
+          1   5                 0.00000
+  Terms:
+    &lsquo;Intercept&rsquo; (column 0)
+    &lsquo;x0&rsquo; (column 1)
+    &lsquo;np.log(np.abs(x1) + 1)&rsquo; (column 2)</p>
+
+<pre><code>
+常见的变量转换包括标准化（平均值为0，方差为1）和中心化（减去平均值）。Patsy有内置的函数进行这样的工作：
+</code></pre>
+
+<p>python
+In [44]: y, X = patsy.dmatrices(&lsquo;y ~ standardize(x0) + center(x1)&lsquo;, data)</p>
+
+<p>In [45]: X
+Out[45]:
+DesignMatrix with shape (5, 3)
+  Intercept  standardize(x0)  center(x1)
+          1         -1.41421        0.78
+          1         -0.70711        0.76
+          1          0.00000        1.02
+          1          0.70711       -3.33
+          1          1.41421        0.77
+  Terms:
+    &lsquo;Intercept&rsquo; (column 0)
+    &lsquo;standardize(x0)&rsquo; (column 1)
+    &lsquo;center(x1)&rsquo; (column 2)</p>
+
+<pre><code>
+作为建模的一步，你可能拟合模型到一个数据集，然后用另一个数据集评估模型。另一个数据集可能是剩余的部分或是新数据。当执行中心化和标准化转变，用新数据进行预测要格外小心。因为你必须使用平均值或标准差转换新数据集，这也称作状态转换。
+
+patsy.build_design_matrices函数可以使用原始样本数据集的保存信息，来转换新数据，：
+</code></pre>
+
+<p>python
+In [46]: new_data = pd.DataFrame({
+   &hellip;.:     &lsquo;x0&rsquo;: [6, 7, 8, 9],
+   &hellip;.:     &lsquo;x1&rsquo;: [3.1, -0.5, 0, 2.3],
+   &hellip;.:     &lsquo;y&rsquo;: [1, 2, 3, 4]})</p>
+
+<p>In [47]: new_X = patsy.build_design_matrices([X.design_info], new_data)</p>
+
+<p>In [48]: new_X
+Out[48]:
+[DesignMatrix with shape (4, 3)
+   Intercept  standardize(x0)  center(x1)
+           1          2.12132        3.87
+           1          2.82843        0.27
+           1          3.53553        0.77
+           1          4.24264        3.07
+   Terms:
+     &lsquo;Intercept&rsquo; (column 0)
+     &lsquo;standardize(x0)&rsquo; (column 1)
+     &lsquo;center(x1)&rsquo; (column 2)]</p>
+
+<pre><code>
+因为Patsy中的加号不是加法的意义，当你按照名称将数据集的列相加时，你必须用特殊I函数将它们封装起来：
+</code></pre>
+
+<p>python
+In [49]: y, X = patsy.dmatrices(&lsquo;y ~ I(x0 + x1)&lsquo;, data)</p>
+
+<p>In [50]: X
+Out[50]:
+DesignMatrix with shape (5, 2)
+  Intercept  I(x0 + x1)
+          1        1.01
+          1        1.99
+          1        3.25
+          1       -0.10
+          1        5.00
+  Terms:
+    &lsquo;Intercept&rsquo; (column 0)
+    &lsquo;I(x0 + x1)&rsquo; (column 1)</p>
+
+<pre><code>
+Patsy的patsy.builtins模块还有一些其它的内置转换。请查看线上文档。
+
+分类数据有一个特殊的转换类，下面进行讲解。
+
+## 分类数据和Patsy
+
+非数值数据可以用多种方式转换为模型设计矩阵。完整的讲解超出了本书范围，最好和统计课一起学习。
+
+当你在Patsy公式中使用非数值数据，它们会默认转换为虚变量。如果有截距，会去掉一个，避免共线性：
+</code></pre>
+
+<p>python
+In [51]: data = pd.DataFrame({
+   &hellip;.:     &lsquo;key1&rsquo;: [&lsquo;a&rsquo;, &lsquo;a&rsquo;, &lsquo;b&rsquo;, &lsquo;b&rsquo;, &lsquo;a&rsquo;, &lsquo;b&rsquo;, &lsquo;a&rsquo;, &lsquo;b&rsquo;],
+   &hellip;.:     &lsquo;key2&rsquo;: [0, 1, 0, 1, 0, 1, 0, 0],
+   &hellip;.:     &lsquo;v1&rsquo;: [1, 2, 3, 4, 5, 6, 7, 8],
+   &hellip;.:     &lsquo;v2&rsquo;: [-1, 0, 2.5, -0.5, 4.0, -1.2, 0.2, -1.7]
+   &hellip;.: })</p>
+
+<p>In [52]: y, X = patsy.dmatrices(&lsquo;v2 ~ key1&rsquo;, data)</p>
+
+<p>In [53]: X
+Out[53]:
+DesignMatrix with shape (8, 2)
+  Intercept  key1[T.b]
+          1          0
+          1          0
+          1          1
+          1          1
+          1          0
+          1          1
+          1          0
+          1          1
+  Terms:
+    &lsquo;Intercept&rsquo; (column 0)
+    &lsquo;key1&rsquo; (column 1)</p>
+
+<pre><code>
+如果你从模型中忽略截距，每个分类值的列都会包括在设计矩阵的模型中：
+</code></pre>
+
+<p>python
+In [54]: y, X = patsy.dmatrices(&lsquo;v2 ~ key1 + 0&rsquo;, data)</p>
+
+<p>In [55]: X
+Out[55]:
+DesignMatrix with shape (8, 2)
+  key1[a]  key1[b]
+        1        0
+        1        0
+        0        1
+        0        1
+        1        0
+        0        1
+        1        0
+        0        1
+  Terms:
+    &lsquo;key1&rsquo; (columns 0:2)</p>
+
+<pre><code>
+使用C函数，数值列可以截取为分类量：
+</code></pre>
+
+<p>python
+In [56]: y, X = patsy.dmatrices(&lsquo;v2 ~ C(key2)&lsquo;, data)</p>
+
+<p>In [57]: X
+Out[57]:
+DesignMatrix with shape (8, 2)
+  Intercept  C(key2)[T.1]
+          1             0
+          1             1
+          1             0
+          1             1
+          1             0
+          1             1
+          1             0
+          1             0
+  Terms:
+    &lsquo;Intercept&rsquo; (column 0)
+    &lsquo;C(key2)&rsquo; (column 1)</p>
+
+<pre><code>
+当你在模型中使用多个分类名，事情就会变复杂，因为会包括key1:key2形式的相交部分，它可以用在方差（ANOVA）模型分析中：
+</code></pre>
+
+<p>python
+In [58]: data[&lsquo;key2&rsquo;] = data[&lsquo;key2&rsquo;].map({0: &lsquo;zero&rsquo;, 1: &lsquo;one&rsquo;})</p>
+
+<p>In [59]: data
+Out[59]:
+  key1  key2  v1   v2
+0    a  zero   1 -1.0
+1    a   one   2  0.0
+2    b  zero   3  2.5
+3    b   one   4 -0.5
+4    a  zero   5  4.0
+5    b   one   6 -1.2
+6    a  zero   7  0.2
+7    b  zero   8 -1.7</p>
+
+<p>In [60]: y, X = patsy.dmatrices(&lsquo;v2 ~ key1 + key2&rsquo;, data)</p>
+
+<p>In [61]: X
+Out[61]:
+DesignMatrix with shape (8, 3)
+  Intercept  key1[T.b]  key2[T.zero]
+          1          0             1
+          1          0             0
+          1          1             1
+          1          1             0
+          1          0             1
+          1          1             0
+          1          0             1
+          1          1             1
+  Terms:
+    &lsquo;Intercept&rsquo; (column 0)
+    &lsquo;key1&rsquo; (column 1)
+    &lsquo;key2&rsquo; (column 2)</p>
+
+<p>In [62]: y, X = patsy.dmatrices(&lsquo;v2 ~ key1 + key2 + key1:key2&rsquo;, data)</p>
+
+<p>In [63]: X
+Out[63]:
+DesignMatrix with shape (8, 4)
+  Intercept  key1[T.b]  key2[T.zero]
+key1[T.b]:key2[T.zero]
+          1          0             1                       0
+          1          0             0                       0
+          1          1             1                       1
+          1          1             0                       0
+          1          0             1                       0
+          1          1             0                       0
+          1          0             1                       0
+          1          1             1                       1
+  Terms:
+    &lsquo;Intercept&rsquo; (column 0)
+    &lsquo;key1&rsquo; (column 1)
+    &lsquo;key2&rsquo; (column 2)
+    &lsquo;key1:key2&rsquo; (column 3)</p>
+
+<pre><code>
+Patsy提供转换分类数据的其它方法，包括以特定顺序转换。请参阅线上文档。
+
+# 13.3 statsmodels介绍
+
+statsmodels是Python进行拟合多种统计模型、进行统计试验和数据探索可视化的库。Statsmodels包含许多经典的统计方法，但没有贝叶斯方法和机器学习模型。
+
+statsmodels包含的模型有：
+
+- 线性模型，广义线性模型和健壮线性模型
+- 线性混合效应模型
+- 方差（ANOVA）方法分析
+- 时间序列过程和状态空间模型
+- 广义矩估计
+
+下面，我会使用一些基本的statsmodels工具，探索Patsy公式和pandasDataFrame对象如何使用模型接口。
+
+## 估计线性模型
+
+statsmodels有多种线性回归模型，包括从基本（比如普通最小二乘）到复杂（比如迭代加权最小二乘法）的。
+
+statsmodels的线性模型有两种不同的接口：基于数组和基于公式。它们可以通过API模块引入：
+</code></pre>
+
+<p>python
+import statsmodels.api as sm
+import statsmodels.formula.api as smf</p>
+
+<pre><code>
+为了展示它们的使用方法，我们从一些随机数据生成一个线性模型：
+</code></pre>
+
+<p>python
+def dnorm(mean, variance, size=1):
+    if isinstance(size, int):
+        size = size,
+    return mean + np.sqrt(variance) * np.random.randn(*size)</p>
+
+<h1 id="for-reproducibility">For reproducibility</h1>
+
+<p>np.random.seed(12345)</p>
+
+<p>N = 100
+X = np.c_[dnorm(0, 0.4, size=N),
+          dnorm(0, 0.6, size=N),
+          dnorm(0, 0.2, size=N)]
+eps = dnorm(0, 0.1, size=N)
+beta = [0.1, 0.3, 0.5]</p>
+
+<p>y = np.dot(X, beta) + eps</p>
+
+<pre><code>
+这里，我使用了“真实”模型和可知参数beta。此时，dnorm可用来生成正态分布数据，带有特定均值和方差。现在有：
+</code></pre>
+
+<p>python
+In [66]: X[:5]
+Out[66]:
+array([[-0.1295, -1.2128,  0.5042],
+       [ 0.3029, -0.4357, -0.2542],
+       [-0.3285, -0.0253,  0.1384],
+       [-0.3515, -0.7196, -0.2582],
+       [ 1.2433, -0.3738, -0.5226]])</p>
+
+<p>In [67]: y[:5]
+Out[67]: array([ 0.4279, -0.6735, -0.0909, -0.4895,-0.1289])</p>
+
+<pre><code>
+像之前Patsy看到的，线性模型通常要拟合一个截距。sm.add_constant函数可以添加一个截距的列到现存的矩阵：
+</code></pre>
+
+<p>python
+In [68]: X_model = sm.add_constant(X)</p>
+
+<p>In [69]: X_model[:5]
+Out[69]:
+array([[ 1.    , -0.1295, -1.2128,  0.5042],
+       [ 1.    ,  0.3029, -0.4357, -0.2542],
+       [ 1.    , -0.3285, -0.0253,  0.1384],
+       [ 1.    , -0.3515, -0.7196, -0.2582],
+       [ 1.    ,  1.2433, -0.3738, -0.5226]])</p>
+
+<pre><code>
+sm.OLS类可以拟合一个普通最小二乘回归：
+</code></pre>
+
+<p>python
+In [70]: model = sm.OLS(y, X)</p>
+
+<pre><code>
+这个模型的fit方法返回了一个回归结果对象，它包含估计的模型参数和其它内容：
+</code></pre>
+
+<p>python
+In [71]: results = model.fit()</p>
+
+<p>In [72]: results.params
+Out[72]: array([ 0.1783,  0.223 ,  0.501 ])</p>
+
+<pre><code>
+对结果使用summary方法可以打印模型的详细诊断结果：
+</code></pre>
+
+<p>python
+In [73]: print(results.summary())</p>
+
+<h1 id="ols-regression-results">OLS Regression Results</h1>
+
+<p>Dep. Variable:                      y   R-squared:                       0.430
+Model:                            OLS   Adj. R-squared:                  0.413
+Method:                 Least Squares   F-statistic:                     24.42
+Date:                Mon, 25 Sep 2017   Prob (F-statistic):           7.44e-12
+Time:                        14:06:15   Log-Likelihood:                -34.305
+No. Observations:                 100   AIC:                             74.61
+Df Residuals:                      97   BIC:                             82.42
+Df Model:                           3</p>
+
+<h1 id="covariance-type-nonrobust">Covariance Type:            nonrobust</h1>
+
+<pre><code>             coef    std err          t      P&gt;|t|      [0.025      0.975]
+</code></pre>
+
+<hr />
+
+<p>x1             0.1783      0.053      3.364      0.001       0.073       0.283
+x2             0.2230      0.046      4.818      0.000       0.131       0.315</p>
+
+<h1 id="x3-0-5010-0-080-6-237-0-000-0-342-0-660">x3             0.5010      0.080      6.237      0.000       0.342       0.660</h1>
+
+<p>Omnibus:                        4.662   Durbin-Watson:                   2.201
+Prob(Omnibus):                  0.097   Jarque-Bera (JB):                4.098
+Skew:                           0.481   Prob(JB):                        0.129
+Kurtosis:                       3.243   Cond. No.</p>
+
+<h1 id="1-74">1.74</h1>
+
+<p>Warnings:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly
+specified.</p>
+
+<pre><code>
+这里的参数名为通用名x1, x2等等。假设所有的模型参数都在一个DataFrame中：
+</code></pre>
+
+<p>python
+In [74]: data = pd.DataFrame(X, columns=[&lsquo;col0&rsquo;, &lsquo;col1&rsquo;, &lsquo;col2&rsquo;])</p>
+
+<p>In [75]: data[&lsquo;y&rsquo;] = y</p>
+
+<p>In [76]: data[:5]
+Out[76]:
+       col0      col1      col2         y
+0 -0.129468 -1.212753  0.504225  0.427863
+1  0.302910 -0.435742 -0.254180 -0.673480
+2 -0.328522 -0.025302  0.138351 -0.090878
+3 -0.351475 -0.719605 -0.258215 -0.489494
+4  1.243269 -0.373799 -0.522629 -0.128941</p>
+
+<pre><code>
+现在，我们使用statsmodels的公式API和Patsy的公式字符串：
+</code></pre>
+
+<p>python
+In [77]: results = smf.ols(&lsquo;y ~ col0 + col1 + col2&rsquo;, data=data).fit()</p>
+
+<p>In [78]: results.params
+Out[78]:
+Intercept    0.033559
+col0         0.176149
+col1         0.224826
+col2         0.514808
+dtype: float64</p>
+
+<p>In [79]: results.tvalues
+Out[79]:
+Intercept    0.952188
+col0         3.319754
+col1         4.850730
+col2         6.303971
+dtype: float64</p>
+
+<pre><code>
+观察下statsmodels是如何返回Series结果的，附带有DataFrame的列名。当使用公式和pandas对象时，我们不需要使用add_constant。
+
+给出一个样本外数据，你可以根据估计的模型参数计算预测值：
+</code></pre>
+
+<p>python
+In [80]: results.predict(data[:5])
+Out[80]:
+0   -0.002327
+1   -0.141904
+2    0.041226
+3   -0.323070
+4   -0.100535
+dtype: float64</p>
+
+<pre><code>
+statsmodels的线性模型结果还有其它的分析、诊断和可视化工具。除了普通最小二乘模型，还有其它的线性模型。
+
+## 估计时间序列过程
+
+statsmodels的另一模型类是进行时间序列分析，包括自回归过程、卡尔曼滤波和其它态空间模型，和多元自回归模型。
+
+用自回归结构和噪声来模拟一些时间序列数据：
+</code></pre>
+
+<p>python
+init_x = 4</p>
+
+<p>import random
+values = [init_x, init_x]
+N = 1000</p>
+
+<p>b0 = 0.8
+b1 = -0.4
+noise = dnorm(0, 0.1, N)
+for i in range(N):
+    new_x = values[-1] * b0 + values[-2] * b1 + noise[i]
+    values.append(new_x)</p>
+
+<pre><code>
+这个数据有AR(2)结构（两个延迟），参数是0.8和-0.4。拟合AR模型时，你可能不知道滞后项的个数，因此可以用较多的滞后量来拟合这个模型：
+</code></pre>
+
+<p>python
+In [82]: MAXLAGS = 5</p>
+
+<p>In [83]: model = sm.tsa.AR(values)</p>
+
+<p>In [84]: results = model.fit(MAXLAGS)</p>
+
+<pre><code>
+结果中的估计参数首先是截距，其次是前两个参数的估计值：
+</code></pre>
+
+<p>python
+In [85]: results.params
+Out[85]: array([-0.0062,  0.7845, -0.4085, -0.0136,  0.015 ,  0.0143])</p>
+
+<pre><code>
+更多的细节以及如何解释结果超出了本书的范围，可以通过statsmodels文档学习更多。
+
+# 13.4 scikit-learn介绍
+
+scikit-learn是一个广泛使用、用途多样的Python机器学习库。它包含多种标准监督和非监督机器学习方法和模型选择和评估、数据转换、数据加载和模型持久化工具。这些模型可以用于分类、聚合、预测和其它任务。
+
+机器学习方面的学习和应用scikit-learn和TensorFlow解决实际问题的线上和纸质资料很多。本节中，我会简要介绍scikit-learn API的风格。
+
+写作此书的时候，scikit-learn并没有和pandas深度结合，但是有些第三方包在开发中。尽管如此，pandas非常适合在模型拟合前处理数据集。
+
+举个例子，我用一个Kaggle竞赛的经典数据集，关于泰坦尼克号乘客的生还率。我们用pandas加载测试和训练数据集：
+</code></pre>
+
+<p>python
+In [86]: train = pd.read_csv(&lsquo;datasets/titanic/train.csv&rsquo;)</p>
+
+<p>In [87]: test = pd.read_csv(&lsquo;datasets/titanic/test.csv&rsquo;)</p>
+
+<p>In [88]: train[:4]
+Out[88]:
+   PassengerId  Survived  Pclass  <br />
+0            1         0       3<br />
+1            2         1       1<br />
+2            3         1       3<br />
+3            4         1       1<br />
+                                                Name     Sex   Age  SibSp  <br />
+0                            Braund, Mr. Owen Harris    male  22.0      1<br />
+1  Cumings, Mrs. John Bradley (Florence Briggs Th&hellip;  female  38.0      1<br />
+2                             Heikkinen, Miss. Laina  female  26.0      0<br />
+3       Futrelle, Mrs. Jacques Heath (Lily May Peel)  female  35.0      1<br />
+   Parch            Ticket     Fare Cabin Embarked<br />
+0      0         A/5 21171   7.2500   NaN        S<br />
+1      0          PC 17599  71.2833   C85        C<br />
+2      0  STON/O2. 3101282   7.9250   NaN        S<br />
+3      0            113803  53.1000  C123        S</p>
+
+<pre><code>
+statsmodels和scikit-learn通常不能接收缺失数据，因此我们要查看列是否包含缺失值：
+</code></pre>
+
+<p>python
+In [89]: train.isnull().sum()
+Out[89]:
+PassengerId      0
+Survived         0
+Pclass           0
+Name             0
+Sex              0
+Age            177
+SibSp            0
+Parch            0
+Ticket           0
+Fare             0
+Cabin          687
+Embarked         2
+dtype: int64</p>
+
+<p>In [90]: test.isnull().sum()
+Out[90]:
+PassengerId      0
+Pclass           0
+Name             0
+Sex              0
+Age             86
+SibSp            0
+Parch            0
+Ticket           0
+Fare             1
+Cabin          327
+Embarked         0
+dtype: int64</p>
+
+<pre><code>
+在统计和机器学习的例子中，根据数据中的特征，一个典型的任务是预测乘客能否生还。模型现在训练数据集中拟合，然后用样本外测试数据集评估。
+
+我想用年龄作为预测值，但是它包含缺失值。缺失数据补全的方法有多种，我用的是一种简单方法，用训练数据集的中位数补全两个表的空值：
+</code></pre>
+
+<p>python
+In [91]: impute_value = train[&lsquo;Age&rsquo;].median()</p>
+
+<p>In [92]: train[&lsquo;Age&rsquo;] = train[&lsquo;Age&rsquo;].fillna(impute_value)</p>
+
+<p>In [93]: test[&lsquo;Age&rsquo;] = test[&lsquo;Age&rsquo;].fillna(impute_value)</p>
+
+<pre><code>
+现在我们需要指定模型。我增加了一个列IsFemale，作为“Sex”列的编码：
+</code></pre>
+
+<p>python
+In [94]: train[&lsquo;IsFemale&rsquo;] = (train[&lsquo;Sex&rsquo;] == &lsquo;female&rsquo;).astype(int)</p>
+
+<p>In [95]: test[&lsquo;IsFemale&rsquo;] = (test[&lsquo;Sex&rsquo;] == &lsquo;female&rsquo;).astype(int)</p>
+
+<pre><code>
+然后，我们确定一些模型变量，并创建NumPy数组：
+</code></pre>
+
+<p>python
+In [96]: predictors = [&lsquo;Pclass&rsquo;, &lsquo;IsFemale&rsquo;, &lsquo;Age&rsquo;]</p>
+
+<p>In [97]: X_train = train[predictors].values</p>
+
+<p>In [98]: X_test = test[predictors].values</p>
+
+<p>In [99]: y_train = train[&lsquo;Survived&rsquo;].values</p>
+
+<p>In [100]: X_train[:5]
+Out[100]:
+array([[  3.,   0.,  22.],
+       [  1.,   1.,  38.],
+       [  3.,   1.,  26.],
+       [  1.,   1.,  35.],
+       [  3.,   0.,  35.]])</p>
+
+<p>In [101]: y_train[:5]
+Out[101]: array([0, 1, 1, 1, 0])</p>
+
+<pre><code>
+我不能保证这是一个好模型，但它的特征都符合。我们用scikit-learn的LogisticRegression模型，创建一个模型实例：
+</code></pre>
+
+<p>python
+In [102]: from sklearn.linear_model import LogisticRegression</p>
+
+<p>In [103]: model = LogisticRegression()</p>
+
+<pre><code>
+与statsmodels类似，我们可以用模型的fit方法，将它拟合到训练数据：
+</code></pre>
+
+<p>python
+In [104]: model.fit(X_train, y_train)
+Out[104]:
+LogisticRegression(C=1.0, class_weight=None, dual=False, fit_intercept=True,
+          intercept_scaling=1, max_iter=100, multi_class=&lsquo;ovr&rsquo;, n_jobs=1,
+          penalty=&lsquo;l2&rsquo;, random_state=None, solver=&lsquo;liblinear&rsquo;, tol=0.0001,
+          verbose=0, warm_start=False)</p>
+
+<pre><code>
+现在，我们可以用model.predict，对测试数据进行预测：
+</code></pre>
+
+<p>python
+In [105]: y_predict = model.predict(X_test)</p>
+
+<p>In [106]: y_predict[:10]
+Out[106]: array([0, 0, 0, 0, 1, 0, 1, 0, 1, 0])</p>
+
+<pre><code>
+如果你有测试数据集的真是值，你可以计算准确率或其它错误度量值：
+</code></pre>
+
+<p>python
+(y_true == y_predict).mean()</p>
+
+<pre><code>
+在实际中，模型训练经常有许多额外的复杂因素。许多模型有可以调节的参数，有些方法（比如交叉验证）可以用来进行参数调节，避免对训练数据过拟合。这通常可以提高预测性或对新数据的健壮性。
+
+交叉验证通过分割训练数据来模拟样本外预测。基于模型的精度得分（比如均方差），可以对模型参数进行网格搜索。有些模型，如logistic回归，有内置的交叉验证的估计类。例如，logisticregressioncv类可以用一个参数指定网格搜索对模型的正则化参数C的粒度：
+</code></pre>
+
+<p>python
+In [107]: from sklearn.linear_model import LogisticRegressionCV</p>
+
+<p>In [108]: model_cv = LogisticRegressionCV(10)</p>
+
+<p>In [109]: model_cv.fit(X_train, y_train)
+Out[109]:
+LogisticRegressionCV(Cs=10, class_weight=None, cv=None, dual=False,
+           fit_intercept=True, intercept_scaling=1.0, max_iter=100,
+           multi_class=&lsquo;ovr&rsquo;, n_jobs=1, penalty=&lsquo;l2&rsquo;, random_state=None,
+           refit=True, scoring=None, solver=&lsquo;lbfgs&rsquo;, tol=0.0001, verbose=0)</p>
+
+<pre><code>
+要手动进行交叉验证，你可以使用cross_val_score帮助函数，它可以处理数据分割。例如，要交叉验证我们的带有四个不重叠训练数据的模型，可以这样做：
+</code></pre>
+
+<p>python
+In [110]: from sklearn.model_selection import cross_val_score</p>
+
+<p>In [111]: model = LogisticRegression(C=10)</p>
+
+<p>In [112]: scores = cross_val_score(model, X_train, y_train, cv=4)</p>
+
+<p>In [113]: scores
+Out[113]: array([ 0.7723,  0.8027,  0.7703,  0.7883])
+```</p>
+
+<p>默认的评分指标取决于模型本身，但是可以明确指定一个评分。交叉验证过的模型需要更长时间来训练，但会有更高的模型性能。</p>
+
+<h1 id="13-5-继续学习">13.5 继续学习</h1>
+
+<p>我只是介绍了一些Python建模库的表面内容，现在有越来越多的框架用于各种统计和机器学习，它们都是用Python或Python用户界面实现的。</p>
+
+<p>这本书的重点是数据规整，有其它的书是关注建模和数据科学工具的。其中优秀的有：</p>
+
+<ul>
+<li>Andreas Mueller and Sarah Guido (O’Reilly)的 《Introduction to Machine Learning with Python》</li>
+<li>Jake VanderPlas (O’Reilly)的 《Python Data Science Handbook》</li>
+<li>Joel Grus (O’Reilly) 的 《Data Science from Scratch: First Principles》</li>
+<li>Sebastian Raschka (Packt Publishing) 的《Python Machine Learning》</li>
+<li>Aurélien Géron (O’Reilly) 的《Hands-On Machine Learning with Scikit-Learn and TensorFlow》</li>
+</ul>
+
+<p>虽然书是学习的好资源，但是随着底层开源软件的发展，书的内容会过时。最好是不断熟悉各种统计和机器学习框架的文档，学习最新的功能和API。</p>
+
+          </div>
+
+          
+          <div class="row">
+            <div class="col-md-8">
+            
+              <div class="mb-5">
+                
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://example.com/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://example.com/tags/pandas" role="button">Pandas </a></li>
+      
+    
+      <li><a href="https://example.com/tags/python" role="button">Python </a></li>
+      
+    
+      <li><a href="https://example.com/tags/numpy" role="button">Numpy </a></li>
+      
+    
+  </div>
+</div>
+              </div>
+            
+            </div>
+            
+          </div>
+          
+
+          
+          <div class="row pt-3">
+            <div class="col-md-6">
+              
+                <a href=https://example.com/java%E5%9F%BA%E7%A1%80/ class="post-meta">Previous
+                  <div class="pt-2 pb-5 d-flex">
+                    <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
+                    <span>Java 基础</span>
+                  </div>
+                </a>
+              
+            </div>
+            
+            <div class="col-md-6 text-right" >
+              
+                <a href=https://example.com/%E7%AC%AC14%E7%AB%A0-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E6%A1%88%E4%BE%8B/ class="post-meta">Next
+                  <div class="pt-2 pb-5 flex-reverse">
+                    <i class="fas fa-angle-right text-grey font-weight-bold ml-2 active-color"></i>
+                    <span>第14章 数据分析实例</span>
+                  </div>
+                </a>
+              
+            </div>
+          </div>
+
+          
+
+        </div>
+        
+
+      </div>
+      
+
+      
+	
+	
+	
+	
+		
+		
+		
+	
+
+		
+		<div class="col-md-2 pl-0">
+
+			
+			<div id="page-scrollspy" class="toc-nav">
+				
+				<ul class="nav nav-pills ml-0">
+					
+					<li class="nav-item pb-3 text-center">
+						<span class="font-weight-bold mb-2">- CATALOG - </span>
+					</li>
+
+					
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#13-1-pandas%e4%b8%8e%e6%a8%a1%e5%9e%8b%e4%bb%a3%e7%a0%81%e7%9a%84%e6%8e%a5%e5%8f%a3">
+												 13.1 pandas与模型代码的接口
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#for-reproducibility">
+												 For reproducibility
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#ols-regression-results">
+												 OLS Regression Results
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#covariance-type-nonrobust">
+												 Covariance Type: nonrobust
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#x3-0-5010-0-080-6-237-0-000-0-342-0-660">
+												 x3 0.5010 0.080 6.237 0.000 0.342 0.660
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#1-74">
+												 1.74
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#13-5-%e7%bb%a7%e7%bb%ad%e5%ad%a6%e4%b9%a0">
+												 13.5 继续学习
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+
+				</ul>
+			</div>
+			
+
+		</div>
+		
+	
+
+    </div>
+    
+
+
+  </main>
+  
+
+
+    
+    
+
+<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+
+  
+  <div class="pb-2 mt-5 pt-5">
+    
+      <a href="//github.com/Flionay " target="_blank" rel="noopener"><i class="fab fa-github mr-3" aria-hidden="true"></i></a>    
+    
+    
+
+    
+
+    
+
+    
+
+    
+        <a href="//instagram.com/luckyflion" target="_blank" rel="noopener"><i class="fab fa-instagram mr-3" aria-hidden="true"></i></a>
+    
+
+    
+        <a href="//weibo.com/u/5792963723" target="_blank" rel="noopener"><i class="fab fa-500px mr-3" aria-hidden="true"></i></a>
+    
+
+
+    
+        <a href="mailto:angyi_jq@163.com"><i class="far fa-envelope-open mr-3" aria-hidden="true"></i></a>
+    
+
+    
+
+    
+
+  </div>
+  
+
+  
+  <div class="copyright py-4">
+    
+    <span>  2016 - 2019 &copy; | Theme <a href='https://github.com/orianna-zzo/AllinOne' target="_blank">AllinOne</a> by <a href='https://github.com/orianna-zzo' target="_blank">Orianna</a>  </span>
+  </div>
+  
+
+</footer>
+
+
+    
+
+
+
+
+
+
+<script type="text/javascript" src="https://example.com/js/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://example.com/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://example.com/js/vendors/popper.min.js"></script>
+<script type="text/javascript" src="https://example.com/js/vendors/holder.min.js"></script>
+<script type="text/javascript" src="https://example.com/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
+
+<script type="text/javascript" src="https://example.com/js/vendors/mdb/mdb.min.js"></script>
+
+<script type="text/javascript" src="https://example.com/js/main.js"></script>
+
+
+
+  
+  <script src="https://example.com/js/vendors/highlight.pack.js"> </script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+ 
+  <script src="https://example.com/js/vendors/katex/katex.min.js"> </script>
+  <script src="https://example.com/js/vendors/katex/contrib/auto-render.min.js"></script>
+
+  <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          renderMathInElement(document.body);
+      });
+  </script>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  
+  new WOW().init();
+</script>
+
+
+
+
+  </body>
+</html>

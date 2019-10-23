@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>可视化 on Angyi</title>
+    <link>https://example.com/tags/%E5%8F%AF%E8%A7%86%E5%8C%96/</link>
+    <description>Recent content in 可视化 on Angyi</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zn-Hans</language>
+    <lastBuildDate>Wed, 21 Aug 2019 10:40:16 +0800</lastBuildDate>
+    
+	<atom:link href="https://example.com/tags/%E5%8F%AF%E8%A7%86%E5%8C%96/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>标准的DataFrame数据框，能怎么分析？</title>
+      <link>https://example.com/kaggle_%E6%95%B0%E6%8D%AE%E7%94%BB%E5%9B%BE%E5%AD%A6%E4%B9%A0/</link>
+      <pubDate>Wed, 21 Aug 2019 10:40:16 +0800</pubDate>
+      
+      <guid>https://example.com/kaggle_%E6%95%B0%E6%8D%AE%E7%94%BB%E5%9B%BE%E5%AD%A6%E4%B9%A0/</guid>
+      <description>偶尔在Kaggle上看到的一个分析Notebook,惊讶于这么简单的数据竟然能够画出这么多漂亮的数据表。特此记录学习一下。</description>
+    </item>
+    
+    <item>
+      <title>第09章 绘图和可视化</title>
+      <link>https://example.com/%E7%AC%AC09%E7%AB%A0-%E7%BB%98%E5%9B%BE%E5%92%8C%E5%8F%AF%E8%A7%86%E5%8C%96/</link>
+      <pubDate>Fri, 25 Jan 2019 12:35:38 +0800</pubDate>
+      
+      <guid>https://example.com/%E7%AC%AC09%E7%AB%A0-%E7%BB%98%E5%9B%BE%E5%92%8C%E5%8F%AF%E8%A7%86%E5%8C%96/</guid>
+      <description>第09章 绘图和可视化：matplotlib是一个用于创建出版质量图表的桌面绘图包（主要是2D方面）。该项目是由John Hunter于2002年启动的，其目的是为Python构建一个MATLAB式的绘图接口。matplotlib和IPython社区进行合作，简化了从IPython shell（包括现在的Jupyter notebook）进行交互式绘图。matplotlib支持各种操作系统上许多不同的GUI后端，而且还能将图片导出为各种常见的矢量（vector）和光栅（raster）图：PDF、SVG、JPG、PNG、BMP、GIF等。除了几张，本书中的大部分图都是用它生成的。</description>
+    </item>
+    
+  </channel>
+</rss>

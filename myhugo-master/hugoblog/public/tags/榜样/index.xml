@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>榜样 on Angyi</title>
+    <link>https://example.com/tags/%E6%A6%9C%E6%A0%B7/</link>
+    <description>Recent content in 榜样 on Angyi</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zn-Hans</language>
+    <lastBuildDate>Wed, 10 Jul 2019 09:59:58 +0800</lastBuildDate>
+    
+	<atom:link href="https://example.com/tags/%E6%A6%9C%E6%A0%B7/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Machine Learning interview</title>
+      <link>https://example.com/%E9%87%87%E8%AE%BF/</link>
+      <pubDate>Wed, 10 Jul 2019 09:59:58 +0800</pubDate>
+      
+      <guid>https://example.com/%E9%87%87%E8%AE%BF/</guid>
+      <description>榜样的力量-吴恩达采访人工智能大师实录</description>
+    </item>
+    
+  </channel>
+</rss>

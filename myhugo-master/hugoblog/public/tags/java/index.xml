@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Java on Angyi</title>
+    <link>https://example.com/tags/java/</link>
+    <description>Recent content in Java on Angyi</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zn-Hans</language>
+    <lastBuildDate>Sun, 10 Feb 2019 09:59:58 +0800</lastBuildDate>
+    
+	<atom:link href="https://example.com/tags/java/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Java 基础</title>
+      <link>https://example.com/java%E5%9F%BA%E7%A1%80/</link>
+      <pubDate>Sun, 10 Feb 2019 09:59:58 +0800</pubDate>
+      
+      <guid>https://example.com/java%E5%9F%BA%E7%A1%80/</guid>
+      <description>Java 廖雪峰教程跟学笔记</description>
+    </item>
+    
+  </channel>
+</rss>
