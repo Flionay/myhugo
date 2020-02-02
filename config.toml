@@ -1,0 +1,100 @@
+baseURL                   = "https://flionay.github.io/"
+builddrafts                = false
+languageCode               = "zn-Hans"
+canonifyurls               = true
+contentdir                 = "content"
+layoutdir                  = "layouts"
+publishdir                 = "public"
+enableEmoji                = true
+hasCJKLanguage             = true
+summaryLength              = 200
+Paginate                   = 4
+
+theme                      = "AllinOne"
+title                      = "Angyi"
+
+pygmentsuseclasses         = true
+
+
+[permalinks]
+  python                    = "python/:year-:month/:slug/"
+  MLDL                    = "mldl/:year-:month/:slug/"
+  Others                    = "Others/:year-:month/:slug/"
+  
+
+
+[taxonomies]
+  tag                      = "tags"
+  series                   = "series"
+  category                 = "categories"
+
+
+[menu]
+  [[menu.main]]
+    name                   = "Python"
+    weight                 = -120
+    identifier             = "python"
+    url                    = "categories/python/"  
+
+  #[[menu.main]]
+  #  name                   = "MLDL"
+  #  weight                 = -110
+  #  identifier             = "mldl"
+   # url                    = "categories/mldl/" 
+
+  #[[menu.main]]
+  #  name                   = "Others"
+  #  weight                 = -100
+  #  identifier             = "others"
+  #  url                    = "categories/others/"  
+
+ 
+
+[params]
+  faviconfile              = "img/pig.png"               # from static/
+  avatar                   = "img/11.png"             # path to image in static dir e.g img/avatar.png 
+  author                   = "Angyi"
+  description              = ["抗压，专注，高效，坚持。", "做一个寡言，但心有一片海的人。", "你的形状，要自己去雕刻。你的高度，取决于你的自我要求。","If you get tired, learn to rest, not to quit."]           # appears in the site header when set to a non-empty string
+# welcome_head             = "Hello, World!"
+# welcome_word             = "~ No Day But Today ~"
+
+  latestpostscount         = 5                             # how many posts to display on the home page
+  bloggroupby              = 'month'
+  dateform                 = "Jan 2, 2006"
+  dateformfull             = "2006-01-02  Monday  15:04:05"
+  noshowreadtime           = false                         # if true, don't show "<x> minutes read" in posts
+
+  # slides
+  slidesDirPath            = "themes/AllinOne/static/img/header-slides"    # path to image in local dir (path for hugo)
+  slidesDirPathURL         = "img/header-slides"    # path to image in static dir (for static pages)
+
+  # highlighting 
+  highlightjs              = true
+
+  # latex
+  katex                    = true
+
+  # links
+  email                    = "angyi_jq@163.com"
+  github                   = "//github.com/Flionay"
+  #linkedin                 = "//linkedin.com/in/you"
+ # facebook                 = "//facebook.com/you"
+ # googleplus               = "//google.com/you"
+ # twitter                  = "//twitter.com/you" 
+  px500                    = "//weibo.com/u/5792963723"
+  instagram                = "//instagram.com/luckyflion"
+ # include_rss              = true                          # include RSS <link> tag in <head> and show RSS icon
+  
+  # analytics
+  googleAnalytics          = "your-google-analytic-id"
+    
+[params.valine]
+  enable = true
+  appId = 'GENPUwFk7J0C5AssHH1PfcOi-gzGzoHsz'
+  appKey = 'NL8BdIcYfX3LwypstePGozwT'
+  notify = false  # mail notifier , https://github.com/xCss/Valine/wiki
+  verify = false # Verification code
+  avatar = 'mm' 
+  placeholder = '请先编辑好上面的昵称和邮箱，然后说点什么吧...'
+  visitor = true
+

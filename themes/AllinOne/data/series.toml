@@ -1,0 +1,22 @@
+[[series]]
+name = "python"
+img = "img/series/code.jpg"
+summary = "《利用Python进行数据分析》转载笔记系列"
+
+
+
+[[series]]
+name = "ai"
+img = "img/series/ml2.jpg"
+summary = "吴恩达深度学习系列"
+
+
+[[series]]
+name = "others"
+img = "img/series/timg.jpeg"
+summary = "其他算法系列"
+
+[[series]]
+name = "ocean"
+img = "img/series/ocean.jpg"
+summary = "海洋大气分析"
