@@ -5,10 +5,10 @@ date  = 2020-01-30T23:39:11+08:00
 draft = false
 share = true	# set false to hide share buttons
 tags = ["GUI","PyQt5"]
-series = ["Others"]
+series = ["其他"]
 categories = ["Others"]
 toc = true
-summary= "PyQt5 练手小项目，过年给亲戚写的方便日常工作的小软件哈哈哈"
+summary= "PyQt5 练手小项目，过年给亲戚写的方便日常工作的小软件"
 title = "PyQt5 GUI项目小项目 "
 img = "images/gui.png"
 +++
@@ -24,12 +24,16 @@ img = "images/gui.png"
 ## 笔记小结
 
 1. 可以直接使用QtDesigner来设计软件界面，生成ui文件然后直接用
+
+
 ```shell
 
 pyuic5 -o ui.py source.ui
 
 ```
+
 直接将`.ui`文件转换为`.py`文件。
+
 
 ```python 
 import ui # 导入生成的py文件
@@ -50,6 +54,8 @@ class mainWindow(QMainWindow):
     
 
 ```
+
+
 2. 数据库
 选择SQLite数据库，因为其有独特的迁移性优点，不需要扩展的应用，特别适合单用户的本地应用，移动应用和游戏。
 

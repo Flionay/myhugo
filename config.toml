@@ -1,4 +1,4 @@
-baseURL                   = "https://flionay.github.io/"
+baseURL                   = "https://flionay.gitee.io/blog/"
 builddrafts                = false
 languageCode               = "zn-Hans"
 canonifyurls               = true
