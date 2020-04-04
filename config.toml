@@ -1,4 +1,4 @@
-baseURL                   = "https://flionay.gitee.io/blog/"
+baseURL                   = "http://angyi.online"
 builddrafts                = false
 languageCode               = "zn-Hans"
 canonifyurls               = true
@@ -52,7 +52,7 @@ pygmentsuseclasses         = true
 
 [params]
   faviconfile              = "img/pig.png"               # from static/
-  avatar                   = "img/11.png"             # path to image in static dir e.g img/avatar.png 
+  avatar                   = "img/12.png"             # path to image in static dir e.g img/avatar.png 
   author                   = "Angyi"
   description              = ["抗压，专注，高效，坚持。", "做一个寡言，但心有一片海的人。", "你的形状，要自己去雕刻。你的高度，取决于你的自我要求。","If you get tired, learn to rest, not to quit."]           # appears in the site header when set to a non-empty string
 # welcome_head             = "Hello, World!"
