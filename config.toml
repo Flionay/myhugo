@@ -1,4 +1,4 @@
-baseURL                   = "http://angyi.online"
+baseURL                   = "https://flionay.github.io"
 builddrafts                = false
 languageCode               = "zn-Hans"
 canonifyurls               = true
@@ -8,7 +8,7 @@ publishdir                 = "public"
 enableEmoji                = true
 hasCJKLanguage             = true
 summaryLength              = 200
-Paginate                   = 4
+Paginate                   = 6
 
 theme                      = "AllinOne"
 title                      = "Angyi"
