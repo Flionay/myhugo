@@ -1,5 +1,5 @@
 
-{{ range where .Pages ".Params.tags" "ne" nil }}
+{{ range where .Site.Pages ".Params.tags" "ne" nil }}
   {{ $.Scratch.Add "tags"  (apply .Params.tags "lower" ".") }}
 {{ end }}
 
@@ -13,15 +13,21 @@
         <a href="{{ "tags/" | absLangURL }}">
           <span class="font-weight-bold text-uppercase post-meta">
             <i class="fas fa-tags pr-1" aria-hidden="true"></i> 
-            Featured Tags
+            标签
           </span>
         </a>
       </div>
+      <div class="widget tagcloud">
+        {{ range $name, $items := .Site.Taxonomies.tags }}
+        {{ $url := printf "%s/%s" "tags" ($name | urlize | lower)}}
+        <a href="{{ $url | absURL }}" style="font-size: 12px;">{{ $name }}</a>
+        {{ end }}
+    </div>
 
       <div class="li-x post-meta tags-md" style="margin-left: -8px;">
         
         
-        {{ range first 20 (where .ByCount "Name" "in" $terms)  }}
+        {{ range first 30 (where .ByCount "Name" "in" $terms)  }}
             <li><a href="{{ "tags/" | absLangURL }}{{ .Name | urlize }}" role="button"><span>{{ .Name }} ({{ .Count }})</span></a></li>
           
         {{ end }}
