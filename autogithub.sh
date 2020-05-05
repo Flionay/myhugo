@@ -3,9 +3,9 @@ cd public
 git add .
 msg="rebuilding site `date`"
 git commit -m "$msg"
-git push -u origin master
+git push --force origin master
 cd ..
 git add .
 msg="Origindata of  `date`"
 git commit -m "$msg"
-git push -u origin master
+git push --force origin master

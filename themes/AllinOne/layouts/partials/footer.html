@@ -51,16 +51,40 @@
   </div>
   <!-- Social icons -->
 
+  <p class="copyright py-1">
+    
+      <!-- {{ if .Site.Author.name }}
+        {{ if .Site.Author.website }}
+          <a href="{{ .Site.Author.website }}">{{ .Site.Author.name }}</a>
+        {{ else }}
+          {{ .Site.Author.name }}
+        {{ end }}
+      {{ end }} -->
+      
+      {{ .Site.LastChange.Format "January 2,2006" }}
+      updated
+      &nbsp;
+      <!-- {{ if .Site.Title }}
+        &nbsp;&bull;&nbsp;
+        <a href="{{ "" | absLangURL }}">Home</a>
+      {{ end }} -->
+
+    <span id="busuanzi_container_site_pv">
+        本站访问量：<span id="busuanzi_value_site_pv"></span>次
+    </span>
+    &nbsp;
+    <span id="busuanzi_container_site_uv">
+        您是本站第 <span id="busuanzi_value_site_uv"></span> 位访问者
+    </span>
+    </p>
+
   <!--Copyright-->
-  <div class="copyright py-4">
-    <!-- Copyright © 2018 Orianna 
-    <span>  2016 - {{ now.Year }} &copy; | Theme <a href='https://github.com/orianna-zzo/AllinOne' target="_blank">AllinOne</a> by <a href='https://github.com/orianna-zzo' target="_blank">Orianna</a>  </span>
-  -->
+  <div class="copyright py-1">
+    Copyright © 2018 Orianna 
+    <span>  2016 - {{ now.Year }} &copy; | Theme <a href='https://github.com/orianna-zzo/AllinOne' target="_blank">myAllinOne</a> based on <a href='https://github.com/orianna-zzo' target="_blank">Orianna</a>  </span>
+ 
   </div>
   <!--/.Copyright-->
-  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-  <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
 
-  
 </footer>
 <!--/.Footer-->

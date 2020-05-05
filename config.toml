@@ -12,7 +12,7 @@ Paginate                   = 5
 
 theme                      = "AllinOne"
 title                      = "Angyi"
-
+author                     = "Angyi"
 pygmentsuseclasses         = true
 
 
@@ -67,9 +67,9 @@ pygmentsuseclasses         = true
   faviconfile              = "img/pig.png"               # from static/
   avatar                   = "img/1.jpg"             # path to image in static dir e.g img/avatar.png 
   author                   = "Angyi"
-  description              = ["Qingdao China","If you get tired, learn to rest, not to quit."]           # appears in the site header when set to a non-empty string
+  description              = ["青岛 中国","星垂平野阔，月涌大江流","飘飘何所似，天地一沙鸥"]           # appears in the site header when set to a non-empty string
   welcome_head             = "最近动态!"
- welcome_word             = "~ No Day But Today ~"
+  #welcome_word             = "时间都去哪儿啦"
 
   latestpostscount         = 5                             # how many posts to display on the home page
   bloggroupby              = 'month'
@@ -88,8 +88,10 @@ pygmentsuseclasses         = true
 
   # latex
   katex                    = true
- # counter
-  busuanzi                 = true
+
+  # busuanzi
+  busuanzi = true
+  busuanzi_site_offset = 100000
 
   # links
   email                    = "angyi_jq@163.com"
@@ -113,5 +115,5 @@ pygmentsuseclasses         = true
   verify = false # Verification code
   avatar = 'mm' 
   placeholder = '请先编辑好上面的昵称和邮箱，然后说点什么吧...'
-  visitor = false
+  visitor = true
 
