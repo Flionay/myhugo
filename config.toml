@@ -91,7 +91,6 @@ pygmentsuseclasses         = true
 
   # busuanzi
   busuanzi = true
-  busuanzi_site_offset = 100000
 
   # links
   email                    = "angyi_jq@163.com"
