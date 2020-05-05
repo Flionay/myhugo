@@ -1,4 +1,5 @@
 #!/bin/bash
+hugo
 cd public
 git add .
 msg="rebuilding site `date`"
