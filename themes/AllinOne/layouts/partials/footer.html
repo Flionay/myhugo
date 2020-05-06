@@ -50,14 +50,42 @@
 
   </div>
   <!-- Social icons -->
-
+<!--网站已安全运行X天X小时X分X秒 start-->
+<div class="copyright py-1">
+  <span id="dhnblog"></span><span id="dhnblog" style="color: #ff0000;"></span>
+  <script type="text/javascript">
+  function NewDate(str) {
+  str = str.split('-');
+  var date = new Date();
+  date.setUTCFullYear(str[0], str[1] - 1, str[2]);
+  date.setUTCHours(0, 0, 0, 0);
+  return date;
+  }
+  function momxc() {
+  var birthDay =NewDate("2018-7-1");
+  var today=new Date();
+  var timeold=today.getTime()-birthDay.getTime();
+  var sectimeold=timeold/1000
+  var secondsold=Math.floor(sectimeold);
+  var msPerDay=24*60*60*1000; var e_daysold=timeold/msPerDay;
+  var daysold=Math.floor(e_daysold);
+  var e_hrsold=(daysold-e_daysold)*-24;
+  var hrsold=Math.floor(e_hrsold);
+  var e_minsold=(hrsold-e_hrsold)*-60;
+  var minsold=Math.floor((hrsold-e_hrsold)*-60); var seconds=Math.floor((minsold-e_minsold)*-60).toString();
+  document.getElementById("dhnblog").innerHTML = "本站已安全运行"+daysold+"天"+hrsold+"小时"+minsold+"分"+seconds+"秒";
+  setTimeout(momxc, 1000);
+  }momxc();
+  </script>  
+  </div>
+  <!--网站已安全运行X天X小时X分X秒 end-->
 
   <!-- Busuanzi -->
 
   <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
   <div class="copyright py-1">
-      {{ .Site.LastChange.Format "January 2,2006" }}
-      updated
+      最近更新于 {{ .Site.LastChange.Format "January 2,2006" }}
+      &nbsp;&nbsp;&nbsp;
      <span id="busuanzi_container_site_pv">
         本站访问量：<span id="busuanzi_value_site_pv">4931</span>次
     </span>
