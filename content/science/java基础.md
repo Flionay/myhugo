@@ -10,7 +10,7 @@ title = "Java 基础"
 Summary = "  Java 廖雪峰教程跟学笔记  "
 
 
-categories = ["其他"]
+categories = ["技能杂记"] ## python 深度学习 机器学习 技能杂记 数据分析 海洋大气
 toc = true
 +++
 

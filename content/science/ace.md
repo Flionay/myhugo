@@ -6,7 +6,7 @@ draft = false
 	# set "main" to add this content to the 
 share = true	# set false to hide share buttons
 tags = ["html"]
-categories=["其他"]
+categories=["技能杂记"]
 toc= true
 title = "利用ACE打造Python在线代码编辑器 "
 Summary = "  网页中的代码编辑器，支持多种语言，高亮以及智能提示.....  "

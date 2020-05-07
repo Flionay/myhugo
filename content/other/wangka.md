@@ -3,7 +3,7 @@ title: "黑苹果Dw1560网卡驱动"
 date: 2020-04-23T22:26:37+08:00
 comments : true
 tags : ["Hackintosh"]
-categories : ["其他"] ## python 深度学习 机器学习 其他 数据分析 海洋大气
+categories : ["技能杂记"] ## python 深度学习 机器学习 其他 数据分析 海洋大气
 # series : ["ai"] # python ai others ocean
 toc : true
 summary : "实现无限wifi，蓝牙，隔空投送。"

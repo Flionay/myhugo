@@ -3,7 +3,7 @@ title: "上手Latex，体验代码式写论文"
 date: 2020-04-29T14:31:00+08:00
 comments : true
 tags : ["Latex"]
-categories : ["其他"] ## python 深度学习 机器学习 其他 数据分析 海洋大气
+categories : ["技能杂记"] ## python 深度学习 机器学习 技能杂记 数据分析 海洋大气
 # series : ["ai"] # python ai others ocean
 toc : true
 summary : "Latex基本配置与基础使用方法。"

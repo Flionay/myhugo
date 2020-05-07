@@ -3,7 +3,7 @@ title: "黑苹果原生态声卡驱动"
 date: 2020-04-23T22:24:25+08:00
 comments : true
 tags : ["Hackintosh"]
-categories : ["其他"] ## python 深度学习 机器学习 其他 数据分析 海洋大气
+categories : ["技能杂记"] ## python 深度学习 机器学习 其他 数据分析 海洋大气
 # series : ["ai"] # python ai others ocean
 toc : true
 summary : "黑苹果板载声卡原生态驱动方式"

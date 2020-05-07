@@ -3,7 +3,7 @@ title: "Other"
 date: 2020-04-23T20:33:32+08:00
 comments : true
 tags : ["Hackintosh"]
-categories : ["其他"] ## python 深度学习 机器学习 其他 数据分析 海洋大气
+categories : ["技能杂记"] ## python 深度学习 机器学习 其他 数据分析 海洋大气
 # series : ["ai"] # python ai others ocean
 toc : true
 summary : "我的第一台组装黑苹果ITX"
