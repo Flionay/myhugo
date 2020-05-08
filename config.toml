@@ -1,4 +1,4 @@
-baseURL                   = "https://www.angyi.online/"
+baseURL                   = "https://flionay.github.io/"
 builddrafts                = false
 languageCode               = "zn-Hans"
 canonifyurls               = true
