@@ -1,5 +1,5 @@
 ---
-title: "关于我"
+title: "about"
 date: 2018-04-21T12:44:15+08:00
 ---
 
@@ -27,7 +27,3 @@ date: 2018-04-21T12:44:15+08:00
 时间自由，财富自由，家庭幸福，世界和平。
 
 
-
-<span id="busuanzi_container_site_pv">
-    本站总访问量<span id="busuanzi_value_site_pv"></span>次
-</span>
